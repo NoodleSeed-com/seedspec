@@ -65,6 +65,344 @@ This specification will generate a complete, working application.
 - **Production Ready**: Built-in best practices and security patterns
 - **Full Stack**: Covers database, backend, frontend, and integrations
 
+## Examples
+
+Here's a progression of examples showing the expressiveness and simplicity of SeedML.
+
+### Basic CRUD Application
+
+```yaml
+# Simple customer management system
+app CustomerManager {
+  entity Customer {
+    # Basic information
+    name: string
+    email: email
+    phone: phone?
+    status: active/inactive = active
+    
+    # Validation rules built-in
+    validate: email != null if status == active
+  }
+
+  # Generates complete admin interface
+  screen Customers {
+    list: [name, email, status]
+    search: [name, email]
+    actions: [create, edit, delete]
+  }
+}
+```
+
+### Business Application with Logic
+
+```yaml
+# Order management with business rules
+app OrderSystem {
+  entity Order {
+    # Basic fields with types
+    customer: Customer
+    items: [
+      product: Product,
+      quantity: int > 0,
+      price: money
+    ]
+    
+    # Computed fields
+    subtotal: sum(items.price * items.quantity)
+    tax: subtotal * 0.2
+    total: subtotal + tax
+    
+    # State management
+    status: draft->submitted->approved->shipped->delivered
+    
+    # Business rules
+    rules {
+      submit: {
+        require: [
+          items.length > 0,
+          customer.verified,
+          total <= customer.creditLimit
+        ]
+        then: notify@sales
+      }
+      
+      approve: {
+        require: role.manager
+        check: items.all(inStock)
+        then: [create@invoice, notify@warehouse]
+      }
+    }
+  }
+
+  # UI with business-oriented layout
+  screen Orders {
+    list {
+      view: table
+      show: [id, customer, total, status]
+      group: status
+      actions: [
+        submit if draft,
+        approve if submitted and role.manager
+      ]
+    }
+    
+    detail {
+      layout: split
+      left {
+        customer: card
+        items: editable-table
+      }
+      right {
+        summary: [subtotal, tax, total]
+        status: timeline
+        actions: panel
+      }
+    }
+  }
+}
+```
+
+### Analytics Dashboard
+
+```yaml
+# Real-time analytics dashboard
+app Analytics {
+  # Data models
+  entity Metric {
+    name: string
+    value: number
+    timestamp: datetime
+    category: string
+  }
+
+  # Dashboard screen
+  screen Dashboard {
+    layout: grid(2x2)
+    
+    # Multiple chart types
+    widgets: [
+      {
+        type: line-chart
+        data: Metric
+        x: timestamp
+        y: value
+        group: category
+        range: last-7-days
+      },
+      {
+        type: counter
+        data: Metric
+        value: sum(value)
+        change: vs_previous_period
+      },
+      {
+        type: bar-chart
+        data: Metric
+        x: category
+        y: sum(value)
+      },
+      {
+        type: table
+        data: Metric
+        columns: [name, value, timestamp]
+        sort: -timestamp
+        limit: 10
+      }
+    ]
+    
+    # Interactive features
+    features: [
+      time-range-selector,
+      category-filter,
+      export-data
+    ]
+  }
+}
+```
+
+### Full SaaS Application
+
+```yaml
+# Complete SaaS project management tool
+app ProjectHub {
+  # Core entities
+  entity Project {
+    basics: [name, description, key: slug]
+    dates: [start: date, target: date]
+    status: planning->active->completed
+    team: [lead: User, members: [User]]
+    
+    # Access control
+    access: {
+      view: team.members
+      edit: team.lead
+      admin: role.manager
+    }
+  }
+
+  entity Task {
+    basics: [title, description]
+    planning: [estimate: hours, priority: 1-5]
+    tracking: [
+      status: todo->doing->review->done,
+      assigned: User?,
+      reporter: User
+    ]
+    
+    # Computed fields
+    blocked: depends.any(status != done)
+    overdue: due < today and status != done
+  }
+
+  # Business logic
+  flows {
+    TaskAssignment {
+      on: Task.assigned_changed
+      do: [
+        notify@assigned "New task: ${task.title}",
+        notify@task.reporter "Task assigned to ${assigned}"
+      ]
+    }
+
+    ProjectCompletion {
+      on: Project.status -> completed
+      require: tasks.all(status == done)
+      do: [
+        notify@team "Project completed!",
+        analytics.track("project_completed")
+      ]
+    }
+  }
+
+  # User interface
+  screens {
+    ProjectDashboard {
+      layout: split
+      left {
+        projects: {
+          type: card-grid
+          show: [name, status, progress]
+          filter: status != completed
+          actions: [create, edit]
+        }
+      }
+      right {
+        tasks: {
+          type: kanban
+          group: status
+          show: [title, assigned.avatar, due]
+          filter: assigned == current_user
+        }
+      }
+    }
+
+    ProjectDetail {
+      layout: tabs
+      tabs: {
+        Overview {
+          layout: split
+          left: [
+            details: card(basics, dates),
+            team: avatars(members)
+          ]
+          right: [
+            metrics: [tasks.done, hours.total],
+            activity: timeline(events)
+          ]
+        }
+        
+        Tasks {
+          type: table
+          columns: [title, assigned, due, estimate]
+          actions: [create, assign, edit]
+        }
+      }
+    }
+  }
+
+  # Integrations
+  integrate {
+    auth0: {
+      domain: ${AUTH0_DOMAIN}
+      clients: [web, mobile]
+    }
+
+    slack: {
+      webhook: ${SLACK_WEBHOOK}
+      notify: [task.assigned, project.completed]
+    }
+
+    s3: {
+      bucket: ${S3_BUCKET}
+      access: private
+    }
+  }
+}
+```
+
+### API Integration Example
+
+```yaml
+# External API integration
+app WeatherDashboard {
+  # External API definition
+  api OpenWeather {
+    base: "https://api.openweathermap.org/data/2.5"
+    key: ${WEATHER_API_KEY}
+    
+    endpoints {
+      current: {
+        path: "/weather"
+        params: [city: string, units: string]
+        cache: 30min
+      }
+      
+      forecast: {
+        path: "/forecast"
+        params: [city: string, days: int]
+        cache: 1h
+      }
+    }
+  }
+
+  # Data models
+  entity Location {
+    city: string
+    country: string
+    coords: [lat: float, lon: float]
+  }
+
+  # UI components
+  screen Weather {
+    params: [location: Location]
+    
+    layout: cards
+    
+    widgets: [
+      {
+        type: weather-card
+        data: OpenWeather.current(location.city)
+        show: [temp, humidity, wind]
+      },
+      {
+        type: forecast-chart
+        data: OpenWeather.forecast(location.city)
+        range: 5d
+      }
+    ]
+  }
+}
+```
+
+These examples demonstrate:
+1. Progressive complexity
+2. Business logic integration
+3. UI/UX patterns
+4. External service integration
+5. Data modeling
+6. Access control
+
 ## Documentation
 
 - [Language Specification](docs/spec.md)
