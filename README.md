@@ -90,17 +90,15 @@ We're looking for collaborators interested in:
 
 ### How to Contribute
 1. Check our [Issues](https://github.com/noodleseed/seedml/issues) for current discussions
-2. Join our upcoming Discord community (coming soon)
-3. Share your thoughts through [Discussions](https://github.com/noodleseed/seedml/discussions)
+2. Share your thoughts through [Discussions](https://github.com/noodleseed/seedml/discussions)
 
 ## Contact
 
-- Email: [hello@noodleseed.com](mailto:hello@noodleseed.com)
-- Website: [https://noodleseed.com](https://noodleseed.com) (coming soon)
+- Email: [info@noodleseed.com](mailto:info@noodleseed.com)
+- Website: [https://noodleseed.com](https://noodleseed.com)
 
 ## Coming Soon
 
-- Discord community
 - Development roadmap
 - Contributor guidelines
 - Alpha release timeline
