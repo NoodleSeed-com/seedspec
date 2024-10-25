@@ -532,6 +532,42 @@ app ProjectHub {
 }
 ```
 
+### Pattern Recognition Example
+
+```yaml
+# Implicit patterns are automatically recognized and implemented
+
+# State Machine Pattern
+entity Order {
+  status: draft->submitted->approved
+  # Implies:
+  # - Enum type creation
+  # - State transition validation
+  # - UI status indicators
+  # - Audit logging
+  # - Event triggers
+}
+
+# Data Relationship Pattern
+entity Customer {
+  orders: [Order]
+  # Implies:
+  # - Foreign key setup
+  # - Cascading deletes
+  # - API relationship handling
+  # - UI data loading
+  # - Form relationships
+}
+
+# Smart Defaults Pattern
+entity Product {
+  name: string        # Required, indexed, min length
+  email: email        # Unique, validated, indexed
+  price: money        # Non-negative, precision(2)
+  created: timestamp  # Auto-set, immutable
+}
+```
+
 ### API Integration Example
 
 ```yaml
@@ -892,11 +928,67 @@ This approach allows SeedML to:
 - Reduce errors
 - Speed up development
 
+## Language Structure
+
+### Basic Syntax
+
+```yaml
+app [AppName] {
+  # 1. Global Configuration
+  meta: { ... }
+  
+  # 2. Data Models
+  entity [EntityName] { ... }
+  
+  # 3. Business Rules
+  rules { ... }
+  
+  # 4. User Interface
+  screens { ... }
+  
+  # 5. Integrations
+  integrate { ... }
+}
+```
+
+### Core Types
+
+```yaml
+# Primitive Types
+string              # Text values
+number              # Numeric values
+bool                # Boolean values
+date                # Date values
+time                # Time values
+datetime            # Date and time
+money               # Monetary values
+email               # Email addresses
+phone               # Phone numbers
+url                 # URLs
+
+# Complex Types
+[Type]              # Lists
+Type?               # Optional values
+Type!               # Required values
+map<Key, Value>     # Key-value pairs
+enum(v1,v2,v3)      # Enumerations
+
+# Special Types
+id                  # Unique identifiers
+timestamp           # Timestamps with timezone
+file                # File references
+image               # Image references
+geo                 # Geographical coordinates
+```
+
 ## Documentation
 
 - [Language Specification](docs/spec.md)
 - [Design Principles](docs/principles.md)
 - [Examples](docs/examples/)
+- [Pattern Recognition](docs/patterns.md)
+- [Type System](docs/types.md)
+- [Security Guide](docs/security.md)
 
 ## Licensing
 
