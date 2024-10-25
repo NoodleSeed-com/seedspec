@@ -630,6 +630,58 @@ These examples demonstrate:
 5. Data modeling
 6. Access control
 
+## Advanced Concepts
+
+SeedML includes sophisticated features for enterprise and complex applications:
+
+### Multi-Tenant Architecture
+- Database/schema/row-level tenant isolation
+- Tenant-specific customization capabilities
+- Cross-tenant sharing patterns
+- Automatic tenant scoping
+
+### Domain-Specific Extensions
+- Custom type definitions
+- Domain-specific patterns
+- Specialized validation rules
+- Industry-specific vocabularies
+
+### Time-Based Behaviors
+- Business calendar support
+- Complex scheduling patterns
+- Recurring events
+- Temporal rules and constraints
+
+### Versioning and Migration
+- Schema versioning
+- Automated migrations
+- Content versioning
+- Version-specific behaviors
+
+### Test Specifications
+- Test data generation
+- Behavioral testing
+- Property-based testing
+- Automated test scenarios
+
+### Plugin Architecture
+- Extensible plugin system
+- Multiple plugin types (UI/logic/data)
+- Resource isolation
+- Lifecycle hooks
+
+### AI Integration
+- Content processing
+- Decision support
+- Automated generation
+- AI-enhanced fields
+
+### Internationalization
+- Multi-language support
+- Regional variations
+- Translatable content
+- Locale-aware formatting
+
 ## Smart Defaults and Implicit Features
 
 SeedML drastically reduces specification size through intelligent defaults and contextual understanding. Here's how it works:
