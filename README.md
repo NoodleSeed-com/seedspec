@@ -427,8 +427,9 @@ We're looking for collaborators interested in:
 - Documentation and examples
 
 ### How to Contribute
-1. Check our [Issues](https://github.com/noodleseed/seedml/issues) for current discussions
-2. Share your thoughts through [Discussions](https://github.com/noodleseed/seedml/discussions)
+We'll be opening up for contributions soon. In the meantime, feel free to:
+1. Star the repository to show your interest
+2. Watch for updates as we develop the core specification
 
 ## Contact
 
