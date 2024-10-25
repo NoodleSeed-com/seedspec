@@ -403,6 +403,304 @@ These examples demonstrate:
 5. Data modeling
 6. Access control
 
+## Smart Defaults and Implicit Features
+
+SeedML drastically reduces specification size through intelligent defaults and contextual understanding. Here's how it works:
+
+### 1. Type-Based Implications
+
+```yaml
+# Traditional verbose specification
+entity Product {
+  id: {
+    type: uuid,
+    primary: true,
+    auto_generate: true,
+    indexed: true
+  }
+  name: {
+    type: string,
+    min_length: 1,
+    max_length: 100,
+    required: true,
+    indexed: true
+  }
+  email: {
+    type: string,
+    format: email,
+    unique: true,
+    required: true,
+    indexed: true,
+    validate: regex('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+  }
+  price: {
+    type: decimal,
+    precision: 2,
+    min: 0,
+    required: true,
+    validate: value > 0
+  }
+  created_at: {
+    type: timestamp,
+    auto_set: true,
+    indexed: true,
+    update: false
+  }
+}
+
+# SeedML equivalent (same functionality)
+entity Product {
+  name: string      # Implies: required, indexed, min(1), max(100)
+  email: email      # Implies: unique, required, indexed, format validation
+  price: money      # Implies: decimal(2), min(0), required
+  created: timestamp  # Implies: auto_set, indexed, immutable
+}
+```
+
+### 2. Context-Aware UI Patterns
+
+```yaml
+# Traditional verbose UI specification
+screen Products {
+  layout: {
+    type: responsive_grid,
+    columns: {
+      mobile: 1,
+      tablet: 2,
+      desktop: 4
+    },
+    spacing: 16,
+    padding: 24
+  }
+  list: {
+    type: data_table,
+    pagination: {
+      enabled: true,
+      per_page: 20,
+      controls: true
+    },
+    sorting: {
+      enabled: true,
+      default_field: "created",
+      default_direction: "desc"
+    },
+    filtering: {
+      enabled: true,
+      controls: true
+    },
+    selection: {
+      enabled: true,
+      type: "multi"
+    }
+  }
+  actions: {
+    placement: "top-right",
+    primary: {
+      create: {
+        type: "button",
+        variant: "primary",
+        icon: "plus",
+        label: "Create Product"
+      }
+    },
+    item: {
+      edit: {
+        type: "button",
+        variant: "secondary",
+        icon: "edit"
+      },
+      delete: {
+        type: "button",
+        variant: "danger",
+        icon: "trash",
+        confirm: true
+      }
+    }
+  }
+}
+
+# SeedML equivalent (same functionality)
+screen Products {
+  layout: grid      # Implies: responsive, standard spacing, padding
+  list: [name, price, status]  # Implies: pagination, sorting, filtering
+  actions: [create, edit, delete]  # Implies: proper placement, styling, confirmation
+}
+```
+
+### 3. Business Logic Patterns
+
+```yaml
+# Traditional verbose business rules
+entity Order {
+  status_transitions: {
+    draft: {
+      allowed_next: ["submitted"],
+      validation: {
+        conditions: [
+          "items.length > 0",
+          "total > 0",
+          "customer != null"
+        ]
+      },
+      before_transition: [
+        "validateCustomerCredit",
+        "checkInventory"
+      ],
+      after_transition: [
+        "notifyCustomer",
+        "notifySales",
+        "createAuditLog"
+      ]
+    }
+  },
+  validations: {
+    total: {
+      rules: ["positive", "less_than_credit_limit"],
+      messages: {
+        positive: "Total must be positive",
+        less_than_credit_limit: "Exceeds credit limit"
+      }
+    }
+  }
+}
+
+# SeedML equivalent (same functionality)
+entity Order {
+  status: draft->submitted->approved  # Implies: state machine, validation, audit
+  total: money  # Implies: positive, credit limit check
+  
+  rules {
+    submit: {
+      require: items.length > 0
+      then: notify@customer
+    }
+  }
+}
+```
+
+### 4. Smart Integration Patterns
+
+```yaml
+# Traditional verbose integration
+integrations: {
+  stripe: {
+    type: "payment_processor",
+    config: {
+      api_key: "${STRIPE_KEY}",
+      webhook_secret: "${STRIPE_WEBHOOK}",
+      success_url: "/payment/success",
+      cancel_url: "/payment/cancel"
+    },
+    events: {
+      payment_success: {
+        handler: "handlePaymentSuccess",
+        actions: [
+          "updateOrderStatus",
+          "sendConfirmationEmail",
+          "createInvoice"
+        ]
+      },
+      payment_failure: {
+        handler: "handlePaymentFailure",
+        actions: [
+          "markOrderFailed",
+          "notifyCustomer",
+          "logError"
+        ]
+      }
+    }
+  }
+}
+
+# SeedML equivalent (same functionality)
+integrate {
+  stripe: {
+    on: order.submit  # Implies: standard payment flow, success/failure handling
+    charge: total     # Implies: amount formatting, currency handling
+    then: approve     # Implies: status update, notifications, logging
+  }
+}
+```
+
+### 5. Security and Access Control
+
+```yaml
+# Traditional verbose permissions
+security: {
+  roles: {
+    admin: {
+      permissions: ["*"],
+      resource_access: "all"
+    },
+    manager: {
+      permissions: [
+        "read:*",
+        "write:orders",
+        "write:products",
+        "delete:own"
+      ],
+      resource_access: "department"
+    },
+    user: {
+      permissions: [
+        "read:own",
+        "write:own"
+      ],
+      resource_access: "own"
+    }
+  },
+  resource_policies: {
+    orders: {
+      read: "hasRole('admin') || isOwner() || inDepartment()",
+      write: "hasRole('admin') || hasRole('manager')",
+      delete: "hasRole('admin')"
+    }
+  }
+}
+
+# SeedML equivalent (same functionality)
+app Store {
+  roles: [admin, manager, user]  # Implies: standard role hierarchy
+  
+  entity Order {
+    access: {
+      view: team        # Implies: role-based + ownership checks
+      edit: role.manager
+      delete: role.admin
+    }
+  }
+}
+```
+
+### Key Principles of Implicit Features
+
+#### Convention Over Configuration
+- Common patterns are assumed
+- Override only when needed
+- Standard best practices built-in
+
+#### Context-Aware Defaults
+- Type implies validation
+- UI patterns imply layout
+- Actions imply permissions
+
+#### Semantic Understanding
+- Business concepts map to implementations
+- Common patterns are recognized
+- Standard flows are automated
+
+#### Progressive Disclosure
+- Start simple
+- Add complexity only when needed
+- Override defaults explicitly
+
+This approach allows SeedML to:
+- Reduce specification size by 70-90%
+- Maintain full functionality
+- Ensure consistency
+- Reduce errors
+- Speed up development
+
 ## Documentation
 
 - [Language Specification](docs/spec.md)
