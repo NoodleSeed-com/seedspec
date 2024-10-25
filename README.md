@@ -78,7 +78,7 @@ SeedML will be available under a dual license:
 - [GNU General Public License v3.0](LICENSE-GPL.md) for open source use
 - Commercial License for commercial use (coming soon)
 
-Similar to MySQL's licensing model, the core language specification and parser will be open source, while the compiler and enterprise features will require a commercial license.
+The core language specification and parser will be open source, while the compiler and enterprise features will require a commercial license.
 
 ## Getting Involved
 
