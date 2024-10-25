@@ -48,6 +48,197 @@ app TaskManager {
 
 This specification will generate a complete, working application.
 
+## Core Qualities
+
+SeedML is built on eight fundamental qualities that make it uniquely suited for modern application development:
+
+### 1. LLM-Native Design
+
+**What It Means**
+- Designed to be generated and modified by AI language models
+- Consistent patterns that map to natural language
+- Minimal but unambiguous syntax
+- Context-preserving structure
+
+**Why It's Important**
+```yaml
+# LLMs can easily generate this from natural language:
+"Create a task system with priorities and assignments"
+↓
+app TaskSystem {
+  entity Task {
+    title: string
+    priority: low/medium/high
+    assigned: User?
+  }
+}
+```
+
+### 2. Single Source of Truth
+
+**What It Means**
+- One file describes the entire application
+- All aspects (data, UI, logic, integrations) in one place
+- No redundant specifications
+- No sync issues between layers
+
+**Why It's Important**
+```yaml
+# Change in one place affects everything:
+entity Order {
+  status: draft->submitted->approved  # Defines:
+  # - Database schema
+  # - State management
+  # - UI transitions
+  # - API endpoints
+  # - Validation rules
+  # - Audit logging
+}
+```
+
+### 3. Semantic Over Syntactic
+
+**What It Means**
+- Describes what things are, not how they work
+- Business concepts map directly to implementation
+- Domain-specific patterns built in
+- Intent-based configuration
+
+**Why It's Important**
+```yaml
+# Business concept straight to implementation:
+screen Orders {
+  type: kanban     # Instead of detailed layout specs
+  group: status    # Instead of complex data transformations
+  card: [          # Instead of component configuration
+    title,
+    assigned.avatar,
+    due.countdown
+  ]
+}
+```
+
+### 4. Smart Defaults with Explicit Overrides
+
+**What It Means**
+- Common patterns are implicit
+- Best practices built in
+- Override only when needed
+- Progressive complexity
+
+**Why It's Important**
+```yaml
+# Simple by default, complex when needed:
+entity User {
+  # Simple case - all best practices included
+  name: string
+
+  # Complex case - explicit configuration
+  email: string {
+    format: custom_email
+    validate: matches(@company.com)
+    unique: per_tenant
+  }
+}
+```
+
+### 5. Technology Independent
+
+**What It Means**
+- Describes what, not how
+- Compiles to any modern stack
+- Framework agnostic
+- Future-proof specifications
+
+**Why It's Important**
+```yaml
+# Same spec, multiple targets:
+app CustomerPortal {
+  entity Customer { ... }
+  screen Dashboard { ... }
+}
+
+# Compiles to:
+- React/Vue/Angular frontends
+- REST/GraphQL APIs
+- SQL/NoSQL databases
+- Various cloud platforms
+```
+
+### 6. Business-Domain Aligned
+
+**What It Means**
+- Matches how business stakeholders think
+- Natural mapping to requirements
+- Clear connection between spec and functionality
+- Domain-driven by default
+
+**Why It's Important**
+```yaml
+# Business requirements map directly to code:
+entity Invoice {
+  rules {
+    approve: {
+      require: [
+        total <= customer.credit_limit,
+        items.all(in_stock)
+      ]
+      then: [create@payment, notify@account_manager]
+    }
+  }
+}
+```
+
+### 7. Full Stack Coherence
+
+**What It Means**
+- All layers work together naturally
+- Consistent patterns throughout
+- Automatic relationship management
+- Built-in integrations
+
+**Why It's Important**
+```yaml
+# Everything works together automatically:
+screen ProductCatalog {
+  list: Products       # Implies:
+  search: [name, tag]  # - API endpoints
+  filter: category     # - Database queries
+  sort: -price        # - UI components
+  cache: 5min         # - Caching logic
+}
+```
+
+### 8. Implementation Determinism
+
+**What It Means**
+- Same spec always produces same result
+- No hidden behaviors
+- Predictable outputs
+- Consistent across environments
+
+**Why It's Important**
+```yaml
+# Guaranteed consistent implementation:
+entity Order {
+  status: draft->submitted->approved
+  # Always generates:
+  # - Same database schema
+  # - Same state transitions
+  # - Same validation rules
+  # - Same audit trails
+}
+```
+
+These qualities combine to create a language that is:
+- Easy for LLMs to generate
+- Simple to maintain
+- Quick to modify
+- Reliable to implement
+- Future-proof
+- Business-friendly
+- Developer-efficient
+
 ## Current Status
 
 - [x] Initial language specification
