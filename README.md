@@ -682,6 +682,164 @@ SeedML includes sophisticated features for enterprise and complex applications:
 - Translatable content
 - Locale-aware formatting
 
+## Common Business Patterns
+
+SeedML provides built-in support for common business application patterns:
+
+### 1. CRUD Screens
+```yaml
+screen Customers {
+  # Standard list pattern
+  list {
+    show: [name, email, status]
+    actions: [create, edit]
+    search: [name, email]
+    filter: status
+  }
+
+  # Common detail layout
+  detail {
+    layout: split
+    left: info
+    right: [activity, actions]
+  }
+}
+```
+
+### 2. Business Workflows
+```yaml
+entity Expense {
+  # Common workflow status
+  status: draft->submitted->approved/rejected
+
+  rules {
+    submit: {
+      require: [amount > 0, description.valid]
+      then: notify@manager
+    }
+    approve: {
+      require: role.manager
+      then: [notify@submitter, create@payment]
+    }
+  }
+}
+```
+
+### 3. Dashboard Layouts
+```yaml
+screen Dashboard {
+  layout: grid(2x2)  # Common 4-panel layout
+  
+  widgets: [
+    {
+      type: counter
+      title: "New Customers"
+      data: Customer.count(this_month)
+      compare: last_month
+    },
+    {
+      type: line
+      title: "Sales Trend"
+      data: Order.total(by: day)
+      range: last_30_days
+    }
+  ]
+}
+```
+
+### 4. Form Patterns
+```yaml
+screen OrderForm {
+  form {
+    sections: {
+      customer: [name!, email!, phone?],
+      details: [items: table, notes, shipping]
+    }
+
+    validate: {
+      email: valid_email,
+      total: positive
+    }
+
+    actions: [save: draft, submit: if valid]
+  }
+}
+```
+
+### 5. Search and Filter
+```yaml
+screen ProductCatalog {
+  search {
+    quick: [name, sku]
+    filters: {
+      category: select,
+      price: range,
+      status: multiple
+    }
+    sort: [name, -created, price]
+    results: {
+      view: grid/table,
+      per_page: 20
+    }
+  }
+}
+```
+
+### 6. Simple Reports
+```yaml
+reports {
+  SalesSummary: {
+    group: [month, category]
+    metrics: [
+      orders: count,
+      revenue: sum,
+      average: mean(order_total)
+    ]
+    format: table
+    export: excel
+  }
+}
+```
+
+### 7. Common Integrations
+```yaml
+integrate {
+  email: {
+    templates: {
+      welcome: "Welcome to {company}",
+      order_confirm: "Order #{id} Confirmed"
+    }
+  }
+
+  storage: {
+    documents: [pdf, doc, max: 10mb],
+    images: [jpg, png, resize: thumbnail]
+  }
+}
+```
+
+### 8. Access Control
+```yaml
+app Portal {
+  roles: [admin, manager, user]
+
+  access {
+    manager: {
+      read: all
+      write: [orders, products]
+      approve: expenses
+    }
+    
+    user: {
+      read: [own_orders, products]
+      write: own_profile
+    }
+  }
+}
+```
+
+These patterns demonstrate how SeedML makes it easy to implement common business functionality with minimal code while following best practices.
+
 ## Smart Defaults and Implicit Features
 
 SeedML drastically reduces specification size through intelligent defaults and contextual understanding. Here's how it works:
