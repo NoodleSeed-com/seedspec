@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
         :root {
-            --primary: #7c3aed;
-            --primary-hover: #6d28d9;
+            --primary: var(--brand-blue);
+            --primary-hover: var(--brand-teal);
         }
         .container {
             max-width: 1200px;
@@ -18,7 +18,7 @@
         .hero {
             text-align: center;
             padding: 4rem 0;
-            background: linear-gradient(135deg, #7c3aed11 0%, #6d28d911 100%);
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-teal) 100%);
             border-radius: 1rem;
             margin: 2rem 0;
         }
@@ -32,7 +32,8 @@
             padding: 1.5rem;
             border-radius: 0.5rem;
             background: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
         }
         .cta {
             text-align: center;
@@ -72,7 +73,7 @@
         <section class="hero">
             <h1>SeedML</h1>
             <p>An AI-native programming language that bridges the gap between human intent and production software.</p>
-            <a href="docs/getting-started/quick-start.html" role="button">Get Started</a>
+            <a href="docs/getting-started/quick-start.html" class="btn btn-primary">Get Started</a>
         </section>
 
         <section class="features">
@@ -123,8 +124,8 @@ seedml generate app.seed</code></pre>
         <section class="cta">
             <h2>Ready to Get Started?</h2>
             <p>Join us in making software development more natural for humans and machines.</p>
-            <a href="docs/getting-started/installation.html" role="button">Install Now</a>
-            <a href="https://github.com/fahd-noodleseed/seedml" role="button" class="secondary">View on GitHub</a>
+            <a href="docs/getting-started/installation.html" class="btn btn-primary">Install Now</a>
+            <a href="https://github.com/fahd-noodleseed/seedml" class="btn btn-secondary">View on GitHub</a>
         </section>
     </main>
 
