@@ -3,11 +3,11 @@
 [![Project Status: Initial Development](https://img.shields.io/badge/Project%20Status-Initial%20Development-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 
-> 🚧 **Early Development**: SeedML is currently in initial development. We're sharing our vision and progress openly, but the implementation is not yet ready for use. Star the repo to follow our progress!
+> 🚧 **Early Development**: SeedML is currently in initial development. Star the repo to follow our progress!
 
 ## What is SeedML?
 
-SeedML is a revolutionary specification language that bridges the gap between human requirements and working software. It enables complete application development through a single, AI-friendly format that can be understood by both business stakeholders and developers.
+SeedML is a specification language that bridges the gap between human requirements and working software. It enables complete application development through a single, AI-friendly format that both business stakeholders and developers can understand.
 
 ### Why SeedML?
 
