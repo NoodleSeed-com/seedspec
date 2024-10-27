@@ -7,21 +7,14 @@
 
 ## What is SeedML?
 
-SeedML is a specification language that bridges the gap between human requirements and working software. It enables complete application development through a single, AI-friendly format that both business stakeholders and developers can understand.
+SeedML is a programming language designed to be generated and modified by AI language models. It enables complete application development through a single, AI-friendly format that both humans and machines can easily understand.
 
-### Why SeedML?
+## Key Features
 
-Modern software development faces several key challenges:
-- Business requirements get lost in translation across multiple technical layers
-- Changes require updates across numerous disconnected components
-- Different teams (business, frontend, backend) speak different languages
-- Development requires constant context switching between technologies
-
-SeedML solves these challenges by providing:
-- A single source of truth for entire applications
-- Natural language-like syntax that maps directly to implementation
-- AI-native design that works seamlessly with LLMs
-- Technology-independent specifications that can target any modern stack
+- **AI-Native Design**: Optimized for LLM generation and modification
+- **Smart Defaults**: Common patterns built-in, override only when needed  
+- **Single Source**: One specification describes your entire application
+- **Technology Independent**: Target any modern tech stack
 
 ### Quick Example
 
