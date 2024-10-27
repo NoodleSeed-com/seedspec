@@ -15,7 +15,7 @@ setup(
     },
     python_requires=">=3.8",
     author="SeedML Team",
-    author_email="team@seedml.dev", 
+    author_email="team@seedml.dev",
     description="CLI tool for generating applications from SeedML specifications",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
