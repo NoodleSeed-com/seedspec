@@ -72,11 +72,11 @@ SeedML currently generates a modern, production-ready stack:
 
 ## 📚 Documentation
 
-- **[Getting Started](docs/getting-started.md)**
-  - [Introduction](docs/getting-started/introduction.md)
-  - [Installation](docs/getting-started/installation.md)
-  - [Quick Start](docs/getting-started/quick-start.md)
-  - [First Application](docs/getting-started/first-app.md)
+- **[Getting Started](getting-started.md)**
+  - [Introduction](getting-started/introduction.md)
+  - [Installation](getting-started/installation.md)
+  - [Quick Start](getting-started/quick-start.md)
+  - [First Application](getting-started/first-app.md)
 
 - **[Core Concepts](docs/core-concepts/)**
   - [Type System](docs/core-concepts/type-system.md)
@@ -97,7 +97,7 @@ SeedML currently generates a modern, production-ready stack:
 
 ## 🛠️ Development Status
 
-SeedML is in active development with a focus on:
+SeedML is in active development (v0.1.0) with a focus on:
 
 1. **Language Evolution**
    - Expanding core patterns
