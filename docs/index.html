@@ -98,23 +98,21 @@
             <h2>Quick Start</h2>
             <div class="code-block">
                 <code>
-# Install SeedML<br>
-pip install -e .<br>
-export ANTHROPIC_API_KEY='your-api-key'<br>
-<br>
-# Create a simple app<br>
-cat > app.seed << EOF<br>
-app TodoApp {<br>
-&nbsp;&nbsp;entity Task {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;title: string!<br>
-&nbsp;&nbsp;&nbsp;&nbsp;done: bool = false<br>
-&nbsp;&nbsp;}<br>
-&nbsp;&nbsp;screen Tasks {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;list: [title, done]<br>
-&nbsp;&nbsp;&nbsp;&nbsp;actions: [create, toggle-done]<br>
-&nbsp;&nbsp;}<br>
-}<br>
-EOF<br>
+# Install SeedML
+pip install -e .
+export ANTHROPIC_API_KEY='your-api-key'
+
+# Create a simple app
+echo 'app TodoApp {
+  entity Task {
+    title: string!
+    done: bool = false
+  }
+  screen Tasks {
+    list: [title, done]
+    actions: [create, toggle-done]
+  }
+}' > app.seed
 <br>
 # Generate the application<br>
 seedml generate app.seed
