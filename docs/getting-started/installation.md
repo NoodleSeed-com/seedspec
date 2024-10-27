@@ -5,40 +5,32 @@
 Before installing SeedML, ensure you have:
 - Python 3.8 or higher
 - pip package manager
-- Git (optional, for development)
+- Anthropic API key (for Claude access)
 
-## Installation Methods
+## Installation
 
-### 1. Using pip (Recommended)
-
-```bash
-pip install seedml
-```
-
-### 2. From Source
+### 1. From Source (Current Method)
 
 ```bash
+# Clone the repository
 git clone https://github.com/seedml/seedml.git
 cd seedml
+
+# Install dependencies
+pip install anthropic
+
+# Install SeedML in development mode
 pip install -e .
 ```
 
-## Verifying Installation
-
-After installation, verify SeedML is working:
+### 2. Verify Installation
 
 ```bash
-seedml --version
-```
+# Set your Anthropic API key
+export ANTHROPIC_API_KEY='your-api-key'
 
-## Development Tools
-
-We recommend installing these additional tools:
-- SeedML VS Code Extension
-- SeedML CLI Development Tools
-
-```bash
-pip install seedml-dev
+# Test the CLI
+seedml --help
 ```
 
 ## Next Steps

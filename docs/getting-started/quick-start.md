@@ -1,6 +1,12 @@
 # Quick Start Guide
 
-Get up and running with SeedML in minutes.
+## Prerequisites
+
+1. Install SeedML following the [installation guide](installation.md)
+2. Set up your Anthropic API key:
+```bash
+export ANTHROPIC_API_KEY='your-api-key'
+```
 
 ## Your First SeedML App
 
@@ -24,35 +30,18 @@ app TodoList {
 2. Generate the application:
 
 ```bash
-seedml generate todo.seed
+seedml todo.seed
 ```
 
-3. Run your app:
-
-```bash
-cd todo-app
-seedml run
-```
-
-Visit `http://localhost:3000` to see your running application!
-
-## Key Concepts Demonstrated
-
-- Entity definition with fields
-- Basic types and defaults
-- Simple UI generation
-- CRUD operations
+This will create a complete application with:
+- React frontend
+- FastAPI backend 
+- MySQL database
+- Testing suite
+- Documentation
 
 ## Next Steps
 
-1. Add more features to your todo app:
-   - User authentication
-   - Categories/tags
-   - Due date reminders
-
-2. Learn about:
-   - [Core Concepts](../core-concepts/overview.md)
-   - [Type System](../reference/types.md)
-   - [UI Patterns](../core-concepts/ui-patterns.md)
-
+1. Add more features to your todo app
+2. Learn about [Core Concepts](../core-concepts/overview.md)
 3. Try the [First Application Tutorial](first-app.md)
