@@ -3,16 +3,12 @@
 [![Project Status: Initial Development](https://img.shields.io/badge/Project%20Status-Initial%20Development-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 
-> 🚧 **Early Development**: SeedML is currently in initial development. Star the repo to follow our progress!
-
-## What is SeedML?
-
-SeedML is a programming language designed for AI-first development. It enables complete application development through a single, AI-friendly specification format that both humans and machines can easily understand and modify.
+SeedML is an AI-native programming language that enables rapid application development through simple, declarative specifications. It's designed to be equally understandable by humans and AI.
 
 ## Key Features
 
-- **AI-Native Design**: Optimized for LLM generation and modification
-- **Smart Defaults**: Common patterns built-in, override only when needed
+- **AI-First Design**: Optimized for LLM generation and modification
+- **Smart Defaults**: Common patterns built-in, override when needed
 - **Single Source**: One specification describes your entire application
 - **Technology Independent**: Target any modern tech stack
 
@@ -25,12 +21,6 @@ app TaskManager {
     status: todo->doing->done
     assigned: User?
     priority: low/medium/high
-    
-    rules {
-      assign: {
-        then: notify@assigned
-      }
-    }
   }
 
   screen TaskBoard {
@@ -44,13 +34,7 @@ app TaskManager {
 ## Documentation
 
 - [Getting Started](docs/getting-started/)
-  - [Installation](docs/getting-started/installation.md)
-  - [Quick Start](docs/getting-started/quick-start.md)
-  - [First App](docs/getting-started/first-app.md)
 - [Core Concepts](docs/core-concepts/)
-  - [Language Structure](docs/core-concepts/language-structure.md)
-  - [Type System](docs/core-concepts/type-system.md)
-  - [Business Rules](docs/core-concepts/business-rules.md)
 - [Examples](docs/examples/)
 - [Reference](docs/reference/)
 
