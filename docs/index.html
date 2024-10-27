@@ -103,7 +103,7 @@ pip install -e .
 export ANTHROPIC_API_KEY='your-api-key'
 
 # Create a simple app
-cat > app.seed << EOF
+echo 'app TodoApp {
 app TodoApp {
   entity Task {
     title: string!
@@ -114,7 +114,7 @@ app TodoApp {
     actions: [create, toggle-done]
   }
 }
-EOF
+}' > app.seed
 
 # Generate the application
 seedml generate app.seed</code></pre>
