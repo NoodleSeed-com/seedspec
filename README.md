@@ -104,7 +104,7 @@ seedml myapp.seed
 
 ## Documentation
 
-- [Getting Started](docs/getting-started/)
+- [Getting Started](docs/getting-started.md)
 - [Core Concepts](docs/core-concepts/)
 - [Examples](docs/examples/)
 - [Reference](docs/reference/)

@@ -22,3 +22,19 @@ SeedML is built on several key concepts that work together to create a powerful 
 - Time-based patterns
 
 See the individual concept guides for detailed information on each topic.
+
+## Next Steps
+
+1. Core Concepts:
+   - [Architecture](architecture.md)
+   - [Type System](type-system.md)
+   - [Business Rules](business-rules.md)
+   - [UI Patterns](ui-patterns.md)
+
+2. Examples:
+   - [Basic CRUD](../examples/basic-crud.md)
+   - [Business App](../examples/business-app.md)
+
+3. Reference:
+   - [Types](../reference/types.md)
+   - [Patterns](../reference/patterns.md)
