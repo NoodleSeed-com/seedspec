@@ -32,7 +32,6 @@ color               # Color values with formats
 ```yaml
 # Collections
 [Type]              # Lists of values
-Type[]              # Alternative list syntax
 map<Key,Value>      # Key-value mappings
 set<Type>           # Unique value sets
 
