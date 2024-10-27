@@ -9,29 +9,41 @@ Before installing SeedML, ensure you have:
 
 ## Installation
 
-### 1. From Source (Current Method)
-
 ```bash
-# Clone the repository
+# Install from PyPI (coming soon)
+pip install seedml
+
+# Or install from source
 git clone https://github.com/seedml/seedml.git
 cd seedml
-
-# Install dependencies
-pip install anthropic
-
-# Install SeedML in development mode
 pip install -e .
 ```
 
-### 2. Verify Installation
+## Configuration
+
+Set your Anthropic API key:
+```bash
+export ANTHROPIC_API_KEY='your-api-key'
+```
+
+## Verify Installation
 
 ```bash
-# Set your Anthropic API key
-export ANTHROPIC_API_KEY='your-api-key'
-
-# Test the CLI
+# Should show available commands
 seedml --help
+
+# Should show version number
+seedml --version
 ```
+
+## Current Status
+
+SeedML is in early development (v0.1.0). Current features:
+- Basic application generation from .seed files
+- React + FastAPI stack generation
+- Simple CRUD operations
+
+Many planned features are still in development.
 
 ## Next Steps
 
