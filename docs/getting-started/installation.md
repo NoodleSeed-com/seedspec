@@ -45,4 +45,4 @@ pip install seedml-dev
 
 - Follow the [Quick Start Guide](quick-start.md)
 - Try the [First Application Tutorial](first-app.md)
-- Read about [Basic Concepts](basic-concepts.md)
+- Read about [Core Concepts](../core-concepts/overview.md)
