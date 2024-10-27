@@ -92,9 +92,20 @@ string {
 
 # Advanced
 Type {
-  unique: true    # Unique values
-  index: true     # Database indexing
-  private: true   # Access control
+  # Validation
+  required: bool     # Field is required
+  unique: bool      # Values must be unique
+  min: number       # Minimum value/length
+  max: number       # Maximum value/length
+  pattern: string   # Regex pattern
+
+  # Storage
+  index: bool      # Create database index
+  private: bool    # Restrict access
+  
+  # Behavior  
+  immutable: bool  # Cannot change after set
+  computed: bool   # Derived from other fields
 }
 ```
 
