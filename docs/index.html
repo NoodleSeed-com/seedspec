@@ -97,13 +97,13 @@
         <section>
             <h2>Quick Start</h2>
             <div class="code-block">
-                <code>
-# Install SeedML
+                <pre><code># Install SeedML
 pip install -e .
 export ANTHROPIC_API_KEY='your-api-key'
 
 # Create a simple app
-echo 'app TodoApp {
+cat > app.seed << EOF
+app TodoApp {
   entity Task {
     title: string!
     done: bool = false
@@ -112,11 +112,11 @@ echo 'app TodoApp {
     list: [title, done]
     actions: [create, toggle-done]
   }
-}' > app.seed
+}
+EOF
 
 # Generate the application
-seedml generate app.seed
-                </code>
+seedml generate app.seed</code></pre>
             </div>
         </section>
 
