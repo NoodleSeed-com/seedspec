@@ -5,7 +5,7 @@
 
 > 🚧 **Early Development**: SeedML is currently in initial development. We're sharing our vision and progress openly, but the implementation is not yet ready for use. Star the repo to follow our progress!
 
-## Introduction
+## What is SeedML?
 
 SeedML is a revolutionary specification language that bridges the gap between human requirements and working software. It enables complete application development through a single, AI-friendly format that can be understood by both business stakeholders and developers.
 
