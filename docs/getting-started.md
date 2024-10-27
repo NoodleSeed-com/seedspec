@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npm install -g seedml
+pip install -e .
 ```
 
 ## Quick Start
