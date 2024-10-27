@@ -1,71 +1,90 @@
 # Language Structure
 
-## Basic Syntax
+SeedML uses a clean, hierarchical syntax designed for both human readability and machine parsing. The language structure follows a logical organization that maps directly to application components.
 
-SeedML uses a clean, hierarchical syntax that is both human-readable and machine-parseable:
+## Core Structure
+
+Every SeedML application follows this high-level structure:
 
 ```yaml
 app [AppName] {
-  # Global Configuration
+  # Configuration
   meta: { ... }
   
-  # Data Models
+  # Data Layer
   entity [EntityName] { ... }
   
-  # Business Rules
+  # Business Layer  
   rules { ... }
   
-  # User Interface
+  # Presentation Layer
   screens { ... }
   
-  # Integrations
+  # Integration Layer
   integrate { ... }
 }
 ```
 
 ## Key Components
 
-### 1. Entities
-Define your data models and their relationships:
+### 1. Meta Configuration
+Global application settings and metadata:
 ```yaml
-entity User {
-  name: string
-  email: email
-  role: admin/user/guest
-  projects: [Project]
+meta {
+  name: "My App"
+  version: "1.0"
+  description: "App description"
 }
 ```
 
-### 2. Rules
-Specify business logic and validation:
+### 2. Entities
+Data models with built-in validation:
+```yaml
+entity User {
+  name: string!     # Required
+  email: email      # Validated
+  role: admin/user  # Enum
+  active: bool = true
+}
+```
+
+### 3. Business Rules
+Logic and workflow definitions:
 ```yaml
 rules {
-  createProject: {
-    require: role == admin
-    validate: name.length > 0
-    then: notify@team
+  createOrder: {
+    require: [
+      user.verified,
+      items.length > 0
+    ]
+    validate: total > 0
+    then: notify@sales
   }
 }
 ```
 
-### 3. Screens
-Define user interfaces and interactions:
+### 4. Screens
+UI components and layouts:
 ```yaml
 screen Dashboard {
-  layout: grid(2x2)
+  layout: grid(3x2)
   widgets: [
-    stats: counter,
-    tasks: list,
-    alerts: feed
+    stats: counter(orders),
+    chart: trend(sales),
+    tasks: list(pending)
   ]
+  actions: [refresh, export]
 }
 ```
 
-### 4. Integrations
-Configure external services and APIs:
+### 5. Integrations
+External service connections:
 ```yaml
 integrate {
-  auth: oauth2
+  auth: {
+    provider: oauth2
+    config: { ... }
+  }
   storage: s3
   email: sendgrid
 }
@@ -73,8 +92,22 @@ integrate {
 
 ## Best Practices
 
-1. Use meaningful names that reflect business concepts
-2. Keep entities focused and cohesive
-3. Group related rules together
-4. Design screens around user workflows
-5. Follow consistent naming conventions
+1. **Organization**
+   - Group related entities together
+   - Keep rules close to their entities
+   - Structure screens by user workflow
+
+2. **Naming**
+   - Use clear, descriptive names
+   - Follow consistent conventions
+   - Reflect business terminology
+
+3. **Modularity**
+   - Break large apps into modules
+   - Reuse common patterns
+   - Keep components focused
+
+4. **Documentation**
+   - Comment complex logic
+   - Document business rules
+   - Explain custom patterns
