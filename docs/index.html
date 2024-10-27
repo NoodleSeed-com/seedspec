@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeedML - AI-Native Programming Language</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-hover: #6d28d9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #7c3aed11 0%, #6d28d911 100%);
+            border-radius: 1rem;
+            margin: 2rem 0;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        .feature-card {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .cta {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        .code-block {
+            background: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        .code-block code {
+            color: #d4d4d4;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <nav class="container">
+        <ul>
+            <li><strong>SeedML</strong></li>
+        </ul>
+        <ul>
+            <li><a href="https://github.com/seedml/seedml">GitHub</a></li>
+            <li><a href="docs/getting-started.html">Docs</a></li>
+            <li><a href="docs/examples/basic-crud.html">Examples</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h1>SeedML</h1>
+            <p>An AI-native programming language that bridges the gap between human intent and production software.</p>
+            <a href="docs/getting-started/quick-start.html" role="button">Get Started</a>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <h3>🎯 Natural Expression</h3>
+                <p>Write specifications in a clear, intent-focused language that both humans and AI can understand.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🤖 AI-First Design</h3>
+                <p>Built from the ground up for seamless interaction with AI language models.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ Smart Defaults</h3>
+                <p>Production patterns built-in, with full flexibility to customize when needed.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Full Stack</h3>
+                <p>Generate complete applications with frontend, backend, and infrastructure.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Quick Start</h2>
+            <div class="code-block">
+                <code>
+# Install SeedML<br>
+pip install -e .<br>
+export ANTHROPIC_API_KEY='your-api-key'<br>
+<br>
+# Create a simple app<br>
+cat > app.seed << EOF<br>
+app TodoApp {<br>
+&nbsp;&nbsp;entity Task {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;title: string!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;done: bool = false<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;screen Tasks {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;list: [title, done]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;actions: [create, toggle-done]<br>
+&nbsp;&nbsp;}<br>
+}<br>
+EOF<br>
+<br>
+# Generate the application<br>
+seedml generate app.seed
+                </code>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to Get Started?</h2>
+            <p>Join us in making software development more natural for humans and machines.</p>
+            <a href="docs/getting-started/installation.html" role="button">Install Now</a>
+            <a href="https://github.com/seedml/seedml" role="button" class="secondary">View on GitHub</a>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a></p>
+        <p>
+            <a href="https://github.com/seedml/seedml">GitHub</a> •
+            <a href="docs/getting-started.html">Documentation</a> •
+            <a href="https://discord.gg/seedml">Discord</a>
+        </p>
+    </footer>
+</body>
+</html>
