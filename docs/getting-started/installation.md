@@ -11,7 +11,7 @@ Before installing SeedML, ensure you have:
 
 ```bash
 # Install from source
-git clone https://github.com/seedml/seedml.git
+git clone https://github.com/fahd-noodleseed/seedml.git
 cd seedml
 pip install -e .
 ```
