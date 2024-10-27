@@ -7,19 +7,18 @@
 
 ## What is SeedML?
 
-SeedML is a programming language designed to be generated and modified by AI language models. It enables complete application development through a single, AI-friendly format that both humans and machines can easily understand.
+SeedML is a programming language designed for AI-first development. It enables complete application development through a single, AI-friendly specification format that both humans and machines can easily understand and modify.
 
 ## Key Features
 
 - **AI-Native Design**: Optimized for LLM generation and modification
-- **Smart Defaults**: Common patterns built-in, override only when needed  
+- **Smart Defaults**: Common patterns built-in, override only when needed
 - **Single Source**: One specification describes your entire application
 - **Technology Independent**: Target any modern tech stack
 
-### Quick Example
+## Quick Example
 
 ```yaml
-# A complete task management system in SeedML
 app TaskManager {
   entity Task {
     title: string
@@ -42,95 +41,36 @@ app TaskManager {
 }
 ```
 
-This simple specification automatically generates:
-- Complete database schema
-- API endpoints with validation
-- Interactive UI components
-- Business logic implementation
-- User notifications
-- Access control
-
 ## Documentation
 
-- [Language Specification](docs/spec.md)
-- [Design Principles](docs/principles.md)
+- [Getting Started](docs/getting-started/)
+  - [Installation](docs/getting-started/installation.md)
+  - [Quick Start](docs/getting-started/quick-start.md)
+  - [First App](docs/getting-started/first-app.md)
+- [Core Concepts](docs/core-concepts/)
+  - [Language Structure](docs/core-concepts/language-structure.md)
+  - [Type System](docs/core-concepts/type-system.md)
+  - [Business Rules](docs/core-concepts/business-rules.md)
 - [Examples](docs/examples/)
-- [Pattern Recognition](docs/patterns.md)
-- [Type System](docs/types.md)
-- [Security Guide](docs/security.md)
+- [Reference](docs/reference/)
 
-## Getting Involved
+## Contributing
 
-We're looking for collaborators interested in:
-- Language design and specification
-- Compiler development
-- Developer tools and IDE integration
-- Documentation and examples
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get involved.
 
-### How to Contribute
-We'll be opening up for contributions soon. In the meantime, feel free to:
-1. Star the repository to show your interest
-2. Watch for updates as we develop the core specification
+## License
 
-## Licensing
-
-SeedML will be available under a dual license:
-
-- [GNU General Public License v3.0](LICENSE-GPL.md) for open source use
-- Commercial License for commercial use (coming soon)
-
-The core language specification and parser will be open source, while the compiler and enterprise features will require a commercial license.
+- Open Source: [GNU GPL v3.0](LICENSE-GPL.md)
+- Commercial License: Coming soon
 
 ## Contact
 
-- Email: [info@noodleseed.com](mailto:info@noodleseed.com)
-- Website: [https://noodleseed.com](https://noodleseed.com)
-
-## Coming Soon
-
-- Development roadmap
-- Contributor guidelines
-- Alpha release timeline
+- Website: https://noodleseed.com
+- Email: info@noodleseed.com
 
 ---
 
 Built with ❤️ by Noodle Seed
-
-### Quick Example
-
-```yaml
-# A complete task management system in SeedML
-app TaskManager {
-  entity Task {
-    title: string
-    status: todo->doing->done
-    assigned: User?
-    priority: low/medium/high
-    
-    rules {
-      assign: {
-        then: notify@assigned
-      }
-    }
-  }
-
-  screen TaskBoard {
-    layout: kanban(status)
-    card: [title, assigned.avatar, priority]
-    actions: [assign, move, edit]
-  }
-}
-```
-
-This simple specification automatically generates:
-- Complete database schema
-- API endpoints with validation
-- Interactive UI components
-- Business logic implementation
-- User notifications
-- Access control
-
-## Core Qualities
 
 SeedML is built on eight fundamental qualities that make it uniquely suited for modern application development:
 
