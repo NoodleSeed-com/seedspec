@@ -1,4 +1,9 @@
+#!/usr/bin/env python3
+
 import os
+import sys
+import argparse
+import yaml
 from pathlib import Path
 from anthropic import Anthropic
 
@@ -31,16 +36,31 @@ Follow these strict guidelines:
    - SQL injection prevention
    - XSS protection
 
-5. Docker Compose:
-   - Include services for frontend, backend, and database
-   - Set up environment variables
-   - Provide volume mounts for database
+5. File naming:
+   - React components: PascalCase
+   - Hooks: useFeatureName
+   - Services: feature.service.ts
+   - Types: feature.types.ts
+   - Tests: *.test.ts
 
-6. Kubernetes:
-   - Generate Deployment, Service, and Ingress manifests
-   - Use environment variables for configuration
-   - Provide persistent volume claim for database
-   - Include Helm chart for easy deployment"""
+Your output must be in this exact format:
+<file_list>
+file1.ts
+file2.py
+file3.sql
+</file_list>
+
+<file:file1.ts>
+// File content here
+</file>
+
+<file:file2.py>
+# File content here
+</file>
+
+<file:file3.sql>
+-- File content here
+</file>"""
 
 class SeedMLGenerator:
     def __init__(self, api_key):
@@ -142,3 +162,22 @@ Generate ALL necessary files with complete, production-ready code."""
                 with open(full_path, 'w') as f:
                     f.write(content)
                 print(f"Generated: {filename}")
+
+def main():
+    parser = argparse.ArgumentParser(description='Generate full-stack application from SeedML specification')
+    parser.add_argument('seed_file', help='Path to the .seed file')
+    parser.add_argument('--api-key', help='Anthropic API key', default=os.getenv('ANTHROPIC_API_KEY'))
+    
+    args = parser.parse_args()
+    
+    if not args.api_key:
+        print("Error: Anthropic API key not provided. Set ANTHROPIC_API_KEY environment variable or use --api-key")
+        sys.exit(1)
+    
+    generator = SeedMLGenerator(args.api_key)
+    generator.generate_application(args.seed_file)
+    
+    print(f"Application generated successfully!")
+
+if __name__ == '__main__':
+    main()
