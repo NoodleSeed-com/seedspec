@@ -52,7 +52,7 @@ Visit `http://localhost:3000` to see your running application!
 
 2. Learn about:
    - [Core Concepts](../core-concepts/overview.md)
-   - [Type System](../core-concepts/type-system.md)
+   - [Type System](../reference/types.md)
    - [UI Patterns](../core-concepts/ui-patterns.md)
 
 3. Try the [First Application Tutorial](first-app.md)

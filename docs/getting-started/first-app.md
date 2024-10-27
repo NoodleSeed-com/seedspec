@@ -129,6 +129,6 @@ seedml run
    - Reports
 
 2. Learn about:
-   - [Advanced Patterns](../patterns/advanced-patterns.md)
+   - [Advanced Patterns](../reference/patterns.md)
    - [Integration](../core-concepts/integration.md)
    - [Security](../core-concepts/security.md)
