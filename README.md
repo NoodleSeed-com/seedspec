@@ -2,60 +2,37 @@
 
 [![Project Status: Initial Development](https://img.shields.io/badge/Project%20Status-Initial%20Development-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)]()
+[![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
 SeedML is an AI-native programming language that bridges the gap between human intent and production software. It enables rapid application development through declarative specifications that are natural for both humans and AI to read and write.
 
-## Vision
+## 🚀 Quick Start
 
-Traditional development requires translating business requirements through multiple technical layers, leading to lost context and increased complexity. SeedML solves this by providing:
+```bash
+# Install SeedML
+pip install -e .
+export ANTHROPIC_API_KEY='your-api-key'
 
-1. A natural bridge between human intent and working software
-2. Clear, declarative specifications that serve as a single source of truth
-3. AI-native design that leverages the power of language models
-4. Technology-independent patterns that can target any modern stack
-
-## How It Works
-
-SeedML uses a two-phase transformation approach:
-
-### Phase 1: Intent → SeedML
-Convert business requirements into SeedML specifications through:
-- Direct human authoring
-- AI-assisted generation from natural language
-- Collaborative human-AI refinement
-
-```yaml
-# Business intent: "Task management system with assignments and priorities"
-app TaskManager {
+# Create a simple app
+cat > app.seed << EOF
+app TodoApp {
   entity Task {
-    title: string
-    status: todo->doing->done
-    assigned: User?
-    priority: low/medium/high
+    title: string!
+    done: bool = false
   }
-
-  screen TaskBoard {
-    layout: kanban(status)
-    card: [title, assigned.avatar, priority]
-    actions: [assign, move, edit]
+  screen Tasks {
+    list: [title, done]
+    actions: [create, toggle-done]
   }
 }
+EOF
+
+# Generate the application
+seedml generate app.seed
 ```
 
-### Phase 2: SeedML → Implementation
-Transform SeedML into production applications:
-- Current: AI-powered generation using LLMs for maximum flexibility
-- Future: Deterministic compilers for reliability and efficiency
-- Hybrid: Combine approaches based on needs
-
-The current implementation uses Claude to generate:
-- React + TypeScript frontend
-- FastAPI + SQLAlchemy backend
-- MySQL database
-- Docker & Kubernetes deployment
-- Complete CI/CD pipeline
-
-## Key Features
+## 🌟 Key Features
 
 - **Natural Expression**: Write specifications in a clear, intent-focused language
 - **AI-First Design**: Optimized for both human and AI interaction
@@ -63,67 +40,132 @@ The current implementation uses Claude to generate:
 - **Single Source**: One specification drives all application layers
 - **Tech Independence**: Target any modern technology stack
 
-## Current Status
+## 🏗️ Generated Stack
+
+SeedML currently generates a modern, production-ready stack:
+
+- **Frontend**: React + TypeScript
+  - Material UI components
+  - Redux state management
+  - React Router navigation
+  - Form validation
+  - API integration
+
+- **Backend**: FastAPI + SQLAlchemy
+  - REST API endpoints
+  - Database models
+  - Authentication
+  - Validation
+  - Error handling
+
+- **Database**: MySQL
+  - Schema migrations
+  - Indexes
+  - Relationships
+  - Constraints
+
+- **DevOps**:
+  - Docker containers
+  - Kubernetes manifests
+  - CI/CD pipelines
+  - Monitoring setup
+
+## 📚 Documentation
+
+- **[Getting Started](docs/getting-started.md)**
+  - [Introduction](docs/getting-started/introduction.md)
+  - [Installation](docs/getting-started/installation.md)
+  - [Quick Start](docs/getting-started/quick-start.md)
+  - [First Application](docs/getting-started/first-app.md)
+
+- **[Core Concepts](docs/core-concepts/)**
+  - [Type System](docs/core-concepts/type-system.md)
+  - [Business Rules](docs/core-concepts/business-rules.md)
+  - [UI Patterns](docs/core-concepts/ui-patterns.md)
+  - [Architecture](docs/core-concepts/architecture.md)
+
+- **[Examples](docs/examples/)**
+  - [Basic CRUD](docs/examples/basic-crud.md)
+  - [Business App](docs/examples/business-app.md)
+  - [Dashboard](docs/examples/dashboard.md)
+  - [SaaS](docs/examples/saas.md)
+
+- **[Reference](docs/reference/)**
+  - [Types](docs/reference/types.md)
+  - [Patterns](docs/reference/patterns.md)
+  - [CLI](docs/reference/cli.md)
+
+## 🛠️ Development Status
 
 SeedML is in active development with a focus on:
 
-1. Language Evolution
-   - Defining core patterns and qualities
-   - Gathering real-world usage feedback
-   - Refining the specification format
+1. **Language Evolution**
+   - Expanding core patterns
+   - Enhancing type system
+   - Adding advanced features
+   - Improving validation
 
-2. Implementation Strategy
-   - Phase 1: LLM-based generation for flexibility
-   - Phase 2: Deterministic compilation for reliability
-   - Hybrid approaches for optimal results
+2. **Generation Pipeline**
+   - LLM prompt optimization
+   - Code quality improvements
+   - Performance tuning
+   - Testing automation
 
-3. Tooling Development
-   - CLI tools for generation
+3. **Developer Experience**
    - IDE integration
-   - Development workflows
+   - Live preview
+   - Debug tools
+   - Error messages
 
-## Getting Started
+4. **Enterprise Features**
+   - Multi-tenancy
+   - Authentication
+   - Authorization
+   - Audit logging
+   - Compliance
 
-1. Install SeedML:
-```bash
-pip install -e .
-export ANTHROPIC_API_KEY='your-api-key'
-```
+## 🤝 Contributing
 
-2. Create your specification:
-```yaml
-app MyApp {
-  # Your app specification
-}
-```
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Development setup
+- Coding standards
+- Pull request process
+- Issue guidelines
 
-3. Generate your application:
-```bash
-seedml myapp.seed
-```
+## 📄 License
 
-## Documentation
+- **Open Source**: [GNU GPL v3.0](LICENSE-GPL.md)
+  - Free for personal and open source use
+  - Modifications must be shared
+  - Commercial use requires license
 
-- [Getting Started](docs/getting-started.md)
-- [Core Concepts](docs/core-concepts/)
-- [Examples](docs/examples/)
-- [Reference](docs/reference/)
+- **Commercial License**
+  - Coming soon
+  - Priority support
+  - Private modifications
+  - Enterprise features
 
-## Contributing
+## 📱 Contact & Support
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get involved.
+- **Website**: https://noodleseed.com
+- **Documentation**: https://docs.noodleseed.com
+- **GitHub Issues**: Bug reports & feature requests
+- **Discord**: Community chat & support
+- **Email**: info@noodleseed.com
+- **Twitter**: [@noodleseed](https://twitter.com/noodleseed)
 
-## License
+## 🙏 Acknowledgments
 
-- Open Source: [GNU GPL v3.0](LICENSE-GPL.md)
-- Commercial License: Coming soon
-
-## Contact
-
-- Website: https://noodleseed.com
-- Email: info@noodleseed.com
+Special thanks to:
+- Anthropic for Claude API access
+- Our open source contributors
+- Early adopters and testers
 
 ---
 
-Built with ❤️ by Noodle Seed
+<div align="center">
+  Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a>
+  <br>
+  Making software development more natural for humans and machines
+</div>
 
