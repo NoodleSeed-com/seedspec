@@ -1,27 +1,121 @@
 # Language Structure
 
-SeedML uses a clean, hierarchical syntax designed for both human readability and machine parsing. The language structure follows a logical organization that maps directly to application components.
+SeedML follows core principles that make it powerful yet approachable:
 
-## Core Structure
+## Fundamental Principles
 
-Every SeedML application follows this high-level structure:
+### 1. Everything is an Expression
+All values and logic are expressions that can be evaluated:
 
 ```yaml
-app [AppName] {
-  # Configuration
-  meta: { ... }
+app Example {
+  # Direct expressions
+  value: 1 + 2
+  text: "Hello " + name
   
-  # Data Layer
-  entity [EntityName] { ... }
+  # Method expressions
+  total: items.sum()
+  filtered: users.filter(active)
   
-  # Business Layer  
-  rules { ... }
+  # Conditional expressions
+  status: if total > 1000 then "high" else "low"
   
-  # Presentation Layer
-  screens { ... }
+  # Collection expressions
+  tags: ["a", "b"].concat(extra_tags)
+}
+```
+
+### 2. Consistent Type System
+Types follow clear, predictable patterns:
+
+```yaml
+types {
+  # Basic types
+  name: string              # Basic type
+  age: number              # Numeric type
+  active: bool             # Boolean type
   
-  # Integration Layer
-  integrate { ... }
+  # Type modifiers
+  optional: string?        # Optional value
+  required: string!        # Required value
+  validated: string(email) # Validated type
+  
+  # Collections
+  tags: [string]          # List type
+  scores: map<id,number>  # Map type
+  status: draft->done     # State machine
+}
+```
+
+### 3. Clear Component Boundaries
+Components have specific responsibilities:
+
+```yaml
+app MyApp {
+  # 1. Configuration
+  config {
+    name: "My Application"
+    version: "1.0.0"
+    features: [auth, api]
+  }
+
+  # 2. Type Definitions
+  types {
+    Money: decimal(2) {
+      min: 0
+      currency: USD
+    }
+  }
+
+  # 3. Data Models
+  entity Order {
+    # Properties
+    id: uuid
+    total: Money
+    status: draft->submitted->approved
+
+    # Relationships
+    customer: Customer
+    items: [OrderItem]
+
+    # Behaviors
+    rules { ... }
+    compute { ... }
+    access { ... }
+  }
+
+  # 4. Business Logic
+  rules {
+    submit_order: {
+      when: order.status -> submitted
+      require: [
+        order.total > 0,
+        order.items.length > 0
+      ]
+      then: [
+        notify@customer,
+        create@invoice
+      ]
+    }
+  }
+
+  # 5. User Interface
+  screens {
+    OrderList {
+      layout: table
+      columns: [id, customer, total, status]
+      actions: [create, edit]
+    }
+  }
+
+  # 6. Integration
+  integrate {
+    stripe: {
+      on: order.submit
+      charge: total
+      then: approve
+    }
+  }
 }
 ```
 
