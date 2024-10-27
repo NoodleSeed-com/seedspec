@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "seedml=seedml.cli:main",
+            "seedml=seedml.generator:main",
         ],
     },
     python_requires=">=3.8",

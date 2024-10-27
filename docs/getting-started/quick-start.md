@@ -34,11 +34,13 @@ seedml todo.seed
 ```
 
 This will create a complete application with:
-- React frontend
+- React + TypeScript frontend
 - FastAPI backend 
 - MySQL database
 - Testing suite
-- Documentation
+- API documentation
+
+Note: This is an alpha release with basic functionality. More features coming soon.
 
 ## Next Steps
 

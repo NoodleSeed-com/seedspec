@@ -10,10 +10,7 @@ Before installing SeedML, ensure you have:
 ## Installation
 
 ```bash
-# Install from PyPI (coming soon)
-pip install seedml
-
-# Or install from source
+# Install from source
 git clone https://github.com/seedml/seedml.git
 cd seedml
 pip install -e .
