@@ -33,14 +33,13 @@ app TodoList {
 seedml todo.seed
 ```
 
-This will create a complete application with:
-- React + TypeScript frontend
-- FastAPI backend 
-- MySQL database
-- Testing suite
-- API documentation
+This will create a basic application with:
+- React + TypeScript frontend (alpha)
+- FastAPI backend (alpha)
+- MySQL database schema
+- Basic API documentation
 
-Note: This is an alpha release with basic functionality. More features coming soon.
+Note: SeedML is currently in early alpha. Many features are still under development and the generated code should be reviewed carefully before use in production.
 
 ## Next Steps
 

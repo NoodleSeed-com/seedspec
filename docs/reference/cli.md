@@ -1,97 +1,41 @@
 # Command Line Interface
 
-SeedML provides a powerful CLI for managing projects and generating applications.
+SeedML provides a CLI tool for generating applications from specifications.
 
 ## Installation
 
 ```bash
-# Install globally
-npm install -g seedml-cli
+# Install from source
+git clone https://github.com/seedml/seedml.git
+cd seedml
+pip install -e .
 
-# Or locally in a project
-npm install --save-dev seedml-cli
+# Set your API key
+export ANTHROPIC_API_KEY='your-api-key'
 ```
 
-## Basic Commands
+## Basic Usage
 
-### Project Management
 ```bash
-# Create new project
-seedml new my-app
+# Generate application from spec
+seedml myapp.seed
 
-# Initialize in existing directory
-seedml init
+# Show help
+seedml --help
 
-# Add component to project
-seedml add entity User
-seedml add screen Dashboard
+# Show version
+seedml --version
 ```
 
-### Development
+## Options
+
 ```bash
-# Start development server
-seedml dev
-
-# Watch for changes
-seedml watch
-
-# Run type checking
-seedml check
+--api-key KEY      Anthropic API key (or use ANTHROPIC_API_KEY env var)
+--output DIR       Output directory (default: ./generated)
+--verbose         Show detailed output
 ```
 
-### Code Generation
-```bash
-# Generate full application
-seedml generate
-
-# Generate specific components
-seedml generate entity User
-seedml generate screen Dashboard
-
-# Clean generated files
-seedml clean
-```
-
-### Testing
-```bash
-# Run all tests
-seedml test
-
-# Run specific tests
-seedml test entities
-seedml test screens
-
-# Test coverage
-seedml test --coverage
-```
-
-### Deployment
-```bash
-# Build for production
-seedml build
-
-# Deploy to environment
-seedml deploy staging
-seedml deploy production
-
-# Show deployment status
-seedml status
-```
-
-### Development Tools
-```bash
-# Start interactive console
-seedml console
-
-# Analyze project
-seedml analyze
-
-# Format code
-seedml format
-
-# Validate configuration
-seedml validate
-```
+Note: This is an alpha release with basic functionality. More features coming soon.
 
 ## Configuration
 
