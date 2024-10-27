@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="seedml",
-    version="0.1.0",
+    version=__import__('seedml').__version__,
     packages=find_packages(),
     install_requires=[
         "anthropic>=0.3.0",
