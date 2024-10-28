@@ -1,6 +1,42 @@
 # Application Patterns
 
-SeedML provides built-in patterns organized by architectural layer.
+SeedML provides built-in patterns organized by architectural layer. These patterns ensure consistency and best practices across applications.
+
+## Foundation Layer Patterns
+
+```yaml
+# Base entity pattern
+entity BaseEntity {
+  id: uuid
+  created_at: timestamp = now()
+  created_by: User
+  updated_at: timestamp
+  updated_by: User
+  version: int = 1
+}
+
+# Common validation patterns
+validation {
+  required: field != null
+  format: matches(pattern)
+  range: between(min, max)
+  money: positive and precision(2)
+  quantity: positive and <= stock
+}
+
+# Error handling patterns
+error_handling {
+  retry: {
+    attempts: 3
+    backoff: exponential
+    notify: on_final_failure
+  }
+  validation: {
+    collect_all: true
+    format: standard_error
+  }
+}
+```
 
 ## 1. Foundation Patterns
 

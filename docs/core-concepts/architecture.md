@@ -4,7 +4,38 @@ SeedML transforms specifications into working applications through a carefully d
 
 ## System Architecture
 
-SeedML follows a layered architecture pattern:
+SeedML follows a strict layered architecture pattern where each layer has clear responsibilities and boundaries:
+
+### Layer Dependencies
+```ascii
+┌─────────────────────────────────────────────────────┐
+│                Integration Layer                     │
+│  • External services, APIs, webhooks                │
+│  • Error handling, rate limiting, security          │
+├─────────────────────────────────────────────────────┤
+│                Presentation Layer                    │
+│  • UI components, layouts, navigation               │
+│  • User interactions, forms, validation             │
+├─────────────────────────────────────────────────────┤
+│                 Security Layer                       │
+│  • Roles, permissions, access control               │
+│  • Authentication, authorization, audit             │
+├─────────────────────────────────────────────────────┤
+│                  Logic Layer                         │
+│  • Business rules, workflows                        │
+│  • Computations, validations                        │
+├─────────────────────────────────────────────────────┤
+│                  Data Layer                         │
+│  • Entities, relationships                          │
+│  • CRUD operations, queries                         │
+├─────────────────────────────────────────────────────┤
+│                Foundation Layer                      │
+│  • Types, validation rules                          │
+│  • Common patterns, base entities                   │
+└─────────────────────────────────────────────────────┘
+```
+
+SeedML enforces these architectural boundaries:
 
 ```ascii
 ┌─────────────────────────────────────────────────────┐
