@@ -3,107 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SeedML - An AI-native programming language that bridges the gap between human intent and production software">
+    <meta property="og:title" content="SeedML - AI-Native Programming Language">
+    <meta property="og:description" content="Write specifications in a clear, intent-focused language that both humans and AI can understand">
+    <meta property="og:image" content="assets/images/seedml-og.png">
     <title>SeedML - AI-Native Programming Language</title>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
     <style>
-        :root {
-            --primary: var(--brand-blue);
-            --primary-hover: var(--brand-teal);
-        }
-        .container {
+        .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
         }
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-teal) 100%);
-            border-radius: 1rem;
-            margin: 2rem 0;
+        .section {
+            margin-bottom: 32px;
         }
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
+            gap: 32px;
+            margin: 48px 0;
         }
         .feature-card {
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            background: #ffffff;
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            background: white;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
         }
-        .cta {
-            text-align: center;
-            margin: 4rem 0;
+        .feature-card:hover {
+            transform: translateY(-4px);
         }
         .code-block {
             background: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin: 2rem 0;
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            position: relative;
         }
-        .code-block code {
-            color: #d4d4d4;
+        .code-block button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
         }
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            border-top: 1px solid #eaeaea;
+        @media (max-width: 640px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .button-base {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="container">
-        <ul>
-            <li><strong>SeedML</strong></li>
-        </ul>
-        <ul>
-            <li><a href="https://github.com/fahd-noodleseed/seedml">GitHub</a></li>
-            <li><a href="docs/getting-started.html">Docs</a></li>
-            <li><a href="docs/examples/basic-crud.html">Examples</a></li>
-        </ul>
-    </nav>
+    <div class="page-wrapper">
+        <nav class="container-base container-primary">
+            <div id="logo"></div>
+            <ul class="nav-links">
+                <li><a href="https://github.com/fahd-noodleseed/seedml">GitHub</a></li>
+                <li><a href="docs/getting-started.html">Docs</a></li>
+                <li><a href="docs/examples/basic-crud.html">Examples</a></li>
+            </ul>
+        </nav>
 
-    <main class="container">
-        <section class="hero">
-            <h1>SeedML</h1>
-            <p>An AI-native programming language that bridges the gap between human intent and production software.</p>
-            <a href="docs/getting-started/quick-start.html" class="btn btn-primary">Get Started</a>
-        </section>
+        <main>
+            <section class="section">
+                <div class="container-base container-hero">
+                    <h1>SeedML</h1>
+                    <p>An AI-native programming language that bridges the gap between human intent and production software.</p>
+                    <a href="docs/getting-started/quick-start.html" class="button-base button-primary">Get Started</a>
+                </div>
+            </section>
 
-        <section class="features">
-            <div class="feature-card">
-                <h3>🎯 Natural Expression</h3>
-                <p>Write specifications in a clear, intent-focused language that both humans and AI can understand.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🤖 AI-First Design</h3>
-                <p>Built from the ground up for seamless interaction with AI language models.</p>
-            </div>
-            <div class="feature-card">
-                <h3>⚡ Smart Defaults</h3>
-                <p>Production patterns built-in, with full flexibility to customize when needed.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🎨 Full Stack</h3>
-                <p>Generate complete applications with frontend, backend, and infrastructure.</p>
-            </div>
-        </section>
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>Key Features</h2>
+                    <div class="features">
+                        <div class="feature-card">
+                            <h3>🎯 Natural Expression</h3>
+                            <p>Write specifications in a clear, intent-focused language that both humans and AI can understand.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🤖 AI-First Design</h3>
+                            <p>Built from the ground up for seamless interaction with AI language models.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>⚡ Smart Defaults</h3>
+                            <p>Production patterns built-in, with full flexibility to customize when needed.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🎨 Full Stack</h3>
+                            <p>Generate complete applications with frontend, backend, and infrastructure.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <section>
-            <h2>Quick Start</h2>
-            <div class="code-block">
-                <pre><code># Install SeedML
+            <section class="section">
+                <div class="container-base container-secondary">
+                    <h2>Quick Start</h2>
+                    <div class="code-block">
+                        <button class="button-base button-tertiary" onclick="copyCode()">Copy</button>
+                        <pre><code class="language-bash"># Install SeedML
 pip install -e .
 export ANTHROPIC_API_KEY='your-api-key'
 
 # Create a simple app
-echo 'app TodoApp {
+cat << 'EOF' > app.seed
 app TodoApp {
   entity Task {
     title: string!
@@ -114,28 +120,50 @@ app TodoApp {
     actions: [create, toggle-done]
   }
 }
-}' > app.seed
+EOF
 
 # Generate the application
 seedml generate app.seed</code></pre>
-            </div>
-        </section>
+                    </div>
+                </div>
+            </section>
 
-        <section class="cta">
-            <h2>Ready to Get Started?</h2>
-            <p>Join us in making software development more natural for humans and machines.</p>
-            <a href="docs/getting-started/installation.html" class="btn btn-primary">Install Now</a>
-            <a href="https://github.com/fahd-noodleseed/seedml" class="btn btn-secondary">View on GitHub</a>
-        </section>
-    </main>
+            <section class="section">
+                <div class="container-base container-hero">
+                    <h2>Ready to Get Started?</h2>
+                    <p>Join us in making software development more natural for humans and machines.</p>
+                    <div class="button-group">
+                        <a href="docs/getting-started/installation.html" class="button-base button-primary">Install Now</a>
+                        <a href="https://github.com/fahd-noodleseed/seedml" class="button-base button-secondary">View on GitHub</a>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-    <footer class="container">
-        <p>Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a></p>
-        <p>
-            <a href="https://github.com/seedml/seedml">GitHub</a> •
-            <a href="docs/getting-started.html">Documentation</a> •
-            <a href="https://discord.gg/seedml">Discord</a>
-        </p>
-    </footer>
+        <footer class="container-base">
+            <p>Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a></p>
+            <p>
+                <a href="https://github.com/seedml/seedml">GitHub</a> •
+                <a href="docs/getting-started.html">Documentation</a> •
+                <a href="https://discord.gg/seedml">Discord</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="assets/js/logo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script>
+        // Initialize logo
+        document.getElementById('logo').appendChild(createLogo('primary', 40));
+        
+        // Copy code function
+        function copyCode() {
+            const code = document.querySelector('.code-block code').innerText;
+            navigator.clipboard.writeText(code);
+            const btn = document.querySelector('.code-block button');
+            btn.innerText = 'Copied!';
+            setTimeout(() => btn.innerText = 'Copy', 2000);
+        }
+    </script>
 </body>
 </html>

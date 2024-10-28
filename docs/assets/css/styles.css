@@ -1,30 +1,30 @@
+/* Brand Variables */
+:root {
+  --brand-primary: #1E84FF;
+  --brand-secondary: #00DBAA;
+  --brand-tertiary: #FECC8D;
+  --radius-sm: 20px;
+  --radius-lg: 40px;
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 400% 400%;
+}
+
 /* Base styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-:root {
-  /* Brand Colors */
-  --brand-blue: #1E84FF;
-  --brand-teal: #00DBAA;
-  --brand-orange: #FECC8D;
-
-  /* Theme Colors - Light */
-  --background: #FFFFFF;
-  --foreground: #0A0A0A;
-  --muted: #F5F5F5;
-  --border: #E5E5E5;
-
-  /* Theme Colors - Dark */
-  --background-dark: #0A0A0A;
-  --foreground-dark: #FAFAFA;
-  --muted-dark: #262626;
-  --border-dark: #404040;
-
-  /* Chart Colors */
-  --chart-1: #FF6B6B;
-  --chart-2: #4ECDC4;
-  --chart-3: #45B7D1;
-  --chart-4: #96CEB4;
-  --chart-5: #FFEEAD;
+body {
+  margin: 0;
+  padding: 16px;
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
 }
 
 /* Typography */
