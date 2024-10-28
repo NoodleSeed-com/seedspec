@@ -1,6 +1,92 @@
-# Common Patterns
+# Application Patterns
 
-SeedML provides built-in support for common application patterns that help you build robust applications quickly.
+SeedML provides built-in patterns organized by architectural layer.
+
+## 1. Foundation Patterns
+
+```yaml
+# Type patterns
+types {
+  Email: string { format: email }
+  Money: number { precision: 2 }
+  Status: enum(active, inactive)
+}
+
+# Validation patterns
+validate {
+  required: field != null
+  format: matches(pattern)
+  range: between(min, max)
+}
+```
+
+## 2. Data Patterns
+
+```yaml
+# Entity patterns
+entity Base {
+  id: uuid
+  created: timestamp
+  updated: timestamp
+}
+
+# Relationship patterns
+relationships {
+  one_to_many: [parent->children]
+  many_to_many: [products<->categories]
+}
+```
+
+## 3. Logic Patterns
+
+```yaml
+# Business rule patterns
+rules {
+  validation: require(condition)
+  workflow: state->next_state
+  computation: derived = formula
+}
+```
+
+## 4. Security Patterns
+
+```yaml
+# Permission patterns
+permissions {
+  entity_level: {
+    entity: Type
+    actions: [create, read, update]
+  }
+}
+
+# Role patterns
+roles {
+  hierarchical: [admin->manager->user]
+  functional: [billing, support, sales]
+}
+```
+
+## 5. Presentation Patterns
+
+```yaml
+# UI patterns
+screens {
+  layouts: [list, detail, dashboard]
+  components: [table, form, chart]
+  navigation: [menu, tabs, breadcrumbs]
+}
+```
+
+## 6. Integration Patterns
+
+```yaml
+# External service patterns
+integrate {
+  apis: [rest, graphql]
+  events: [webhook, queue]
+  sync: [batch, realtime]
+}
+```
 
 ## CRUD Operations
 

@@ -2,14 +2,57 @@
 
 SeedML transforms specifications into working applications through a carefully designed pipeline architecture.
 
-## System Overview
+## System Architecture
+
+SeedML follows a layered architecture pattern:
 
 ```ascii
-┌─────────────┐    ┌──────────────┐    ┌────────────────┐    ┌──────────────┐
-│   SeedML    │ -> │  Validation  │ -> │  Generation    │ -> │  Output      │
-│   Spec      │    │  & Parsing   │    │  via Claude    │    │  Processing  │
-└─────────────┘    └──────────────┘    └────────────────┘    └──────────────┘
+┌─────────────────────────────────────────────────────┐
+│                Integration Layer                     │
+├─────────────────────────────────────────────────────┤
+│                Presentation Layer                    │
+├─────────────────────────────────────────────────────┤
+│                 Security Layer                       │
+├─────────────────────────────────────────────────────┤
+│                  Logic Layer                         │
+├─────────────────────────────────────────────────────┤
+│                  Data Layer                         │
+├─────────────────────────────────────────────────────┤
+│                Foundation Layer                      │
+└─────────────────────────────────────────────────────┘
 ```
+
+Each layer builds upon lower layers:
+
+1. **Foundation Layer**
+   - Type system
+   - Validation rules
+   - Computed fields
+
+2. **Data Layer**
+   - Independent entities
+   - Dependent entities
+   - Relationships
+
+3. **Logic Layer**
+   - Business rules
+   - Workflows
+   - Computations
+
+4. **Security Layer**
+   - Permissions
+   - Roles
+   - Access control
+
+5. **Presentation Layer**
+   - Screens
+   - Components
+   - Layouts
+
+6. **Integration Layer**
+   - External services
+   - APIs
+   - Events
 
 ## Core Components
 

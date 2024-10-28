@@ -2,44 +2,50 @@
 
 Learn the fundamental concepts of SeedML development.
 
-## Core Components
+## Application Structure
 
-### 1. Applications
+SeedML applications follow a layered architecture:
 
-Every SeedML project starts with an app definition:
+### 1. Foundation Layer
+
+The base of every application:
 
 ```yaml
-app MyApp {
-  # App components go here
+# Type definitions
+types {
+  Email: string { format: email }
+  Status: active/inactive
+}
+
+# Base validation
+validate {
+  email: format_valid
+  status: in_enum
 }
 ```
 
-### 2. Entities
+### 2. Data Layer
 
-Entities define your data models:
+Independent and dependent entities:
 
 ```yaml
+# Base entity (no dependencies)
 entity User {
-  name: string
-  email: email
-  active: bool = true
+  name: string!
+  email: Email
+  status: Status = active
+}
+
+# Dependent entity
+entity Order {
+  customer: User!
+  items: [OrderItem]
 }
 ```
 
-### 3. Screens
+### 3. Logic Layer
 
-Screens define your user interface:
-
-```yaml
-screen UserList {
-  list: [name, email, active]
-  actions: [create, edit]
-}
-```
-
-### 4. Rules
-
-Rules define business logic:
+Business rules and computations:
 
 ```yaml
 rules {
@@ -47,6 +53,53 @@ rules {
     validate: email != null
     then: send_welcome_email
   }
+  
+  submit_order: {
+    require: [
+      items.length > 0,
+      customer.verified
+    ]
+  }
+}
+```
+
+### 4. Security Layer
+
+Permissions and roles:
+
+```yaml
+permissions {
+  manage_users: {
+    entity: User
+    actions: [create, update]
+  }
+}
+
+roles {
+  admin: [all]
+  manager: [manage_users]
+}
+```
+
+### 5. Presentation Layer
+
+UI components and screens:
+
+```yaml
+screen UserList {
+  list: [name, email, status]
+  actions: [create, edit]
+}
+```
+
+### 6. Integration Layer
+
+External services and APIs:
+
+```yaml
+integrate {
+  email: sendgrid
+  payment: stripe
 }
 ```
 
