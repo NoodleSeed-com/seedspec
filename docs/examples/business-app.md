@@ -3,6 +3,26 @@
 ```yaml
 # Complete order management system
 app OrderSystem {
+  # Role definitions
+  roles {
+    admin: [all]
+    manager: [
+      view_all_customers,
+      approve_orders,
+      manage_products,
+      set_credit_limits
+    ]
+    sales: [
+      view_customers,
+      create_orders,
+      submit_orders,
+      view_own_orders
+    ]
+    customer: [
+      view_own_orders,
+      create_orders
+    ]
+  }
   # Customer entity definition
   entity Customer {
     # Basic information
@@ -70,12 +90,21 @@ app OrderSystem {
           customer.verified,
           total <= customer.creditLimit
         ]
+        error: {
+          items.length: "Order must contain at least one item"
+          customer.verified: "Customer must be verified before placing orders"
+          creditLimit: "Order total exceeds customer credit limit"
+        }
         then: notify@sales
       }
       
       approve: {
         require: role.manager
         check: items.all(product.inStock)
+        error: {
+          role: "Only managers can approve orders"
+          stock: "Some items are out of stock"
+        }
         then: [
           create@invoice,
           notify@warehouse
@@ -84,6 +113,9 @@ app OrderSystem {
 
       ship: {
         require: status == approved
+        error: {
+          status: "Order must be approved before shipping"
+        }
         then: [
           update@inventory,
           notify@customer,
