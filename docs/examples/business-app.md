@@ -247,30 +247,7 @@ app OrderSystem {
     }
   }
 
-  screen Customers {
-    list {
-      view: table
-      show: [name, email, status, verified, creditLimit]
-      actions: [create, edit, verify]
-    }
-    
-    detail {
-      layout: tabs
-      info: [name, email, phone, status]
-      orders: related-list(Order)
-      invoices: related-list(Invoice)
-    }
-  }
-
-  screen Products {
-    list {
-      view: table
-      show: [name, price, inStock, stockQuantity]
-      actions: [create, edit]
-    }
-  }
-
-  # Integrations
+  # External integrations (last since they may reference entities and actions)
   integrate {
     payment: stripe {
       apiKey: env.STRIPE_KEY
