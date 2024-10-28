@@ -3,25 +3,95 @@
 ```yaml
 # Complete order management system
 app OrderSystem {
-  # Role definitions
+  # Role definitions with explicit permissions
   roles {
-    admin: [all]
+    admin: [all] {
+      all: {
+        entities: [Customer, Order, Product, Invoice]
+        access: [create, read, update, delete]
+        filter: all
+      }
+    }
+    
     manager: [
       view_all_customers,
       approve_orders,
       manage_products,
       set_credit_limits
-    ]
+    ] {
+      view_all_customers: {
+        entity: Customer
+        access: read
+        filter: all
+      }
+      approve_orders: {
+        entity: Order
+        access: [read, update]
+        filter: status == submitted
+        allow: [approve]
+      }
+      manage_products: {
+        entity: Product
+        access: [create, read, update]
+        filter: all
+      }
+      set_credit_limits: {
+        entity: Customer
+        access: [read, update]
+        fields: [creditLimit]
+        validate: {
+          creditLimit: <= 50000
+        }
+      }
+    }
+    
     sales: [
       view_customers,
       create_orders,
       submit_orders,
       view_own_orders
-    ]
+    ] {
+      view_customers: {
+        entity: Customer
+        access: read
+        filter: status == active
+      }
+      create_orders: {
+        entity: Order
+        access: create
+        fields: [customer, items]
+      }
+      submit_orders: {
+        entity: Order
+        access: [read, update]
+        filter: created_by == current_user
+        allow: [submit]
+      }
+      view_own_orders: {
+        entity: Order
+        access: read
+        filter: created_by == current_user
+      }
+    }
+    
     customer: [
       view_own_orders,
       create_orders
-    ]
+    ] {
+      view_own_orders: {
+        entity: Order
+        access: read
+        filter: customer.id == current_user.id
+      }
+      create_orders: {
+        entity: Order
+        access: create
+        fields: [items]
+        defaults: {
+          customer: current_user
+        }
+      }
+    }
   }
   # Customer entity definition
   entity Customer {
