@@ -1,6 +1,6 @@
 # SeedML CLI
 
-Command line tool for generating full-stack applications from SeedML specifications using Claude 3.5 Sonnet.
+Command line tool for generating layered full-stack applications from SeedML specifications using Claude 3.5 Sonnet.
 
 ## Installation
 
@@ -18,15 +18,58 @@ export ANTHROPIC_API_KEY='your-api-key'
 2. Create a .seed file:
 ```yaml
 app TodoApp {
+  # Foundation layer
+  types {
+    TaskStatus: enum(todo, doing, done)
+  }
+
+  # Data layer
   entity Task {
     title: string!
     description: text
-    status: todo->doing->done
+    status: TaskStatus = todo
+    assigned_to?: User
+  }
+
+  # Logic layer
+  rules {
+    start_task: {
+      require: status == todo
+      then: [set_status(doing), notify@assigned]
+    }
+    complete_task: {
+      require: status == doing
+      then: [set_status(done), notify@creator]
+    }
+  }
+
+  # Security layer
+  permissions {
+    manage_tasks: {
+      entity: Task
+      actions: [create, update]
+      filter: assigned_to == current_user
+    }
   }
   
+  # Presentation layer
   screen Tasks {
-    list: [title, status]
-    actions: [create, edit, delete]
+    list: [title, status, assigned_to]
+    actions: [
+      create,
+      start if todo,
+      complete if doing
+    ]
+  }
+
+  # Integration layer
+  integrate {
+    notification: sendgrid {
+      templates: {
+        task_assigned: "t-123",
+        task_completed: "t-456"
+      }
+    }
   }
 }
 ```
@@ -45,11 +88,20 @@ This will create a complete application with:
 
 ## Features
 
+- Layered architecture generation
+  - Foundation layer (types, validation)
+  - Data layer (entities, relationships)
+  - Logic layer (rules, workflows)
+  - Security layer (permissions, roles)
+  - Presentation layer (UI, components)
+  - Integration layer (external services)
+
 - Production-ready code generation
-- Consistent patterns and practices
-- Complete application structure
-- Security best practices
-- Modern tech stack
+  - Consistent patterns per layer
+  - Cross-layer validation
+  - Layer-specific best practices
+  - Modern tech stack
+  - Complete testing per layer
 
 ## Requirements
 
