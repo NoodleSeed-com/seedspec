@@ -1,8 +1,9 @@
 import os
-from fpdf import FPDF
+from fpdf import FPDF2 as FPDF
 import markdown
 import re
 from bs4 import BeautifulSoup
+import unicodedata
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name, guess_lexer
@@ -22,8 +23,17 @@ class RepoToPDF:
         self.pdf.cell(0, 10, text, ln=True)
         self.pdf.set_font("Arial", size=12)
 
+    def clean_text(self, text):
+        # Remove control characters and normalize unicode
+        text = ''.join(char for char in text if unicodedata.category(char)[0] != 'C')
+        text = unicodedata.normalize('NFKD', text)
+        # Replace problematic characters
+        text = text.encode('ascii', 'replace').decode('ascii')
+        return text
+
     def add_text(self, text):
-        self.pdf.multi_cell(0, 5, text)
+        cleaned_text = self.clean_text(text)
+        self.pdf.multi_cell(0, 5, cleaned_text)
         
     def process_code(self, content, language=""):
         try:
