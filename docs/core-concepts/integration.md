@@ -58,6 +58,24 @@ services {
 }
 ```
 
+### 4. Event Handling
+```yaml
+events {
+  # Declarative event processing
+  'order.created': [
+    notify@customer,
+    update@inventory,
+    track@analytics
+  ]
+  
+  'payment.failed': {
+    retry: 3,
+    notify: [customer, support],
+    timeout: 1h
+  }
+}
+```
+
 ## Best Practices
 
 1. **Express Intent**

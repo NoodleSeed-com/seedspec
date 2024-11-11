@@ -4,6 +4,18 @@ SeedML lets you express business logic through simple, intent-focused rules that
 
 ## Core Concepts
 
+### State Management
+```yaml
+entity Order {
+  # Smart state transitions
+  states: Draft -> Submitted -> Approved -> Completed {
+    Submitted: requires[complete]
+    Approved: requires[manager.review] 
+    Completed: triggers[invoice.create]
+  }
+}
+```
+
 ```yaml
 entity Order {
   # Smart validation - handles type checking, required fields
