@@ -1,126 +1,76 @@
 # Integration
 
-SeedML provides powerful patterns for integrating with external services and systems.
+SeedML simplifies external service integration through intent-focused patterns that handle authentication, data flow, and error cases automatically.
 
-## Basic Integration
+## Core Concepts
 
 ```yaml
 app MyApp {
+  # Declare integration needs
   integrate {
-    # Authentication service
-    auth0: {
-      domain: ${AUTH0_DOMAIN}
-      clients: [web, mobile]
-    }
+    auth: oauth2        # Authentication pattern
+    storage: cloud      # File handling
+    email: transact     # Communication
+    payment: stripe     # Processing
+  }
 
-    # Storage service
-    s3: {
-      bucket: ${S3_BUCKET}
-      access: private
-    }
-
-    # Email service
-    sendgrid: {
-      templates: {
-        welcome: "d-123...",
-        reset: "d-456..."
-      }
+  # Intent-focused usage
+  entity Order {
+    on create {
+      notify: email     # Automatic handling
+      track: analytics  # Built-in integration
     }
   }
 }
 ```
 
-## Integration Types
+## Key Features
 
-### 1. Authentication
+### 1. Smart Authentication
 ```yaml
 auth {
-  provider: oauth2
-  social: [google, github]
-  mfa: optional
+  # Complete auth patterns
+  type: oauth
+  providers: [google, github]
+  features: [mfa, sso]     # Security included
 }
 ```
 
-### 2. Storage
+### 2. Data Integration
 ```yaml
 storage {
-  documents: s3
-  cache: redis
-  search: elasticsearch
+  # Automatic data handling
+  files: s3          # Cloud storage
+  cache: redis       # Performance
+  search: elastic    # Advanced features
 }
 ```
 
-### 3. Communication
+### 3. Service Communication
 ```yaml
-communicate {
-  email: sendgrid
-  sms: twilio
-  push: firebase
-}
-```
-
-### 4. Payment
-```yaml
-payments {
-  processor: stripe
-  methods: [card, ach]
-  webhooks: [success, failure]
-}
-```
-
-## Integration Patterns
-
-### 1. Event-Based
-```yaml
-events {
-  order.created: [
-    notify@customer,
-    update@inventory,
-    track@analytics
-  ]
-}
-```
-
-### 2. Synchronous
-```yaml
-api {
+services {
+  # Intent-based integration
   weather: {
     provider: openweather
-    cache: 30min
-    retry: 3
-  }
-}
-```
-
-### 3. Queue-Based
-```yaml
-queues {
-  exports: {
-    processor: worker
-    retry: exponential
-    dlq: errors
+    cache: 30min          # Smart caching
+    retry: automatic      # Error handling
   }
 }
 ```
 
 ## Best Practices
 
-1. **Configuration**
-   - Use environment variables
-   - Secure credentials
-   - Version dependencies
+1. **Express Intent**
+   - Declare service needs
+   - Focus on business logic
+   - Trust smart handling
 
-2. **Error Handling**
-   - Graceful degradation
-   - Retry strategies
-   - Circuit breakers
+2. **Security First**
+   - Automatic encryption
+   - Credential management
+   - Access control
 
-3. **Monitoring**
-   - Health checks
-   - Performance metrics
-   - Error tracking
-
-4. **Security**
-   - Encrypt connections
-   - Validate data
-   - Audit access
+3. **Reliability**
+   - Smart retries
+   - Error handling
+   - Monitoring included

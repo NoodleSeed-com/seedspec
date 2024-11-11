@@ -1,93 +1,83 @@
 # Business Rules
 
-SeedML provides a powerful system for expressing business logic and validation rules in a clear, declarative way.
+SeedML lets you express business logic through simple, intent-focused rules that automatically handle validation, computation, and workflow.
 
-## Basic Rules
+## Core Concepts
 
 ```yaml
 entity Order {
-  rules {
-    submit: {
-      require: [
-        items.length > 0,
-        total > 0,
-        customer.verified
-      ]
-      then: notify@sales
-    }
+  # Smart validation - handles type checking, required fields
+  validate {
+    total: positive
+    items: not_empty
+    customer: verified
+  }
+
+  # Automatic computations
+  compute {
+    subtotal: sum(items.price)
+    tax: subtotal * 0.1  
+    total: subtotal + tax
+  }
+
+  # Intent-focused workflows
+  flow submit {
+    when: valid           # Implied validation
+    then: notify@sales    # Automatic handling
   }
 }
 ```
 
-## Rule Types
+## Key Features
 
-### 1. Validation Rules
+### 1. Smart Validation
 ```yaml
-validate: {
-  price: positive,
-  stock: available,
-  email: format_valid
+validate {
+  # Built-in validations with clear intent
+  email: valid_email     # Format checking
+  age: adult            # Business logic
+  stock: available      # External check
 }
 ```
 
-### 2. Business Logic
+### 2. Computed Properties 
 ```yaml
-rules {
-  submit_order: {
-    require: [
-      items.length > 0,
-      total > 0,
-      customer.verified
-    ]
-    then: [
-      create@invoice,
-      notify@customer
-    ]
-  }
+compute {
+  # Automatic dependency tracking
+  full_name: first_name + " " + last_name
+  age: today - birthdate
+  status: if(balance > 0) "active" else "suspended"
 }
 ```
 
-### 3. Computed Fields
+### 3. Business Workflows
 ```yaml
-fields {
-  subtotal: sum(items.price)
-  tax: subtotal * tax_rate
-  total: subtotal + tax
-}
-```
-
-### 4. State Transitions
-```yaml
-status: draft->submitted->approved {
-  submitted: {
-    require: complete
-    then: notify@manager
-  }
-  approved: {
-    require: role.manager
-    then: [create@invoice, notify@customer]
-  }
+flow approve_expense {
+  # Focus on business logic, not implementation
+  when: [
+    amount < policy.limit,
+    submitter.manager_approved
+  ]
+  then: [
+    notify@accounting,
+    create@payment
+  ]
 }
 ```
 
 ## Best Practices
 
-1. **Clear Intent**
-   - Use descriptive rule names
-   - Group related rules
-   - Document complex logic
+1. **Express Intent**
+   - Use business terminology
+   - Focus on what, not how
+   - Let SeedML handle implementation
 
-2. **Validation First**
-   - Validate early
-   - Fail fast
-   - Clear error messages
+2. **Smart Defaults**
+   - Common validations built-in
+   - Standard workflows included
+   - Override only when needed
 
-3. **Maintainable Logic**
-   - Keep rules focused
-   - Avoid complex conditions
-   - Use computed fields
-
-4. **Proper Events**
-   - Trigger appropriate notifications
-   - Update related entities
-   - Maintain audit trails
+3. **Keep It Simple**
+   - One rule per concept
+   - Clear dependencies
+   - Automatic optimization
