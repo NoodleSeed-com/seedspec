@@ -21,6 +21,27 @@ app MyApp {
       track: analytics  # Built-in integration
     }
   }
+
+  # Maps Integration
+  integrate {
+    maps: google {
+      key: env.GOOGLE_MAPS_KEY
+      features: [
+        maps,      # Basic mapping
+        places,    # Places API
+        geocoding  # Address lookup
+      ]
+    }
+  }
+
+  # Intent-focused location usage
+  entity Store {
+    location: location
+    on save {
+      geocode: address    # Automatic geocoding
+      validate: region    # Location validation
+    }
+  }
 }
 ```
 
@@ -76,6 +97,92 @@ events {
 }
 ```
 
+### 5. Maps Integration
+```yaml
+maps {
+  # Complete mapping patterns
+  features: {
+    view: {
+      clustering: auto     # Smart clustering
+      bounds: dynamic     # Auto-fitting
+      controls: standard  # Default controls
+    }
+    search: {
+      radius: 5km        # Search radius
+      filters: [type]    # Place filtering
+    }
+    interaction: {
+      select: single     # Selection mode
+      draw: polygon      # Drawing tools
+    }
+  }
+}
+
+# Usage patterns
+screen StoreLocator {
+  map: {
+    markers: Store.all
+    cluster: true
+    search: {
+      radius: 10km
+      types: [retail]
+    }
+  }
+}
+```
+
+### 6. Location Services
+```yaml
+# Location-based Integration
+entity DeliveryZone {
+  region: region
+  rules {
+    validate: {
+      location: within(region)
+      distance: <= max_range
+    }
+    compute: {
+      coverage: area(region)
+      stores: find_in(region)
+    }
+  }
+}
+
+# Maps Customization
+maps {
+  style: {
+    theme: light/dark
+    colors: custom
+    features: [poi, transit]
+  }
+  controls: {
+    position: top_left
+    types: [zoom, search]
+  }
+  behavior: {
+    zoom: [min, max]
+    scroll: disabled
+    gesture: enabled
+  }
+}
+```
+
+events {
+  # Declarative event processing
+  'order.created': [
+    notify@customer,
+    update@inventory,
+    track@analytics
+  ]
+  
+  'payment.failed': {
+    retry: 3,
+    notify: [customer, support],
+    timeout: 1h
+  }
+}
+```
+
 ## Best Practices
 
 1. **Express Intent**
@@ -92,3 +199,11 @@ events {
    - Smart retries
    - Error handling
    - Monitoring included
+
+4. **Maps Integration**
+   - Use appropriate clustering for large datasets
+   - Implement proper error handling for geocoding
+   - Consider mobile-friendly controls
+   - Cache geocoding results
+   - Optimize marker rendering
+   - Handle offline scenarios
