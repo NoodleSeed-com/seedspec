@@ -69,6 +69,30 @@ Each type comes with sensible defaults:
 - `money`: Non-negative, precision(2)
 - `date`: Valid range, proper formatting
 - `phone`: Format validation, optional
+- `location`: Validated coordinates, geocoding, map display
+- `region`: Boundary validation, area calculation
+- `distance`: Unit conversion, formatting
+
+```yaml
+# Location type implications
+location: {
+  validation: coordinates
+  geocoding: automatic
+  reverse: on_save
+  format: address
+}
+
+region: {
+  validation: boundary
+  calculation: area
+  contains: points
+}
+
+distance: {
+  conversion: automatic
+  display: localized
+}
+```
 
 ### 2. UI Patterns
 
@@ -81,6 +105,29 @@ screen Products {
   # - Sorting
   # - Search
   # - Responsive layout
+}
+
+# Map components with smart defaults
+screen Locations {
+  map: [location] # Implies:
+  # - Marker clustering
+  # - Bounds fitting
+  # - Zoom controls
+  # - Mobile gestures
+  # - Location search
+  # - Responsive layout
+}
+
+# Progressive map enhancement
+map: {
+  basic: location        # Single marker
+  multiple: [location]   # Clustered markers
+  interactive: selector  # Location picker
+  advanced: {           # Full features
+    cluster: true
+    search: radius
+    draw: regions
+  }
 }
 ```
 
@@ -97,6 +144,23 @@ entity Invoice {
   # - Notifications
   # - Audit trails
 }
+
+entity Store {
+  location: location
+  # Implies:
+  # - Distance calculations
+  # - Geocoding pipeline
+  # - Region validation
+  # - Location indexing
+  # - Search optimization
+}
+
+# Location-aware rules
+rules {
+  within_region: true    # Region containment
+  distance_calc: auto    # Distance computation
+  geo_index: enabled     # Spatial indexing
+}
 ```
 
 ### 4. Security
@@ -111,6 +175,15 @@ entity Document {
   # - Permission checking
   # - Audit logging
   # - Data filtering
+}
+
+location_data {
+  access: restricted
+  # Implies:
+  # - Coordinate precision control
+  # - Address masking
+  # - Usage tracking
+  # - API key management
 }
 ```
 
