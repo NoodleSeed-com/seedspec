@@ -59,6 +59,25 @@ compute {
   full_name: first_name + " " + last_name
   age: today - birthdate
   status: if(balance > 0) "active" else "suspended"
+
+  # Location-based computations
+  distance: from(warehouse)        # Distance calc
+  coverage: area(service_region)   # Area calc
+  nearest: closest(Store, 5)       # Proximity
+  density: stores_per_km2         # Density calc
+  
+  # Advanced computations
+  route: {
+    optimal_path: [stops]         # Route planning
+    eta: with_traffic            # Arrival time
+    alternatives: top(3)         # Alternative routes
+  }
+  
+  territory: {
+    coverage: region_union       # Combined areas
+    overlap: region_intersect    # Shared areas
+    gaps: region_difference     # Uncovered areas
+  }
 }
 ```
 
@@ -73,6 +92,50 @@ flow approve_expense {
   then: [
     notify@accounting,
     create@payment
+  ]
+}
+
+flow assign_delivery {
+  # Location-aware workflow
+  when: [
+    driver.within(50km, pickup),
+    route.duration <= shift_remaining,
+    vehicle.capacity >= package.size
+  ]
+  
+  compute: {
+    route: optimal_path([pickup, dropoff]),
+    eta: route.duration + now(),
+    cost: route.distance * rate
+  }
+  
+  then: [
+    notify@driver(route),
+    update@customer(eta),
+    track@analytics(assignment)
+  ]
+}
+
+flow optimize_territory {
+  # Territory management workflow
+  when: coverage.gaps > threshold
+  
+  analyze: {
+    density: customers_per_area,
+    workload: orders_per_week,
+    travel: average_distance
+  }
+  
+  propose: {
+    changes: balance_territories,
+    impact: simulate_changes,
+    timing: transition_plan
+  }
+  
+  then: [
+    notify@managers,
+    schedule@updates,
+    track@changes
   ]
 }
 ```
@@ -93,3 +156,28 @@ flow approve_expense {
    - One rule per concept
    - Clear dependencies
    - Automatic optimization
+
+4. **Location Rules Best Practices**
+   - Validation
+     • Use appropriate precision
+     • Consider timezone impacts
+     • Handle edge cases
+     • Validate accessibility
+
+   - Computation
+     • Cache distance calculations
+     • Optimize bulk operations
+     • Use appropriate indices
+     • Handle async calculations
+
+   - Workflows
+     • Consider mobile scenarios
+     • Handle offline cases
+     • Manage battery impact
+     • Process location batches
+
+   - Performance
+     • Smart geocoding cache
+     • Efficient region checks
+     • Batch distance matrices
+     • Progressive loading
