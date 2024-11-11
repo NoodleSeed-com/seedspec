@@ -1,26 +1,50 @@
-# Basic CRUD Application Example
+# Basic CRUD Example
+
+This example shows how a minimal specification generates a complete customer management system with rich features.
 
 ```yaml
-# Simple customer management system
 app CustomerManager {
+  # Core domain model - everything else is automatic
   entity Customer {
-    # Clear required vs optional
-    name: string!       # Required
-    email: email!      # Required, validated
-    phone: phone?      # Optional
-    status: active/inactive = active  # Enum with default
-  }
-
-  screen Customers {
-    list: [name, email, status]
-    actions: [create, edit, delete]
-    features: [search, filter, sort]  # Standard features
+    name: string      # Implies required, validation
+    email: email      # Implies unique, format validation  
+    status: active/inactive = active
   }
 }
 ```
 
-This example demonstrates:
-- Basic entity definition
-- Field types and validation
-- Simple UI generation
-- Standard CRUD operations
+Generated Features:
+- Complete React frontend with:
+  - List view with search, sort, filter
+  - Create/edit forms with validation
+  - Delete confirmation
+  - Responsive design
+  - Loading states
+  - Error handling
+
+- Full REST API backend with:
+  - CRUD endpoints
+  - Input validation
+  - Error handling
+  - Database schema
+  - API documentation
+
+- Standard patterns included:
+  - Pagination
+  - Field validation
+  - Audit logging
+  - API security
+  - Database indexes
+
+The minimal specification focuses on business intent while SeedML adds all the necessary implementation details automatically.
+
+Override defaults only when needed:
+```yaml
+entity Customer {
+  name: string {     # Override string defaults
+    min: 2,
+    max: 50
+  }
+  email: email      # Use smart defaults
+}
+```
