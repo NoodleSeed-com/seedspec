@@ -113,3 +113,118 @@ SeedML is built on eight fundamental qualities that make it uniquely suited for 
 - Easier testing
 - Better security
 - Simpler debugging
+# Core Qualities
+
+SeedML ensures essential software qualities through intent-focused patterns that automatically implement best practices.
+
+## Core Concepts
+
+```yaml
+app QualityApp {
+  # Declare quality needs
+  qualities {
+    performance: high      # Speed focus
+    reliability: 99.9%     # Uptime target
+    maintainable: true     # Code quality
+    testable: complete     # Coverage
+  }
+
+  # Quality-focused features
+  api Orders {
+    cache: smart          # Performance
+    retry: automatic      # Reliability
+    docs: generated       # Maintainability
+    tests: integration    # Quality
+  }
+}
+```
+
+## Key Features
+
+### 1. Performance
+```yaml
+performance {
+  # Automatic optimization
+  cache: {
+    strategy: smart      # Caching
+    invalidate: auto     # Freshness
+  }
+  
+  optimize: {
+    queries: true       # Database
+    assets: true        # Frontend
+    api: true          # Backend
+  }
+}
+```
+
+### 2. Reliability
+```yaml
+reliability {
+  # Built-in stability
+  errors: {
+    handling: complete    # Error management
+    recovery: automatic   # Self-healing
+    reporting: detailed   # Monitoring
+  }
+  
+  testing: {
+    unit: required       # Code quality
+    integration: auto    # System health
+    performance: load    # Capacity
+  }
+}
+```
+
+### 3. Maintainability
+```yaml
+maintainable {
+  # Code quality focus
+  structure: {
+    modular: true        # Organization
+    documented: auto     # Understanding
+    consistent: true     # Standards
+  }
+  
+  practices: {
+    clean: true         # Code quality
+    tested: true        # Verification
+    reviewed: true      # Quality control
+  }
+}
+```
+
+### 4. Testability
+```yaml
+testing {
+  # Comprehensive testing
+  coverage: {
+    unit: 80%           # Code tests
+    integration: 90%    # System tests
+    e2e: critical       # User flows
+  }
+  
+  automation: {
+    ci: full            # Integration
+    deployment: safe    # Release
+    monitoring: live    # Production
+  }
+}
+```
+
+## Best Practices
+
+1. **Quality by Design**
+   - Built into patterns
+   - Automated checks
+   - Continuous verification
+
+2. **Performance First**
+   - Smart optimization
+   - Efficient patterns
+   - Regular monitoring
+
+3. **Future Ready**
+   - Clean architecture
+   - Full testing
+   - Easy maintenance

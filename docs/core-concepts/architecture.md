@@ -315,3 +315,103 @@ The architecture is designed for contribution in these areas:
    - Examples
    - Tutorials
    - Reference
+# Architecture
+
+SeedML generates scalable architectures through intent-focused patterns that automatically implement proven practices.
+
+## Core Concepts
+
+```yaml
+app ScalableApp {
+  # Declare architecture needs
+  architecture {
+    style: microservices    # Application pattern
+    scale: auto             # Infrastructure
+    regions: [us, eu]       # Distribution
+    resilience: high        # Reliability
+  }
+
+  # Intent-focused services
+  service Orders {
+    type: core          # Service classification
+    scale: high         # Resource allocation
+    storage: dedicated  # Data patterns
+  }
+}
+```
+
+## Key Features
+
+### 1. Application Patterns
+```yaml
+architecture {
+  # Smart architectural choices
+  style: microservices
+  patterns: [
+    cqrs,              # Command/Query
+    event_sourcing,    # State management
+    api_gateway        # Access control
+  ]
+}
+```
+
+### 2. Scalability
+```yaml
+scale {
+  # Automatic scaling
+  compute: auto       # Resources
+  storage: replicated # Data
+  cache: distributed  # Performance
+  
+  limits: {
+    cpu: 80%         # Thresholds
+    memory: 70%      # Monitoring
+  }
+}
+```
+
+### 3. Resilience
+```yaml
+resilience {
+  # Built-in reliability
+  failover: automatic    # Recovery
+  backup: continuous     # Data protection
+  monitoring: complete   # Observability
+  
+  sla: {
+    uptime: 99.9%       # Availability
+    latency: 100ms      # Performance
+  }
+}
+```
+
+### 4. Distribution
+```yaml
+regions {
+  # Global deployment
+  primary: us-east
+  replicas: [eu, asia]
+  
+  routing: {
+    strategy: latency    # Smart routing
+    failover: nearest    # Reliability
+  }
+}
+```
+
+## Best Practices
+
+1. **Cloud Native**
+   - Container based
+   - Auto scaling
+   - Service mesh
+
+2. **Reliability First**
+   - High availability
+   - Disaster recovery
+   - Performance monitoring
+
+3. **Future Ready**
+   - Modular design
+   - Easy scaling
+   - Tech flexibility

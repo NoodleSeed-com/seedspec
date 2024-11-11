@@ -145,3 +145,106 @@ audit {
    - Intrusion detection
    - Regular audits
    - Incident response
+# Security
+
+SeedML provides comprehensive security through intent-focused patterns that automatically implement industry best practices.
+
+## Core Concepts
+
+```yaml
+app SecureApp {
+  # Declare security needs
+  security {
+    auth: [oauth2, mfa]     # Authentication
+    roles: [admin, user]    # Authorization
+    audit: all              # Logging
+    encrypt: sensitive      # Data protection
+  }
+
+  # Intent-focused usage
+  entity Payment {
+    amount: money
+    card: encrypted     # Automatic protection
+    access: admin      # Role-based control
+  }
+}
+```
+
+## Key Features
+
+### 1. Authentication
+```yaml
+auth {
+  # Complete auth patterns
+  type: oauth2
+  providers: [google, github]
+  features: [
+    mfa,              # Multi-factor
+    sso,              # Single sign-on
+    passwordless      # Modern auth
+  ]
+}
+```
+
+### 2. Authorization
+```yaml
+roles {
+  # Declarative permissions
+  admin: {
+    access: all
+    except: [audit.delete]
+  }
+  
+  manager: {
+    create: [orders, reports]
+    approve: expenses
+  }
+}
+```
+
+### 3. Data Protection
+```yaml
+protect {
+  # Automatic encryption
+  fields: {
+    pii: encrypted       # Personal data
+    card: tokenized      # Payment info
+    notes: redacted      # Sensitive text
+  }
+  
+  backup: encrypted      # Data at rest
+  transit: tls          # Data in motion
+}
+```
+
+### 4. Audit Logging
+```yaml
+audit {
+  # Comprehensive tracking
+  track: [
+    auth.login,          # Access events
+    data.modify,         # Changes
+    api.access           # Usage
+  ]
+  
+  retain: 1year          # Compliance
+  alert: suspicious      # Monitoring
+}
+```
+
+## Best Practices
+
+1. **Security by Default**
+   - Everything private unless exposed
+   - Encryption always on
+   - Least privilege access
+
+2. **Compliance Ready**
+   - GDPR patterns built-in
+   - Audit trails automatic
+   - Data protection standard
+
+3. **Modern Standards**
+   - Zero trust architecture
+   - Defense in depth
+   - Regular updates
