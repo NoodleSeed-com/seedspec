@@ -1,118 +1,118 @@
 # Core Qualities
 
-SeedML is built on eight fundamental qualities that make it uniquely suited for modern application development. These qualities work together to create a powerful, yet approachable development experience.
+SeedML is built on four fundamental qualities that make it uniquely suited for AI-native development:
 
-## 1. LLM-Native Design
+## 1. AI-First Design
 
-**What It Means**
-- Designed to be generated and modified by AI language models
-- Consistent patterns that map to natural language
-- Minimal but unambiguous syntax
+```yaml
+# Clear patterns that map to natural language
+entity Order {
+  # AI understands these concepts naturally
+  status: enum(draft, submitted, approved)
+  total: money
+  customer: reference
+  
+  # Intent is clear to both AI and humans
+  validate: {
+    total: positive
+    customer: verified
+  }
+}
+```
+
+**Key Aspects:**
+- Designed for AI generation and modification
+- Natural language mapping
 - Context-preserving structure
+- Minimal but unambiguous syntax
 
-**Why It Matters**
-- Enables AI-driven development
-- Reduces boilerplate code
-- Makes code more maintainable
-- Facilitates natural language interactions
+## 2. Intent Over Implementation
 
-## 2. Single Source of Truth
+```yaml
+# Express what you want, not how to build it
+screen Orders {
+  # High-level patterns imply implementation
+  list: [date, customer, total, status]
+  actions: [create, approve]
+  features: [search, filter, export]
+}
+```
 
-**What It Means**
-- One file describes the entire application
-- All aspects (data, UI, logic, integrations) in one place
-- No redundant specifications
-- No sync issues between layers
+**Key Aspects:**
+- Focus on business goals
+- Hide technical complexity
+- Smart pattern recognition
+- Progressive disclosure
 
-**Why It Matters**
-- Eliminates inconsistencies
-- Simplifies maintenance
-- Speeds up development
-- Reduces errors
+## 3. Single Source of Truth
 
-## 3. Semantic Over Syntactic
+```yaml
+# One file describes everything
+app OrderSystem {
+  # All aspects in one place
+  data: {
+    entities: [Order, Customer]
+    storage: cloud
+  }
+  
+  ui: {
+    screens: [dashboard, orders]
+    theme: modern
+  }
+  
+  rules: {
+    workflow: [approve, fulfill]
+    security: role_based
+  }
+}
+```
 
-**What It Means**
-- Focus on meaning over mechanics
-- Business concepts map directly to code
-- Intent-based configuration
-- Domain-driven patterns
-
-**Why It Matters**
-- Clearer code intent
-- Better business alignment
-- Easier to understand
-- More maintainable
+**Key Aspects:**
+- Complete system specification
+- No redundancy
+- Automatic consistency
+- Clear dependencies
 
 ## 4. Smart Defaults
 
-**What It Means**
-- Common patterns built-in
-- Best practices by default
-- Progressive complexity
+```yaml
+# Best practices built-in
+entity User {
+  # These imply proper handling
+  email: email        # Validation included
+  password: secure    # Hashing automatic
+  role: admin        # Permissions set
+  
+  # Override only when needed
+  name: string {
+    min: 2,
+    max: 50
+  }
+}
+```
+
+**Key Aspects:**
+- Production patterns included
 - Override when needed
+- Progressive complexity
+- Secure by default
 
-**Why It Matters**
-- Faster development
-- Fewer decisions needed
-- Consistent patterns
-- Flexible when required
+## Why These Matter
 
-## 5. Technology Independent
+1. **Faster Development**
+   - AI generates more accurately
+   - Less boilerplate
+   - Fewer decisions needed
 
-**What It Means**
-- Not tied to specific frameworks
-- Platform agnostic
-- Future-proof specifications
-- Multiple deployment targets
+2. **Better Quality**
+   - Consistent patterns
+   - Built-in best practices
+   - Reduced errors
 
-**Why It Matters**
-- Avoid vendor lock-in
-- Easy to modernize
-- Flexible deployment
-- Long-term viability
-
-## 6. Business-Domain Aligned
-
-**What It Means**
-- Matches business concepts
-- Natural requirements mapping
-- Domain-driven design
-- Clear business rules
-
-**Why It Matters**
-- Better stakeholder communication
-- Clearer requirements
-- Easier validation
-- Reduced translation errors
-
-## 7. Full Stack Coherence
-
-**What It Means**
-- All layers work together
-- Consistent patterns throughout
-- Automatic relationship handling
-- Built-in integrations
-
-**Why It Matters**
-- Reduced complexity
-- Better maintainability
-- Fewer bugs
-- Faster development
-
-## 8. Implementation Determinism
-
-**What It Means**
-- Predictable outputs
-- Consistent behavior
-- No hidden side effects
-- Clear execution paths
-
-**Why It Matters**
-- Reliable systems
-- Easier testing
-- Better security
-- Simpler debugging
+3. **Future Ready**
+   - AI-native architecture
+   - Technology independent
+   - Easy to evolve
 # Core Qualities
 
 SeedML ensures essential software qualities through intent-focused patterns that automatically implement best practices.
