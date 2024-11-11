@@ -1,50 +1,81 @@
 # Basic CRUD Example
 
-This example shows how a minimal specification generates a complete customer management system with rich features.
+The simplest possible SeedML application showing smart defaults in action.
 
-```yaml
-app CustomerManager {
-  # Core domain model - everything else is automatic
-  entity Customer {
-    name: string      # Implies required, validation
-    email: email      # Implies unique, format validation  
-    status: active/inactive = active
+```seedml
+app Contacts {
+  # Core domain model
+  entity Contact {
+    name: string      # Required by default
+    email: email     # Validated automatically
+    phone: phone?    # Optional field
+  }
+
+  # Complete UI with one line
+  screen Contacts {
+    list: [name, email, phone]  # Everything else is automatic
   }
 }
 ```
 
-Generated Features:
-- Complete React frontend with:
-  - List view with search, sort, filter
-  - Create/edit forms with validation
-  - Delete confirmation
-  - Responsive design
-  - Loading states
-  - Error handling
+## What You Get
 
-- Full REST API backend with:
-  - CRUD endpoints
-  - Input validation
-  - Error handling
-  - Database schema
-  - API documentation
+This minimal specification automatically generates:
 
-- Standard patterns included:
-  - Pagination
-  - Field validation
-  - Audit logging
-  - API security
-  - Database indexes
+### Data Layer
+- Database schema with proper types and indexes
+- Input validation for all fields
+- API endpoints for CRUD operations
+- Search and filter capabilities
 
-The minimal specification focuses on business intent while SeedML adds all the necessary implementation details automatically.
+### User Interface
+- Responsive list/grid view
+- Create and edit forms 
+- Search functionality
+- Sort and filter options
+- Mobile friendly layout
 
-Override defaults only when needed:
-```yaml
-entity Customer {
-  name: string {     # Override string defaults
-    min: 2,
-    max: 50
+### Features
+- Authentication and authorization
+- Error handling
+- Success messages
+- Audit logging
+- API documentation
+
+All of these features come from smart defaults - no additional configuration needed.
+
+## Progressive Enhancement
+
+When you need customization:
+
+```seedml
+app Contacts {
+  # Override specific defaults
+  entity Contact {
+    name: string {
+      min: 2,            # Min length
+      max: 50,           # Max length
+      case: title        # Title case
+    }
+    email: email         # Keep email defaults
+    phone: phone?        # Keep phone defaults
+    status: active       # Add new field
   }
-  email: email      # Use smart defaults
+
+  # Customize UI
+  screen Contacts {
+    list {
+      show: [name, email, status]    # Show specific fields
+      group: status                  # Group by status
+      actions: [create, disable]     # Custom actions
+    }
+  }
 }
 ```
+
+## Key Principles Demonstrated
+
+1. **Minimal Valid Specification**: Express only what's unique about your application
+2. **Smart Defaults**: Production patterns included automatically
+3. **Progressive Enhancement**: Add complexity only when needed
+4. **Intent-Focused**: Express what you want, not how to build it
