@@ -60,6 +60,20 @@ nav {
 }
 ```
 
+### 4. Dashboard Patterns
+```yaml
+dashboard {
+  # Smart layout with automatic responsiveness
+  layout: grid(2x2)
+  widgets: [
+    sales.summary,    # Automatic data binding
+    tasks.kanban,     # Built-in visualizations 
+    alerts.feed,      # Real-time updates
+    metrics.chart     # Interactive graphs
+  ]
+}
+```
+
 ## Best Practices
 
 1. **Express Intent**
