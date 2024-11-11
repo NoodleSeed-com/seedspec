@@ -9,11 +9,13 @@ app Contacts {
     name: string      # Required by default
     email: email     # Validated automatically
     phone: phone?    # Optional field
+    location: location # Location with geocoding
   }
 
-  # Complete UI with one line
+  # Complete UI with maps
   screen Contacts {
-    list: [name, email, phone]  # Everything else is automatic
+    list: [name, email, phone]  # List view
+    map: location               # Map view
   }
 }
 ```
@@ -42,6 +44,14 @@ This minimal specification automatically generates:
 - Audit logging
 - API documentation
 
+### Map Features
+- Interactive map view
+- Location picker for editing
+- Address autocomplete
+- Distance calculations
+- Clustering for multiple contacts
+- Mobile-friendly controls
+
 All of these features come from smart defaults - no additional configuration needed.
 
 ## Progressive Enhancement
@@ -59,15 +69,35 @@ app Contacts {
     }
     email: email         # Keep email defaults
     phone: phone?        # Keep phone defaults
-    status: active       # Add new field
+    location: location {
+      required: true
+      validate: {
+        region: service_area
+        type: business
+      }
+    }
   }
 
   # Customize UI
   screen Contacts {
+    # Enhanced list view
     list {
-      show: [name, email, status]    # Show specific fields
-      group: status                  # Group by status
-      actions: [create, disable]     # Custom actions
+      show: [name, email, location]
+      group: region
+      sort: distance(current_location)
+    }
+    
+    # Enhanced map view
+    map {
+      cluster: true
+      search: {
+        radius: 10km
+        filters: [region, type]
+      }
+      interactions: [
+        select: show_details,
+        route: get_directions
+      ]
     }
   }
 }
@@ -79,3 +109,4 @@ app Contacts {
 2. **Smart Defaults**: Production patterns included automatically
 3. **Progressive Enhancement**: Add complexity only when needed
 4. **Intent-Focused**: Express what you want, not how to build it
+5. **Location-Aware**: Seamless integration of mapping features
