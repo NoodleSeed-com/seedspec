@@ -32,12 +32,13 @@ screen Products {
 screen OrderForm {
   form: {
     sections: [
-      customer: [name, email],
-      items: table,
+      customer: [name!, email!, phone?],
+      items: editable_table,
       notes: textarea
     ]
+    
     validation: inline
-    actions: [save, submit]
+    actions: [save_draft, submit]
   }
 }
 ```

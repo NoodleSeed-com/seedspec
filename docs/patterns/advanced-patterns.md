@@ -91,13 +91,24 @@ app EventSourced {
     }
   }
 
-  # Event handlers
-  handlers {
-    OrderCreated: [
-      createInvoice,
-      notifyCustomer,
-      updateInventory
+  events {
+    order.created: [
+      notify@customer,
+      update@inventory,
+      track@analytics
     ]
+    
+    order.shipped: {
+      handler: [
+        update@status,
+        send@tracking,
+        notify@customer
+      ]
+      retry: {
+        attempts: 3
+        backoff: exponential
+      }
+    }
   }
 }
 ```

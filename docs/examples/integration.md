@@ -3,34 +3,19 @@
 ```yaml
 # Complete integration example
 app IntegratedSystem {
-  # Authentication integration
-  auth {
+  auth: {
     provider: auth0 {
       domain: ${AUTH0_DOMAIN}
       clients: [web, mobile]
       social: [google, github]
     }
-    
-    mfa: {
-      required: role.admin
-      methods: [app, sms]
-    }
   }
-
-  # Payment processing
-  payments {
-    stripe {
+  
+  payments: {
+    provider: stripe {
       webhooks: {
         success: [approve@order, notify@customer],
         failure: [mark@failed, notify@support]
-      }
-      
-      methods: {
-        card: {
-          enabled: true
-          save: customer.consent
-        }
-        ach: role.business
       }
     }
   }

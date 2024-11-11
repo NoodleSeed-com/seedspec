@@ -30,23 +30,10 @@ app Analytics {
         data: Metric
         value: sum(value)
         change: vs_previous_period
-      },
-      {
-        type: bar-chart
-        data: Metric
-        x: category
-        y: sum(value)
-      },
-      {
-        type: table
-        data: Metric
-        columns: [name, value, timestamp]
-        sort: -timestamp
-        limit: 10
       }
     ]
     
-    # Interactive features
+    # Interactive features 
     features: [
       time-range-selector,
       category-filter,

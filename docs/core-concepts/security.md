@@ -14,12 +14,16 @@ app SecureApp {
     user: read_own
   }
 
-  # Apply to entities
   entity Document {
     access: {
       view: authenticated
       edit: role.manager
       delete: role.admin
+    }
+
+    fields: {
+      total: view@finance,
+      notes: edit@owner
     }
   }
 }
