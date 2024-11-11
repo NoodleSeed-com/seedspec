@@ -1,5 +1,8 @@
 import os
 import markdown
+import markdown.extensions.fenced_code
+import markdown.extensions.tables
+import markdown.extensions.toc
 from weasyprint import HTML, CSS
 from bs4 import BeautifulSoup
 
@@ -24,7 +27,12 @@ def convert_md_to_pdf(output_filename='documentation.pdf'):
                     all_content += "---\n\n"  # Add separator between files
     
     # Convert markdown to HTML
-    html = markdown.markdown(all_content)
+    html = markdown.markdown(all_content, extensions=[
+        'fenced_code',
+        'tables',
+        'toc',
+        'attr_list'
+    ])
     
     # Add some basic styling
     css = CSS(string='''
@@ -33,22 +41,61 @@ def convert_md_to_pdf(output_filename='documentation.pdf'):
             line-height: 1.6;
             margin: 40px;
         }
-        h1 { color: #2c3e50; }
-        h2 { color: #34495e; }
+        h1 { 
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+        h2 { 
+            color: #34495e;
+            margin-top: 30px;
+        }
         code { 
             background: #f8f9fa;
             padding: 2px 5px;
             border-radius: 3px;
+            font-family: "Courier New", monospace;
         }
         pre {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
         }
         hr {
             margin: 30px 0;
             border: none;
             border-top: 1px solid #ddd;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 15px;
+            color: #666;
+            margin: 15px 0;
+        }
+        @page {
+            margin: 2.5cm;
+            @top-right {
+                content: counter(page);
+            }
         }
     ''')
     
