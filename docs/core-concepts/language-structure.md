@@ -1,119 +1,112 @@
-# Language Structure
+# Intent-Focused Language Structure
 
-SeedML follows core principles that make it powerful yet approachable:
+SeedML lets you express what you want to build, not how to build it.
 
-## Fundamental Principles
+## Core Principles
 
-### 1. Everything is an Expression
-All values and logic are expressions that can be evaluated:
+### 1. Express Intent, Not Implementation
 
 ```yaml
-app Example {
-  # Direct expressions
-  value: 1 + 2
-  text: "Hello " + name
+# Just describe what you want
+app TodoList {
+  # Core data
+  entity Task {
+    title: string
+    done: bool
+    due?: date
+  }
   
-  # Method expressions
-  total: items.sum()
-  filtered: users.filter(active)
-  
-  # Conditional expressions
-  status: if total > 1000 then "high" else "low"
-  
-  # Collection expressions
-  tags: ["a", "b"].concat(extra_tags)
+  # User interface
+  screen Tasks {
+    list: [title, done, due]
+    actions: [create, complete]
+  }
 }
+
+# SeedML infers the rest:
+# - Database schema
+# - API endpoints
+# - UI components
+# - Business logic
+# - Validation
+# - Error handling
 ```
 
-### 2. Consistent Type System
-Types follow clear, predictable patterns:
+### 2. Progressive Complexity
+
+Start simple, add detail only when needed:
 
 ```yaml
-types {
-  # Basic types
-  name: string              # Basic type
-  age: number              # Numeric type
-  active: bool             # Boolean type
-  
-  # Type modifiers
-  optional: string?        # Optional value
-  required: string!        # Required value
-  validated: string(email) # Validated type
-  
-  # Collections
-  tags: [string]          # List type
-  scores: map<id,number>  # Map type
-  status: draft->done     # State machine
+# Minimal version
+entity User {
+  name: string
+  email: email
 }
-```
 
-### 3. Clear Component Boundaries
-Components have specific responsibilities:
-
-```yaml
-app MyApp {
-  # 1. Configuration
-  config {
-    name: "My Application"
-    version: "1.0.0"
-    features: [auth, api]
+# Add validation when needed
+entity User {
+  name: string {
+    min: 2
+    max: 50
   }
-
-  # 2. Type Definitions
-  types {
-    Money: decimal(2) {
-      min: 0
-      currency: USD
-    }
+  email: email {
+    unique: true
+    domain: company.com
   }
+}
 
-  # 3. Data Models
-  entity Order {
-    # Properties
-    id: uuid
-    total: Money
-    status: draft->submitted->approved
-
-    # Relationships
-    customer: Customer
-    items: [OrderItem]
-
-    # Behaviors
-    rules { ... }
-    compute { ... }
-    access { ... }
-  }
-
-  # 4. Business Logic
+# Add behavior when needed
+entity User {
+  name: string
+  email: email
+  
   rules {
-    submit_order: {
-      when: order.status -> submitted
+    on_create: send_welcome_email
+    on_delete: archive_data
+  }
+  
+  compute {
+    full_name: name + " " + surname
+    age: birthday.years_since()
+  }
+}
+```
+
+### 3. Smart Composition
+
+Combine patterns to express complex intent:
+
+```yaml
+app OrderSystem {
+  # Core domain
+  entity Order {
+    status: draft->submitted->approved
+    items: [OrderItem]
+    total: money
+  }
+  
+  # Business rules
+  rules {
+    submit: {
       require: [
-        order.total > 0,
-        order.items.length > 0
+        items.length > 0,
+        total > 0
       ]
-      then: [
-        notify@customer,
-        create@invoice
-      ]
+      then: notify@customer
     }
   }
-
-  # 5. User Interface
-  screens {
-    OrderList {
-      layout: table
-      columns: [id, customer, total, status]
-      actions: [create, edit]
-    }
+  
+  # User interface
+  screen Orders {
+    list: [id, customer, total, status]
+    actions: [create, submit, approve]
   }
-
-  # 6. Integration
+  
+  # Integration
   integrate {
-    stripe: {
+    payment: stripe {
       on: order.submit
       charge: total
-      then: approve
     }
   }
 }
@@ -121,87 +114,108 @@ app MyApp {
 
 ## Key Components
 
-### 1. Meta Configuration
-Global application settings and metadata:
+### 1. Domain Model
+Define your core business entities:
+
 ```yaml
-meta {
-  name: "My App"
-  version: "1.0"
-  description: "App description"
+entity Product {
+  name: string
+  price: money
+  category: electronics/books/clothing
+  
+  # Relations
+  vendor: Vendor
+  reviews: [Review]
 }
 ```
 
-### 2. Entities
-Data models with built-in validation:
-```yaml
-entity User {
-  name: string!     # Required
-  email: email      # Validated
-  role: admin/user  # Enum
-  active: bool = true
-}
-```
+### 2. Business Rules
+Express logic and workflows:
 
-### 3. Business Rules
-Logic and workflow definitions:
 ```yaml
 rules {
-  createOrder: {
+  approve_order: {
+    when: status -> approved
     require: [
-      user.verified,
-      items.length > 0
+      total < 10000,
+      items.all(in_stock)
     ]
-    validate: total > 0
-    then: notify@sales
+    then: [
+      notify@customer,
+      update@inventory
+    ]
   }
 }
 ```
 
-### 4. Screens
-UI components and layouts:
+### 3. User Interface
+Define screens and interactions:
+
 ```yaml
-screen Dashboard {
-  layout: grid(3x2)
-  widgets: [
-    stats: counter(orders),
-    chart: trend(sales),
-    tasks: list(pending)
+screen Products {
+  # Layout
+  layout: grid(3)
+  
+  # Data display
+  show: [image, name, price]
+  
+  # User actions
+  actions: [
+    create: button,
+    edit: menu,
+    delete: confirm
   ]
-  actions: [refresh, export]
+  
+  # Behavior
+  search: [name, category]
+  sort: price
+  filter: category
 }
 ```
 
-### 5. Integrations
-External service connections:
+### 4. Integration
+Connect external services:
+
 ```yaml
 integrate {
+  # Authentication
   auth: {
-    provider: oauth2
-    config: { ... }
+    provider: google
+    roles: [user, admin]
   }
-  storage: s3
-  email: sendgrid
+  
+  # Storage
+  files: s3 {
+    bucket: uploads
+    types: [image, pdf]
+  }
+  
+  # Notifications
+  notify: {
+    email: sendgrid
+    sms: twilio
+  }
 }
 ```
 
 ## Best Practices
 
-1. **Organization**
-   - Group related entities together
-   - Keep rules close to their entities
-   - Structure screens by user workflow
+1. **Start Simple**
+   - Begin with core entities
+   - Add complexity gradually
+   - Let defaults work for you
 
-2. **Naming**
-   - Use clear, descriptive names
-   - Follow consistent conventions
-   - Reflect business terminology
+2. **Focus on Intent**
+   - Describe what, not how
+   - Use business terminology
+   - Express natural workflows
 
-3. **Modularity**
-   - Break large apps into modules
-   - Reuse common patterns
-   - Keep components focused
+3. **Leverage Patterns**
+   - Use built-in components
+   - Combine existing patterns
+   - Stay consistent
 
-4. **Documentation**
-   - Comment complex logic
-   - Document business rules
-   - Explain custom patterns
+4. **Think in Domains**
+   - Model business concepts
+   - Group related features
+   - Maintain boundaries
