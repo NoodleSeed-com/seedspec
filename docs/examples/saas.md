@@ -8,22 +8,15 @@ app SaaSPlatform {
     isolation: schema  # database, schema, or row
     routing: subdomain
     
-    # Per-tenant customization
-    customize {
+    customize: {
       branding: {
         logo: image
         colors: theme
         domain: url?
       }
-      
       features: {
         enabled: [module]
         limits: map<feature, limit>
-      }
-      
-      data: {
-        fields: [custom]
-        views: [saved]
       }
     }
   }
