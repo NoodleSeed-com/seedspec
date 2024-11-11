@@ -29,7 +29,12 @@ id                  # Unique IDs
 timestamp           # Timestamps
 file                # Files
 image               # Images
-geo                 # Location
+
+# Location Types
+location            # Geographic coordinates with address
+place               # Place details with metadata
+region              # Geographic boundary
+distance            # Distance with units
 ```
 
 ## Type Usage
@@ -50,6 +55,72 @@ entity Product {
   price: 0.00      # money
   created: now()    # timestamp
   active: true     # bool
+}
+```
+
+## Location Type System
+
+```yaml
+# Location Types
+location {
+  lat: number        # Latitude
+  lng: number        # Longitude
+  address?: string   # Optional formatted address
+  placeId?: string   # Optional place identifier
+}
+
+place {
+  location: location
+  name: string
+  type: string
+  metadata: map<string, any>
+}
+
+region {
+  type: circle/polygon/bounds
+  center?: location   # For circle
+  radius?: distance   # For circle
+  points?: [location] # For polygon
+  bounds?: {          # For bounds
+    ne: location
+    sw: location
+  }
+}
+
+distance {
+  value: number
+  unit: km/mi/m
+}
+
+# Location Validation
+location {
+  within: region          # Must be within region
+  near: location, radius  # Must be near point
+  type: business/postal   # Place type constraints
+}
+
+# Location Formatting
+location {
+  format: full/short     # Address format
+  components: [street, city, country]
+  language: string       # Localization
+}
+
+# Usage Examples
+stores: [location]           # List of locations
+coverage: region            # Service area
+distance: number as km      # Distance in kilometers
+
+entity Store {
+  location: location {
+    within: service_area
+    type: commercial
+  }
+  compute {
+    distance: from(user.location)
+    nearby: stores.within(5km)
+    region: coverage_area()
+  }
 }
 ```
 
