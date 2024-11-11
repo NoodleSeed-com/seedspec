@@ -3,28 +3,16 @@
 ## Primitive Types
 
 ```yaml
-# Text Types
-string              # Basic text
-text                # Long text/rich text
-email               # Email addresses with validation
-phone               # Phone numbers with formatting
-url                 # URLs with validation
-
-# Numeric Types
-number              # Generic numbers
-int                 # Integers
-float               # Floating point
-money               # Monetary values with currency
-
-# Date/Time Types
-date                # Calendar dates
-time                # Time values
-datetime            # Combined date and time
-timestamp           # System timestamps with TZ
-
-# Other Primitives
-bool                # True/false values
-color               # Color values with formats
+# Standardize primitive types
+types {
+  string              # Text with validation
+  number              # Numbers with precision
+  boolean             # True/false values 
+  date                # ISO8601 dates
+  email               # Validated emails
+  money               # Currency values
+  phone               # Formatted phones
+}
 ```
 
 ## Complex Types

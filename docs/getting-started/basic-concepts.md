@@ -36,10 +36,14 @@ entity User {
   status: Status = active
 }
 
-# Dependent entity
 entity Order {
-  customer: User!
-  items: [OrderItem]
+  # Clear relationship types
+  customer: Customer!  # Required reference
+  items: [OrderItem]  # One-to-many
+  assignee?: User     # Optional reference
+  
+  # Computed fields marked explicitly
+  total: compute(sum(items.price))
 }
 ```
 

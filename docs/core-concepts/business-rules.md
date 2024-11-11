@@ -33,10 +33,16 @@ validate: {
 ### 2. Business Logic
 ```yaml
 rules {
-  approve_expense: {
-    require: role.manager
-    validate: amount <= approval_limit
-    then: [create@payment, notify@accounting]
+  submit_order: {
+    require: [
+      items.length > 0,
+      total > 0,
+      customer.verified
+    ]
+    then: [
+      create@invoice,
+      notify@customer
+    ]
   }
 }
 ```

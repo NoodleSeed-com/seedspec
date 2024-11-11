@@ -4,21 +4,17 @@
 # Simple customer management system
 app CustomerManager {
   entity Customer {
-    # Basic information
-    name: string
-    email: email
-    phone: phone?
-    status: active/inactive = active
-    
-    # Validation rules built-in
-    validate: email != null if status == active
+    # Clear required vs optional
+    name: string!       # Required
+    email: email!      # Required, validated
+    phone: phone?      # Optional
+    status: active/inactive = active  # Enum with default
   }
 
-  # Generates complete admin interface
   screen Customers {
     list: [name, email, status]
-    search: [name, email]
     actions: [create, edit, delete]
+    features: [search, filter, sort]  # Standard features
   }
 }
 ```
