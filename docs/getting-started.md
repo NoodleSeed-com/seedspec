@@ -38,9 +38,9 @@ seedml run
 
 ## Next Steps
 
-- Read the [Core Concepts](core-concepts/overview.md)
-- Try the [Examples](examples/basic-crud.md)
-- Learn about [Patterns](reference/patterns.md)
+- Read the [Core Concepts](./core-concepts/overview.md)
+- Try the [Examples](./examples/basic-crud.md)
+- Learn about [Patterns](./reference/patterns.md)
 
 ## Learning Path
 
