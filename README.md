@@ -50,6 +50,7 @@ This generates a fully-functional application with:
 - **Smart Defaults**: Production patterns built-in, override only when needed
 - **Full Stack**: One specification drives all application layers
 - **Tech Independent**: Target any modern technology stack
+- **Maps Integration**: Built-in support for location-based features and mapping
 
 ## 🎯 Smart Defaults
 
@@ -60,6 +61,8 @@ SeedML minimizes boilerplate through intelligent defaults:
 - `actions` imply proper handlers, validation, and error handling
 - All entities get automatic CRUD operations
 - Security best practices are automatically applied
+- `location` fields imply geocoding, map rendering, and distance calculations
+- `map` screens imply clustering, search radius, and interactive controls
 
 Override defaults only when needed:
 ```bash
@@ -73,6 +76,15 @@ entity User {
   # Use defaults
   email: email  # Implies validation, uniqueness
 }
+
+# Maps integration with smart defaults
+entity Store {
+  location: location  # Implies geocoding, validation, map rendering
+}
+
+screen StoreLocator {
+  map: [location]     # Implies clustering, search, radius filters
+}
 ```
 
 ## 🏗️ Generated Stack
@@ -85,6 +97,7 @@ SeedML generates a complete, production-ready stack:
 - State management
 - Form handling
 - API integration
+- Maps components
 
 ### Backend
 - FastAPI + SQLAlchemy
