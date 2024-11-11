@@ -5,7 +5,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)]()
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-SeedML is an AI-native programming language that bridges the gap between human intent and production software. It enables rapid application development through declarative specifications that are natural for both humans and AI to read and write.
+SeedML is an AI-native programming language that generates production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
 
 ## 🚀 Quick Start
 
@@ -17,58 +17,87 @@ export ANTHROPIC_API_KEY='your-api-key'
 # Create a simple app
 cat > app.seed << EOF
 app TodoApp {
+  # Core domain model
   entity Task {
-    title: string!
+    title: string
     done: bool = false
   }
+
+  # UI definition (implies standard patterns)
   screen Tasks {
-    list: [title, done]
-    actions: [create, toggle-done]
+    list: [title, done]    # Implies search, sort, pagination
+    actions: [create, done] # Implies proper handlers
   }
 }
 EOF
 
-# Generate the application
+# Generate complete application
 seedml generate app.seed
 ```
 
+This generates a fully-functional application with:
+- React + TypeScript frontend
+- FastAPI backend
+- Database with migrations
+- API documentation
+- Authentication
+- All best practices included
+
 ## 🌟 Key Features
 
-- **Natural Expression**: Write specifications in a clear, intent-focused language
-- **AI-First Design**: Optimized for both human and AI interaction
-- **Smart Defaults**: Production patterns built-in, customizable when needed
-- **Single Source**: One specification drives all application layers
-- **Tech Independence**: Target any modern technology stack
+- **AI-First Design**: Optimized for LLM generation and modification
+- **Intent-Focused**: Express what you want, not how to build it
+- **Smart Defaults**: Production patterns built-in, override only when needed
+- **Full Stack**: One specification drives all application layers
+- **Tech Independent**: Target any modern technology stack
+
+## 🎯 Smart Defaults
+
+SeedML minimizes boilerplate through intelligent defaults:
+
+- `string` fields imply validation, indexing, and proper UI handling
+- `list` screens imply pagination, sorting, and search
+- `actions` imply proper handlers, validation, and error handling
+- All entities get automatic CRUD operations
+- Security best practices are automatically applied
+
+Override defaults only when needed:
+```bash
+entity User {
+  # Override string defaults
+  name: string {
+    min: 3,
+    max: 50
+  }
+  
+  # Use defaults
+  email: email  # Implies validation, uniqueness
+}
+```
 
 ## 🏗️ Generated Stack
 
-SeedML currently generates a modern, production-ready stack:
+SeedML generates a complete, production-ready stack:
 
-- **Frontend**: React + TypeScript
-  - Material UI components
-  - Redux state management
-  - React Router navigation
-  - Form validation
-  - API integration
+### Frontend
+- React + TypeScript
+- Responsive UI components
+- State management
+- Form handling
+- API integration
 
-- **Backend**: FastAPI + SQLAlchemy
-  - REST API endpoints
-  - Database models
-  - Authentication
-  - Validation
-  - Error handling
+### Backend
+- FastAPI + SQLAlchemy
+- REST endpoints
+- Authentication
+- Validation
+- Error handling
 
-- **Database**: MySQL
-  - Schema migrations
-  - Indexes
-  - Relationships
-  - Constraints
-
-- **DevOps**:
-  - Docker containers
-  - Kubernetes manifests
-  - CI/CD pipelines
-  - Monitoring setup
+### Infrastructure
+- Database migrations
+- Docker configuration
+- API documentation
+- Testing setup
 
 ## 📚 Documentation
 
