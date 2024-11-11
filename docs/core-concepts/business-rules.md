@@ -49,6 +49,26 @@ validate {
   email: valid_email     # Format checking
   age: adult            # Business logic
   stock: available      # External check
+
+  # Location-based validations
+  location: {
+    within: service_area          # Geographic boundary
+    near: [warehouse, 50km]       # Proximity check
+    type: commercial             # Location type
+    accessible: true             # Route exists
+  }
+  
+  region: {
+    area: <= 1000km2             # Size limit
+    overlap: none                # No overlap
+    contains: min(5, Store)      # Minimum contents
+  }
+  
+  route: {
+    distance: <= max_range       # Distance limit
+    duration: <= 2h             # Time limit
+    avoid: [tolls, highways]    # Route constraints
+  }
 }
 ```
 
