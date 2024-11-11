@@ -1,22 +1,10 @@
 # Business Application Example
 
-```yaml
-# Complete order management system
+A complete order management system showing how intent-focused patterns scale to larger applications.
+
+```seedml
 app OrderSystem {
-  # Foundation layer
-  types {
-    OrderStatus: enum(draft, submitted, approved, shipped)
-    Money: number { precision: 2, min: 0 }
-    Email: string { format: email }
-  }
-
-  validation {
-    # Common validation rules
-    positive_money: value > 0
-    valid_quantity: value > 0 and value <= stock
-  }
-
-  # Base entities (no dependencies)
+  # 1. Domain Model
   entity Customer {
     # Basic information
     name: string!
