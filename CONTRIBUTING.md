@@ -13,14 +13,41 @@ Thank you for your interest in contributing to SeedML! This document provides gu
 ## Development Setup
 
 ```bash
-# Install dependencies
-npm install
+# Install from source
+git clone https://github.com/seedml/seedml.git
+cd seedml
+pip install -e .
+
+# Set your API key
+export ANTHROPIC_API_KEY='your-api-key'
 
 # Run tests
-npm test
+python -m pytest
 
-# Build project
-npm run build
+# Build documentation
+mkdocs build
+```
+
+## CLI Development
+
+The SeedML CLI tool generates applications from specifications:
+
+```bash
+# Generate application from spec
+seedml myapp.seed
+
+# Show help
+seedml --help
+
+# Show version
+seedml --version
+```
+
+Options:
+```bash
+--api-key KEY      Anthropic API key (or use ANTHROPIC_API_KEY env var)
+--output DIR       Output directory (default: ./generated)
+--verbose         Show detailed output
 ```
 
 ## Contribution Areas
