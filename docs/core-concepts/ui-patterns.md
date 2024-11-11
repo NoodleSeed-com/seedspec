@@ -60,6 +60,34 @@ nav {
 }
 ```
 
+### 4. Map Components
+```yaml
+# Interactive maps with smart defaults
+map location_picker {
+  view: {
+    type: interactive    # Map type
+    center: auto        # Smart centering
+    zoom: dynamic       # Context-aware zoom
+  }
+  features: [
+    search,            # Location search
+    draw,              # Area selection
+    cluster            # Smart clustering
+  ]
+}
+
+# Advanced mapping patterns
+screen StoreLocator {
+  map: {
+    data: Store.active
+    cluster: true      # Auto clustering
+    radius: 10km       # Search radius
+    filters: category  # Data filtering
+  }
+  sidebar: store_list  # Linked components
+}
+```
+
 ### 4. Dashboard Patterns
 ```yaml
 dashboard {
@@ -71,6 +99,59 @@ dashboard {
     alerts.feed,      # Real-time updates
     metrics.chart     # Interactive graphs
   ]
+}
+```
+
+### 5. Map Patterns
+```yaml
+map {
+  # Smart map components
+  view: {
+    type: interactive    # Map type
+    center: location     # Initial center
+    zoom: 12            # Initial zoom
+    fit: markers        # Auto-fit to data
+  }
+  
+  data: {
+    markers: [Store]    # Data binding
+    cluster: true       # Auto clustering
+    regions: [Zone]     # Area overlays
+  }
+  
+  controls: {
+    position: top_left         # Control placement
+    features: [
+      search,                  # Location search
+      filter,                  # Data filtering
+      draw                     # Region drawing
+    ]
+  }
+  
+  interaction: {
+    select: single/multiple    # Selection mode
+    hover: show_info          # Hover behavior
+    click: show_details       # Click handling
+  }
+}
+
+# Example Usage
+screen StoreLocator {
+  layout: split
+  map: {
+    view: location_picker
+    data: Store.active
+    features: [
+      search: address,
+      radius: 10km,
+      filters: category
+    ]
+  }
+  
+  sidebar: {
+    list: selected_stores
+    actions: [directions, share]
+  }
 }
 ```
 
@@ -90,3 +171,10 @@ dashboard {
    - Automatic optimization
    - Smart loading
    - Efficient updates
+
+4. **Map Experience**
+   - Mobile-responsive controls
+   - Progressive loading
+   - Smart clustering
+   - Gesture support
+   - Accessibility features
