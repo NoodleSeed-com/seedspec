@@ -38,29 +38,29 @@ seedml run
 
 ## Next Steps
 
-- Read the [Core Concepts](./core-concepts/overview.md)
-- Try the [Examples](./examples/basic-crud.md)
-- Learn about [Patterns](./reference/patterns.md)
+- Read the [Core Concepts](core-concepts/overview.md)
+- Try the [Examples](examples/basic-crud.md)
+- Learn about [Patterns](reference/patterns.md)
 
 ## Learning Path
 
 1. Start Here:
-   - [Quick Start Guide](getting-started/quick-start.md)
-   - [First Application](getting-started/first-app.md)
+   - [Quick Start Guide](./quick-start.md)
+   - [First Application](./first-app.md)
 
 2. Core Concepts:
-   - [Architecture](core-concepts/architecture.md)
-   - [Type System](core-concepts/type-system.md)
-   - [Business Rules](core-concepts/business-rules.md)
-   - [UI Patterns](core-concepts/ui-patterns.md)
+   - [Architecture](../core-concepts/architecture.md)
+   - [Type System](../core-concepts/type-system.md)
+   - [Business Rules](../core-concepts/business-rules.md)
+   - [UI Patterns](../core-concepts/ui-patterns.md)
 
 3. Examples:
-   - [Basic CRUD](examples/basic-crud.md)
-   - [Business App](examples/business-app.md)
-   - [Dashboard](examples/dashboard.md)
-   - [SaaS](examples/saas.md)
+   - [Basic CRUD](../examples/basic-crud.md)
+   - [Business App](../examples/business-app.md)
+   - [Dashboard](../examples/dashboard.md)
+   - [SaaS](../examples/saas.md)
 
 4. Reference:
-   - [Types](reference/types.md)
-   - [Patterns](reference/patterns.md)
-   - [CLI](reference/cli.md)
+   - [Types](../reference/types.md)
+   - [Patterns](../reference/patterns.md)
+   - [CLI](../reference/cli.md)
