@@ -1,21 +1,24 @@
-# SeedML
+# SeedML Language Specification
 
-[![Project Status: Initial Development](https://img.shields.io/badge/Project%20Status-Initial%20Development-yellow.svg)]()
+[![Project Status: Language Design](https://img.shields.io/badge/Project%20Status-Language%20Design-blue.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)]()
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-SeedML is an AI-native programming language that generates production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
+SeedML is an AI-native programming language that aims to generate production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
 
-## 🚀 Quick Start
+## 🚀 Current Status
 
-```bash
-# Install SeedML
-pip install -e .
-export ANTHROPIC_API_KEY='your-api-key'
+SeedML is currently in the language design phase. We are:
+1. Defining the core language syntax and semantics
+2. Documenting patterns and best practices
+3. Creating example specifications
+4. Planning the implementation architecture
 
-# Create a simple app
-cat > app.seed << EOF
+The code generation tooling and runtime environment are not yet implemented.
+
+## Example Specification
+
+```yaml
 app TodoApp {
   # Core domain model
   entity Task {
@@ -25,23 +28,13 @@ app TodoApp {
 
   # UI definition (implies standard patterns)
   screen Tasks {
-    list: [title, done]    # Implies search, sort, pagination
-    actions: [create, done] # Implies proper handlers
+    list: [title, done]    # Will imply search, sort, pagination
+    actions: [create, done] # Will imply proper handlers
   }
 }
-EOF
-
-# Generate complete application
-seedml generate app.seed
 ```
 
-This generates a fully-functional application with:
-- React + TypeScript frontend
-- FastAPI backend
-- Database with migrations
-- API documentation
-- Authentication
-- All best practices included
+This specification will eventually generate a complete application, but the generation tools are still under development.
 
 ## 🌟 Key Features
 
