@@ -1,10 +1,10 @@
-# SeedML Language Specification
+# Seed Specification Language
 
 [![Project Status: Language Design](https://img.shields.io/badge/Project%20Status-Language%20Design-blue.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-SeedML is an AI-native programming language that aims to generate production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
+The Seed Specification Language (Seed Spec) is an AI-native programming language that aims to generate production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
 
 ## 🚀 Current Status
 
