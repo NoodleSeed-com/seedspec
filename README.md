@@ -8,7 +8,7 @@ SeedML is an AI-native programming language that aims to generate production-rea
 
 ## 🚀 Current Status
 
-SeedML is currently in the language design phase. We are:
+Seed Spec is currently in the language design phase. We are:
 1. Defining the core language syntax and semantics
 2. Documenting patterns and best practices
 3. Creating example specifications
@@ -47,7 +47,7 @@ This specification will eventually generate a complete application, but the gene
 
 ## 🎯 Smart Defaults
 
-SeedML minimizes boilerplate through intelligent defaults:
+Seed Spec minimizes boilerplate through intelligent defaults:
 
 - `string` fields imply validation, indexing, and proper UI handling
 - `list` screens imply pagination, sorting, and search
@@ -82,7 +82,7 @@ screen StoreLocator {
 
 ## 🏗️ Generated Stack
 
-SeedML generates a complete, production-ready stack:
+Seed Spec generates a complete, production-ready stack:
 
 ### Frontend
 - React + TypeScript
@@ -132,7 +132,7 @@ SeedML generates a complete, production-ready stack:
 
 ## 🛠️ Development Status
 
-SeedML is in active development (v0.1.0) with a focus on:
+Seed Spec is in active development (v0.1.0) with a focus on:
 
 1. **Language Evolution**
    - Expanding core patterns
