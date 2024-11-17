@@ -1,6 +1,6 @@
-# Integration
+# Integration & Location Services
 
-SeedML simplifies external service integration through intent-focused patterns that handle authentication, data flow, and error cases automatically.
+SeedML simplifies external service integration and location-based features through intent-focused patterns that handle authentication, data flow, mapping, and error cases automatically.
 
 ## Core Concepts
 
@@ -79,7 +79,30 @@ services {
 }
 ```
 
-### 4. Event Handling
+### 4. Location Services
+```yaml
+class LocationServices {
+    def geocode(self, address):
+        """Convert address to coordinates"""
+        # Validate address format
+        # Call geocoding service
+        # Cache results
+        
+    def reverse_geocode(self, lat, lng):
+        """Convert coordinates to address"""
+        # Validate coordinates
+        # Call reverse geocoding
+        # Format response
+        
+    def validate_region(self, points):
+        """Validate geographic region"""
+        # Check boundary validity
+        # Compute area
+        # Verify constraints
+}
+```
+
+### 5. Event Handling
 ```yaml
 events {
   # Declarative event processing
@@ -97,7 +120,7 @@ events {
 }
 ```
 
-### 5. Maps Integration
+### 6. Maps Integration
 ```yaml
 maps {
   # Complete mapping patterns
