@@ -334,7 +334,46 @@ The system uses a comprehensive error handling approach:
   - Cross-reference checking
   - Custom rule validation
 
-### 2. Research Areas
+### 2. UI Patterns & Components
+
+```yaml
+# Standard Screen Types
+screen List {
+  list: [field1, field2]        # Fields to display
+  actions: [create, edit]       # Basic actions
+}
+
+screen Form {
+  form: [field1, field2]        # Form fields
+  actions: [save, cancel]       # Form actions
+}
+
+screen Detail {
+  content: [field1, field2]     # Content fields
+  actions: [edit, delete]       # Item actions
+}
+
+screen Dashboard {
+  summary: [metric1, metric2]   # Key metrics
+  lists: [recent, popular]      # Data lists
+}
+
+# Layout Patterns
+screen OrderDetail {
+  layout: split
+  left: [customer, items]
+  right: [summary, actions]
+}
+
+# Built-in Features
+features: {
+  search: true        # Search functionality
+  sort: true         # Column sorting
+  pagination: true   # Page navigation
+}
+```
+
+### 3. Research Areas
 
 - **Prompt Engineering**
   - Context optimization

@@ -140,3 +140,47 @@ entity Order {
    - Use consistent patterns
    - Plan for versioning
    - Consider migrations
+
+## Basic Structure
+
+Every SeedML application follows this structure:
+
+```yaml
+app [AppName] {
+  # Global Configuration
+  meta: { ... }
+  
+  # Data Models
+  entity [EntityName] { ... }
+  
+  # Business Rules
+  rules { ... }
+  
+  # User Interface
+  screens { ... }
+  
+  # Integrations
+  integrate { ... }
+}
+```
+
+## Entity Syntax
+
+```yaml
+entity [EntityName] {
+  # Basic fields
+  name: string
+  age: number
+  active: bool = true
+  
+  # Field modifiers
+  required: string!
+  optional: string?
+  defaulted: string = "default"
+  
+  # Complex types
+  items: [Item]
+  metadata: map<string,any>
+  status: draft->submitted->approved
+}
+```
