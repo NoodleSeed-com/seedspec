@@ -1,203 +1,166 @@
 # Business Rules
 
-SeedML lets you express business logic through simple, intent-focused rules that automatically handle validation, computation, and workflow.
+SeedML provides a simplified approach to business rules focused on common use cases and rapid prototyping.
 
 ## Core Concepts
 
-### State Management
+### 1. Basic Validation
 ```yaml
-entity Order {
-  # Smart state transitions
-  states: Draft -> Submitted -> Approved -> Completed {
-    Submitted: requires[complete]
-    Approved: requires[manager.review] 
-    Completed: triggers[invoice.create]
+entity User {
+  email: email
+  password: string
+  
+  rules {
+    validate: {
+      email: required,
+      password: length >= 8
+    }
   }
 }
 ```
 
+### 2. Simple State Transitions
 ```yaml
-entity Order {
-  # Smart validation - handles type checking, required fields
-  validate {
-    total: positive
-    items: not_empty
-    customer: verified
-  }
-
-  # Automatic computations
-  compute {
-    subtotal: sum(items.price)
-    tax: subtotal * 0.1  
-    total: subtotal + tax
-  }
-
-  # Intent-focused workflows
-  flow submit {
-    when: valid           # Implied validation
-    then: notify@sales    # Automatic handling
+entity Task {
+  status: string = "todo"
+  
+  rules {
+    start: {
+      validate: status == "todo"
+      then: updateStatus("in-progress")
+    }
+    
+    complete: {
+      validate: status == "in-progress"
+      then: updateStatus("done")
+    }
   }
 }
 ```
 
-## Key Features
-
-### 1. Smart Validation
+### 3. Basic Computations
 ```yaml
-validate {
-  # Built-in validations with clear intent
-  email: valid_email     # Format checking
-  age: adult            # Business logic
-  stock: available      # External check
-
-  # Location-based validations
-  location: {
-    within: service_area          # Geographic boundary
-    near: [warehouse, 50km]       # Proximity check
-    type: commercial             # Location type
-    accessible: true             # Route exists
-  }
+entity Invoice {
+  items: [InvoiceItem]
   
-  region: {
-    area: <= 1000km2             # Size limit
-    overlap: none                # No overlap
-    contains: min(5, Store)      # Minimum contents
-  }
-  
-  route: {
-    distance: <= max_range       # Distance limit
-    duration: <= 2h             # Time limit
-    avoid: [tolls, highways]    # Route constraints
+  rules {
+    calculate: {
+      then: [
+        updateSubtotal(sum(items.amount)),
+        updateTotal(subtotal + tax)
+      ]
+    }
   }
 }
 ```
 
-### 2. Computed Properties 
-```yaml
-compute {
-  # Automatic dependency tracking
-  full_name: first_name + " " + last_name
-  age: today - birthdate
-  status: if(balance > 0) "active" else "suspended"
+## Common Patterns
 
-  # Location-based computations
-  distance: from(warehouse)        # Distance calc
-  coverage: area(service_region)   # Area calc
-  nearest: closest(Store, 5)       # Proximity
-  density: stores_per_km2         # Density calc
-  
-  # Advanced computations
-  route: {
-    optimal_path: [stops]         # Route planning
-    eta: with_traffic            # Arrival time
-    alternatives: top(3)         # Alternative routes
-  }
-  
-  territory: {
-    coverage: region_union       # Combined areas
-    overlap: region_intersect    # Shared areas
-    gaps: region_difference     # Uncovered areas
+### 1. Field Validation
+```yaml
+entity Product {
+  rules {
+    validate: {
+      name: required,
+      price: positive,
+      stock: minimum(0)
+    }
   }
 }
 ```
 
-### 3. Business Workflows
+### 2. Cross-field Validation
 ```yaml
-flow approve_expense {
-  # Focus on business logic, not implementation
-  when: [
-    amount < policy.limit,
-    submitter.manager_approved
-  ]
-  then: [
-    notify@accounting,
-    create@payment
-  ]
+entity Booking {
+  rules {
+    validate: {
+      endDate: after(startDate),
+      capacity: lessThan(maxCapacity)
+    }
+  }
 }
+```
 
-flow assign_delivery {
-  # Location-aware workflow
-  when: [
-    driver.within(50km, pickup),
-    route.duration <= shift_remaining,
-    vehicle.capacity >= package.size
-  ]
+### 3. Simple Workflows
+```yaml
+entity Leave {
+  status: string = "requested"
   
-  compute: {
-    route: optimal_path([pickup, dropoff]),
-    eta: route.duration + now(),
-    cost: route.distance * rate
+  rules {
+    approve: {
+      validate: status == "requested"
+      then: [
+        updateStatus("approved"),
+        notifyEmployee
+      ]
+    }
+    
+    reject: {
+      validate: status == "requested"
+      then: [
+        updateStatus("rejected"),
+        notifyEmployee
+      ]
+    }
   }
-  
-  then: [
-    notify@driver(route),
-    update@customer(eta),
-    track@analytics(assignment)
-  ]
-}
-
-flow optimize_territory {
-  # Territory management workflow
-  when: coverage.gaps > threshold
-  
-  analyze: {
-    density: customers_per_area,
-    workload: orders_per_week,
-    travel: average_distance
-  }
-  
-  propose: {
-    changes: balance_territories,
-    impact: simulate_changes,
-    timing: transition_plan
-  }
-  
-  then: [
-    notify@managers,
-    schedule@updates,
-    track@changes
-  ]
 }
 ```
 
 ## Best Practices
 
-1. **Express Intent**
-   - Use business terminology
-   - Focus on what, not how
-   - Let SeedML handle implementation
+### 1. Keep Validations Simple
+```yaml
+# DO - Use simple validations
+entity Order {
+  rules {
+    submit: {
+      validate: [
+        items.length > 0,
+        total > 0
+      ]
+    }
+  }
+}
+```
 
-2. **Smart Defaults**
-   - Common validations built-in
-   - Standard workflows included
-   - Override only when needed
+### 2. Use Clear State Transitions
+```yaml
+# DO - Simple state changes
+entity Task {
+  rules {
+    complete: {
+      validate: status == "active"
+      then: updateStatus("completed")
+    }
+  }
+}
+```
 
-3. **Keep It Simple**
-   - One rule per concept
-   - Clear dependencies
-   - Automatic optimization
+### 3. Minimize Complexity
+- Focus on common use cases
+- Avoid complex validation chains
+- Keep workflows linear
+- Use simple state machines
 
-4. **Location Rules Best Practices**
-   - Validation
-     • Use appropriate precision
-     • Consider timezone impacts
-     • Handle edge cases
-     • Validate accessibility
+### 4. Prefer Convention
+- Use standard validation patterns
+- Follow common state transitions
+- Apply consistent naming
+- Leverage built-in behaviors
 
-   - Computation
-     • Cache distance calculations
-     • Optimize bulk operations
-     • Use appropriate indices
-     • Handle async calculations
+## Key Benefits
 
-   - Workflows
-     • Consider mobile scenarios
-     • Handle offline cases
-     • Manage battery impact
-     • Process location batches
+1. **Rapid Development**
+   - Quick to implement
+   - Easy to understand
+   - Fast to modify
 
-   - Performance
-     • Smart geocoding cache
-     • Efficient region checks
-     • Batch distance matrices
-     • Progressive loading
+2. **Reduced Errors**
+   - Simple validation
+   - Clear state flow
+   - Standard patterns
+
+3. **Better Maintenance**
+   - Less complexity
+   - Standard approaches
+   - Clear intent
