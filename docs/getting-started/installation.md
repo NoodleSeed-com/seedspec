@@ -1,8 +1,8 @@
-# Installing SeedML
+# Installing Seed Spec
 
 ## Prerequisites
 
-Before installing SeedML, ensure you have:
+Before installing Seed Spec, ensure you have:
 - Python 3.8 or higher
 - pip package manager
 - Anthropic API key (for Claude access)
@@ -27,15 +27,15 @@ export ANTHROPIC_API_KEY='your-api-key'
 
 ```bash
 # Should show available commands
-seedml --help
+seedspec --help
 
 # Should show version number
-seedml --version
+seedspec --version
 ```
 
 ## Current Status
 
-SeedML is in early development (v0.1.0). Current features:
+Seed Spec is in early development (v0.1.0). Current features:
 - Basic application generation from .seed files
 - React + FastAPI stack generation
 - Simple CRUD operations

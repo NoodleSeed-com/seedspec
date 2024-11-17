@@ -1,6 +1,6 @@
 # Core Concepts Overview
 
-SeedML is built on several key concepts that work together to create a powerful yet approachable development experience:
+The Seed Specification Language (Seed Spec) is built on several key concepts that work together to create a powerful yet approachable development experience:
 
 ## Foundation
 - **Single Source of Truth**: One specification describes your entire application
