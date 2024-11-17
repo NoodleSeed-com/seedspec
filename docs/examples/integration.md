@@ -1,249 +1,85 @@
-# Integration Example
+# Integration Examples
 
-Shows how SeedML simplifies external service integration through intent-focused patterns.
+This guide shows how to integrate external services using SeedML's simplified patterns.
 
 ## Basic Integration
 
 ```seedml
 app Store {
-  # Declare integration needs - everything else is automatic
+  # Simple integrations
   integrate {
-    auth: auth0          # Authentication
-    payment: stripe      # Payments
-    email: sendgrid      # Email
-    storage: s3          # Files
+    auth: google        # Basic auth
+    email: sendgrid     # Email service
+    storage: s3         # File storage
   }
 
-  # Use integrations through simple intent
+  # Use integrations naturally
   entity Order {
-    customer: Customer
-    items: [OrderItem]
     status: Draft -> Paid -> Shipped
+    attachment: file    # Uses storage
 
     rules {
-      pay: {
-        # Intent-focused payment processing
-        requires: items.length > 0
-        then: charge@stripe      # Automatic payment flow
-      }
-
-      ship: {
-        requires: status.paid
-        then: [
-          notify@customer,       # Automatic email
-          track@shipping        # Automatic tracking
-        ]
+      create: {
+        then: notify@customer  # Uses email
       }
     }
   }
 }
 ```
 
-## Smart Features
-
-Every integration includes:
-- Authentication flow
-- Error handling
-- Rate limiting
-- Retry logic
-- Logging
-- Monitoring
-
-## Advanced Integration
-
-```seedml
-app Enterprise {
-  # 1. Authentication
-  auth {
-    provider: oauth2 {
-      sources: [google, github]   # Multiple providers
-      features: [mfa, sso]       # Security features
-    }
-  }
-
-  # 2. Storage
-  storage {
-    files: s3 {
-      public: images/*          # Public access
-      private: documents/*      # Secure storage
-    }
-    
-    cache: redis {
-      ttl: 1h                  # Caching
-      invalidate: smart        # Auto invalidation
-    }
-  }
-
-  # 3. Communication
-  notify {
-    email: {
-      provider: sendgrid
-      templates: {
-        welcome: "welcome-user"    # Email templates
-        order: "order-confirm"
-      }
-    }
-    
-    push: {
-      provider: firebase
-      topics: [news, alerts]      # Push notifications
-    }
-  }
-
-  # 4. Event Handling
-  events {
-    'order.created': [
-      charge@payment,              # Process payment
-      notify@customer,             # Send confirmation
-      track@analytics             # Record event
-    ]
-
-    'file.uploaded': {
-      then: [
-        scan@antivirus,           # Security scan
-        index@search,             # Make searchable
-        notify@owner              # Confirm upload
-      ]
-      retry: 3                    # Auto retry
-    }
-  }
-}
-```
-
-## Event-Based Integration
-
-```seedml
-app EventDriven {
-  # Define event flows
-  events {
-    # Simple event flow
-    'user.signup': [
-      create@account,            # Create account
-      send@welcome,             # Welcome email
-      notify@sales             # Sales notification
-    ]
-
-    # Complex event flow
-    'order.submit': {
-      validate: [               # Pre-conditions
-        stock.available,
-        payment.valid
-      ]
-      then: [                  # Actions
-        process@payment,
-        update@inventory,
-        send@confirmation
-      ]
-      catch: [                 # Error handling
-        notify@support,
-        refund@payment
-      ]
-    }
-  }
-}
-```
-
-## Key Integration Patterns
+## Common Patterns
 
 ### 1. Authentication
 ```seedml
-auth {
-  type: oauth2                # Auth type
-  providers: [google, github] # Providers
-  features: [mfa, sso]       # Security
+integrate {
+  auth: {
+    provider: google    # Single provider
+    redirect: "/home"   # After login
+  }
 }
 ```
 
-### 2. Storage
+### 2. File Storage 
 ```seedml
-storage {
-  files: s3                  # File storage
-  cache: redis              # Caching
-  search: elastic           # Search
+integrate {
+  storage: {
+    provider: s3
+    bucket: "app-files"  # Single bucket
+  }
 }
 ```
 
-### 3. Communication
+### 3. Email Service
 ```seedml
-notify {
-  email: sendgrid           # Email
-  sms: twilio              # SMS
-  push: firebase           # Push
+integrate {
+  email: {
+    provider: sendgrid
+    from: "app@example.com"
+  }
 }
 ```
-
-### 4. Payments
-```seedml
-payments {
-  processor: stripe         # Payment
-  methods: [card, bank]    # Methods
-  webhooks: auto           # Callbacks
-}
-```
-
-## Smart Default Features
-
-Every integration automatically includes:
-
-### Security
-- Credential management
-- Token handling
-- Access control
-- Audit logging
-
-### Reliability
-- Error handling
-- Rate limiting
-- Circuit breaking
-- Retry logic
-
-### Monitoring
-- Health checks
-- Performance metrics
-- Error tracking
-- Usage analytics
-
-### Development
-- Local testing
-- Mock responses
-- Debug logging
-- API documentation
 
 ## Best Practices
 
-1. **Express Intent**
-   - Focus on what, not how
-   - Use business terminology
-   - Let defaults handle details
-
-2. **Handle Failures**
-   - Every integration can fail
-   - Default retry logic
-   - Clear error states
-
-3. **Stay Secure**
-   - Credentials in env vars
-   - Encrypted connections
-   - Access control
-
-4. **Monitor Everything**
-   - Health checks
-   - Performance metrics
-   - Usage tracking
-
-## Key Benefits
-
-1. **Simpler Integration**
+1. **Keep It Simple**
+   - Use single providers
    - Minimal configuration
-   - Standard patterns
-   - Best practices built-in
+   - Default behaviors
 
-2. **Better Reliability**
-   - Automatic retries
-   - Error handling
-   - Circuit breakers
+2. **Security First**
+   - Environment variables for keys
+   - HTTPS connections
+   - Basic access control
 
-3. **Easier Maintenance**
-   - Clear intent
-   - Consistent patterns
-   - Built-in monitoring
+3. **Handle Errors**
+   - Basic retry logic
+   - Simple error states
+   - Clear messages
+
+## Smart Defaults
+
+Every integration includes:
+- Basic error handling
+- Simple retry logic
+- Standard logging
+- Essential security
