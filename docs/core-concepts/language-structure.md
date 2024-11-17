@@ -1,6 +1,6 @@
 # Intent-Focused Language Structure
 
-SeedML lets you express what you want to build, not how to build it.
+The Seed Specification Language lets you express what you want to build, not how to build it.
 
 ## Core Principles
 

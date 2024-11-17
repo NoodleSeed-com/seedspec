@@ -1,6 +1,6 @@
 # Security
 
-SeedML implements comprehensive security patterns to protect applications and data.
+The Seed Specification Language implements comprehensive security patterns to protect applications and data.
 
 ## Access Control
 

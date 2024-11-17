@@ -1,6 +1,6 @@
 # Type System
 
-SeedML's type system combines simplicity with power.
+The Seed Specification Language's type system combines simplicity with power.
 
 ## Core Types
 

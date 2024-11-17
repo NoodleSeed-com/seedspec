@@ -1,6 +1,6 @@
 # Business Rules
 
-SeedML provides a simplified approach to business rules focused on common use cases and rapid prototyping.
+The Seed Specification Language provides a simplified approach to business rules focused on common use cases and rapid prototyping.
 
 ## Core Concepts
 

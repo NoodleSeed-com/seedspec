@@ -1,6 +1,6 @@
 # Integration & Location Services
 
-SeedML simplifies external service integration and location-based features through intent-focused patterns that handle authentication, data flow, mapping, and error cases automatically.
+The Seed Specification Language simplifies external service integration and location-based features through intent-focused patterns that handle authentication, data flow, mapping, and error cases automatically.
 
 ## Core Concepts
 

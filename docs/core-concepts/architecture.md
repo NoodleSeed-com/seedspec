@@ -1,10 +1,10 @@
 # Architecture & Design
 
-SeedML transforms specifications into working applications through a carefully designed pipeline architecture.
+The Seed Specification Language transforms specifications into working applications through a carefully designed pipeline architecture.
 
 ## System Architecture
 
-SeedML follows a strict layered architecture pattern where each layer has clear responsibilities and boundaries:
+The Seed Specification Language follows a strict layered architecture pattern where each layer has clear responsibilities and boundaries:
 
 ### Layer Dependencies
 ```ascii
@@ -36,7 +36,7 @@ SeedML follows a strict layered architecture pattern where each layer has clear 
 └─────────────────────────────────────────────────────┘
 ```
 
-SeedML enforces these architectural boundaries:
+The Seed Specification Language enforces these architectural boundaries:
 
 ```ascii
 ┌─────────────────────────────────────────────────────┐
