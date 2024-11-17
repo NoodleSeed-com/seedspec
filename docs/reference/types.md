@@ -1,100 +1,52 @@
 # Type System Reference
 
-## Primitive Types
+## Core Types
 
 ```yaml
-# Standardize primitive types
+# Simplified primitive types
 types {
-  string              # Text with validation
-  number              # Numbers with precision
-  boolean             # True/false values 
-  date                # ISO8601 dates
-  email               # Validated emails
-  money               # Currency values
-  phone               # Formatted phones
+  string              # Text values
+  number              # Numeric values
+  bool                # True/false values 
+  date                # Simple dates
 }
+
+# Common domain types
+types {
+  email               # Email addresses
+  phone               # Phone numbers  
+  money               # Currency values
+}
+
+# Simple collections
+[Type]                # Lists of values
+Type                  # References to entities
+
+# Optional/Required modifiers
+Type?                 # Optional value
+Type = default        # Default value
 ```
 
-## Complex Types
+## Basic Validation
 
 ```yaml
-# Collections
-[Type]              # Lists of values
-map<Key,Value>      # Key-value mappings
-set<Type>           # Unique value sets
-
-# Optional/Required
-Type?               # Optional value
-Type!               # Required value (default)
-Type = default      # Value with default
-
-# Enumerations
-enum(v1,v2,v3)      # Simple enums
-status: v1->v2->v3  # State machine enums
-```
-
-## Special Types
-
-```yaml
-# System Types
-id                  # Unique identifiers
-uuid                # UUID values
-slug                # URL-friendly names
-version             # Semantic versions
-
-# File Types
-file                # Generic files
-image               # Image files
-document            # Document files
-media               # Audio/video files
-
-# Specialized Types
-geo                 # Geographic coordinates
-json                # JSON data
-xml                 # XML data
-markdown            # Markdown content
-```
-
-## Type Modifiers
-
-```yaml
-# Validation
+# Simple validation rules
 string {
-  min: 1           # Minimum length
-  max: 100         # Maximum length
-  pattern: regex   # Regex pattern
+  required: bool     # Field is required
+  unique: bool      # Values must be unique
+  min: number       # Minimum length
+  max: number       # Maximum length
 }
 
 number {
-  min: 0          # Minimum value
-  max: 999        # Maximum value
-  step: 0.01      # Value increments
+  min: number       # Minimum value
+  max: number       # Maximum value
 }
 
-# Formatting
-string {
-  case: lower     # Case formatting
-  trim: true      # Whitespace trimming
-  format: email   # Format validation
-}
-
-# Advanced
-Type {
-  # Validation
-  required: bool     # Field is required
-  unique: bool      # Values must be unique
-  min: number       # Minimum value/length
-  max: number       # Maximum value/length
-  pattern: string   # Regex pattern
-
-  # Storage
-  index: bool      # Create database index
-  private: bool    # Restrict access
-  
-  # Behavior  
-  immutable: bool  # Cannot change after set
-  computed: bool   # Derived from other fields
-}
+# Format validation
+email: string       # Validates email format
+phone: string       # Validates phone format
+money: number       # Validates currency format
 ```
 
 ## Type Inference
