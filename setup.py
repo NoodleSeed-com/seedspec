@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="seedml",
-    version=__import__('seedml').__version__,
+    name="seed-spec",
+    version=__import__('seed_spec').__version__,
     packages=find_packages(),
     install_requires=[
         "anthropic>=0.3.0",
@@ -10,16 +10,16 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "seedml=seedml.cli:main",
+            "seedspec=seed_spec.cli:main",
         ],
     },
     python_requires=">=3.8",
-    author="SeedML Team",
-    author_email="team@seedml.dev",
-    description="CLI tool for generating applications from SeedML specifications",
+    author="Seed Spec Team",
+    author_email="team@seedspec.dev",
+    description="CLI tool for generating applications from Seed Specification Language",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/seedml/seedml",
+    url="https://github.com/fahd-noodleseed/seed-spec",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
