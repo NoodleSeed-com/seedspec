@@ -11,8 +11,8 @@ Before installing Seed Spec, ensure you have:
 
 ```bash
 # Install from source
-git clone https://github.com/fahd-noodleseed/seedml.git
-cd seedml
+git clone https://github.com/fahd-noodleseed/seed-spec.git
+cd seed-spec
 pip install -e .
 ```
 
