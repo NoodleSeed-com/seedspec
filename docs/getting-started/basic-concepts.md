@@ -1,163 +1,117 @@
 # Basic Concepts
 
-Learn the fundamental concepts of SeedML development.
+Learn the core concepts of SeedML development.
 
 ## Application Structure
 
-SeedML applications follow a layered architecture:
+Every SeedML application has three main parts:
 
-### 1. Foundation Layer
+### 1. Data Models (Entities)
 
-The base of every application:
+Define your data structure:
 
 ```yaml
-# Type definitions
-types {
-  Email: string { format: email }
-  Status: active/inactive
-}
-
-# Base validation
-validate {
-  email: format_valid
-  status: in_enum
+entity Task {
+  title: string           # Text fields
+  done: bool = false      # Boolean with default
+  due: date              # Date field
+  assigned: User         # Reference another entity
+  items: [Item]          # Simple list
 }
 ```
 
-### 2. Data Layer
+### 2. User Interface (Screens)
 
-Independent and dependent entities:
+Define your views:
 
 ```yaml
-# Base entity (no dependencies)
-entity User {
-  name: string!
-  email: Email
-  status: Status = active
+screen TaskList {
+  # List view
+  list: [title, done, due]
+  actions: [create, edit, delete]
 }
 
-entity Order {
-  # Clear relationship types
-  customer: Customer!  # Required reference
-  items: [OrderItem]  # One-to-many
-  assignee?: User     # Optional reference
-  
-  # Computed fields marked explicitly
-  total: compute(sum(items.price))
+screen TaskForm {
+  # Form view  
+  form: [title, due, assigned]
+  actions: [save]
 }
 ```
 
-### 3. Logic Layer
+### 3. Business Rules
 
-Business rules and computations:
+Define basic validation and logic:
 
 ```yaml
 rules {
-  create_user: {
-    validate: email != null
-    then: send_welcome_email
-  }
-  
-  submit_order: {
-    require: [
-      items.length > 0,
-      customer.verified
-    ]
-  }
-}
-```
+  # Validation
+  validate: due > today
+  require: title != null
 
-### 4. Security Layer
-
-Permissions and roles:
-
-```yaml
-permissions {
-  manage_users: {
-    entity: User
-    actions: [create, update]
-  }
-}
-
-roles {
-  admin: [all]
-  manager: [manage_users]
-}
-```
-
-### 5. Presentation Layer
-
-UI components and screens:
-
-```yaml
-screen UserList {
-  list: [name, email, status]
-  actions: [create, edit]
-}
-```
-
-### 6. Integration Layer
-
-External services and APIs:
-
-```yaml
-integrate {
-  email: sendgrid
-  payment: stripe
+  # Simple actions
+  then: notify_assigned
 }
 ```
 
 ## Key Principles
 
-### 1. Declarative Syntax
-- Describe what, not how
-- Focus on business concepts
-- Let SeedML handle implementation
+### 1. Keep It Simple
+- Focus on core features
+- Use basic types
+- Minimal configuration
 
 ### 2. Smart Defaults
 - Common patterns built-in
-- Override only when needed
-- Progressive complexity
+- Sensible behaviors
+- Easy to get started
 
 ### 3. Full Stack
 - One specification
-- Generates all layers
-- Consistent behavior
+- Generates complete app
+- Ready to run
+
+## Basic Types
+
+```yaml
+# Available field types
+string              # Text
+number              # Numbers
+bool                # True/False
+date                # Dates
+[Type]              # Lists
+Reference           # Entity references
+```
 
 ## Common Patterns
 
-### 1. Field Types
+### 1. Fields
 ```yaml
 fields {
-  required: string!
-  optional: string?
-  withDefault: string = "default"
-  validated: email
-  enumerated: red/green/blue
+  required: string         # Required field
+  optional: string?        # Optional field
+  default: bool = false    # Default value
 }
 ```
 
-### 2. Relationships
+### 2. Views
 ```yaml
-entity Order {
-  customer: Customer  # Single
-  items: [Product]   # Multiple
-  assigned?: User    # Optional
+screens {
+  list: [field1, field2]   # List view
+  form: [field1, field2]   # Form view
 }
 ```
 
 ### 3. Actions
 ```yaml
-actions {
-  simple: doThing
-  withParams: doThing(param)
-  conditional: doThing if condition
-  chained: [first, second, third]
-}
+actions: [
+  create,                  # Create new
+  edit,                    # Edit existing
+  delete                   # Delete item
+]
 ```
 
 ## Next Steps
 
 1. Try the [Quick Start Guide](quick-start.md)
 2. Build your [First Application](first-app.md)
-3. Explore [Core Concepts](../core-concepts/overview.md)
+3. See [Examples](../examples/basic-crud.md)
