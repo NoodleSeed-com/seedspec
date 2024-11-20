@@ -28,10 +28,16 @@ app Analytics {
       {
         type: map
         data: LocationMetric
-        view: heatmap
+        view: {
+          type: heatmap,
+          cluster: {
+            enabled: true,
+            threshold: 100
+          },
+          controls: [zoom, pan, search]
+        }
         value: metrics.value
         range: last-7-days
-        cluster: auto        # Smart clustering
       },
       {
         type: region-map

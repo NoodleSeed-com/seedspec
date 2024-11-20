@@ -7,10 +7,22 @@ The Seed Specification Language simplifies external service integration and loca
 ```yaml
 app MyApp {
   integrate {
-    auth: oauth2       # Authentication
-    storage: s3        # File storage
-    email: sendgrid    # Email service
-    payment: stripe    # Payments
+    auth: {
+      provider: oauth2,     # Authentication provider
+      features: [mfa, sso]  # Security features
+    },
+    storage: {
+      provider: s3,         # Storage provider
+      features: [cdn, sync] # Storage features
+    },
+    email: {
+      provider: sendgrid,   # Email provider
+      features: [templates, tracking]
+    },
+    payment: {
+      provider: stripe,     # Payment provider
+      features: [subscriptions, refunds]
+    }
   }
 
   # Intent-focused usage
