@@ -29,15 +29,27 @@ app Analytics {
         type: map
         data: LocationMetric
         view: {
-          type: heatmap,
+          type: heatmap
           cluster: {
-            enabled: true,
+            enabled: true
             threshold: 100
-          },
-          controls: [zoom, pan, search]
+            radius: 50
+            colors: gradient
+          }
+          controls: {
+            zoom: true
+            pan: true
+            search: {
+              radius: 10km
+              filters: [type, status]
+            }
+          }
         }
-        value: metrics.value
-        range: last-7-days
+        value: {
+          field: metrics.value
+          range: last-7-days
+          aggregation: sum
+        }
       },
       {
         type: region-map
