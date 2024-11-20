@@ -11,8 +11,14 @@ app Contacts {
     email: email!         # Email with validation
     
     # Optional fields with validation
-    phone?: phone         # Phone number
-    location?: location   # Location with defaults
+    phone?: phone {       # Phone number
+      format: international
+    }
+    location?: location { # Location with defaults
+      validate: {
+        region: service_area
+      }
+    }
     
     # Metadata
     created: timestamp = now()

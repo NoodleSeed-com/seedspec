@@ -32,10 +32,12 @@ Type = default        # Default value
 ```yaml
 # Simple validation rules
 string {
-  required: bool     # Field is required
-  unique: bool      # Values must be unique
-  min: number       # Minimum length
-  max: number       # Maximum length
+  validate: {
+    required: bool     # Field is required
+    unique: bool      # Values must be unique
+    min: number       # Minimum length
+    max: number       # Maximum length
+  }
 }
 
 number {

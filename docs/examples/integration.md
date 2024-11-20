@@ -8,9 +8,18 @@ This guide shows how to integrate external services using SeedML's simplified pa
 app Store {
   # Simple integrations
   integrate {
-    auth: google        # Basic auth
-    email: sendgrid     # Email service
-    storage: s3         # File storage
+    auth: {
+      provider: google    # Basic auth
+      features: default
+    }
+    email: {
+      provider: sendgrid  # Email service
+      features: default
+    }
+    storage: {
+      provider: s3       # File storage
+      features: default
+    }
   }
 
   # Use integrations naturally
