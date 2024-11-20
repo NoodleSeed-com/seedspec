@@ -6,13 +6,10 @@ The simplest possible SeedML application showing smart defaults in action.
 app Contacts {
   # Core domain model
   entity Contact {
-    name: string!           # Required field
-    email: email!          # Required email
-    phone?: phone          # Optional field
-    location?: location {  # Optional location
-      geocode: true        # Enable geocoding
-      validate: region     # Validate region
-    }
+    name: string!          # Required field
+    email: email!         # Required email
+    phone?: phone         # Optional field
+    location?: location   # Optional location with defaults
   }
 
   # Complete UI with maps

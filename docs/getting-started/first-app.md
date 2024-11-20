@@ -54,14 +54,10 @@ app TaskManager {
   # ... previous code ...
 
   screen TaskBoard {
-    layout: kanban(status)
-    card: [
-      title,
-      assigned?.avatar,
-      priority.badge,
-      due.countdown
-    ]
+    list: [title, assigned, priority, due]
+    view: kanban(status)
     actions: [create, edit, assign]
+    search: [title, assigned]
   }
 
   screen TaskDetail {

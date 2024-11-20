@@ -28,11 +28,10 @@ app Analytics {
       {
         type: map
         data: LocationMetric
-        view: heatmap        # Map visualization type
+        view: heatmap
         value: metrics.value
         range: last-7-days
-        cluster: true        # Enable clustering
-        search: radius(5km)  # Search radius
+        cluster: auto        # Smart clustering
       },
       {
         type: region-map
