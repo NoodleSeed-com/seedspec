@@ -26,11 +26,13 @@ app Analytics {
     # Multiple visualization types
     widgets: [
       {
-        type: heat-map
+        type: map
         data: LocationMetric
+        view: heatmap        # Map visualization type
         value: metrics.value
         range: last-7-days
-        animate: hourly
+        cluster: true        # Enable clustering
+        search: radius(5km)  # Search radius
       },
       {
         type: region-map

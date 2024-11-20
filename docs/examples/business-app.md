@@ -394,18 +394,16 @@ app OrderSystem {
 
   # External integrations (last since they may reference entities and actions)
   integrate {
-    payment: stripe {
-      apiKey: env.STRIPE_KEY
-      webhook: /webhooks/stripe
-    }
-    shipping: fedex {
-      account: env.FEDEX_ACCOUNT
-      endpoint: env.FEDEX_API_URL
-    }
-    notification: sendgrid {
+    payment: stripe      # Payment processing
+    shipping: fedex      # Shipping integration  
+    email: sendgrid     # Email service
+    
+    config {
+      stripe_key: env.STRIPE_KEY
+      fedex_account: env.FEDEX_ACCOUNT
       templates: {
-        order_confirm: "d-123456",
-        shipping_update: "d-789012"
+        order: "d-123456"
+        shipping: "d-789012"
       }
     }
   }
