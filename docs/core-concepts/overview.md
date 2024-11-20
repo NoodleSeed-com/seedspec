@@ -1,40 +1,64 @@
-# Core Concepts Overview
+# Core Concepts
 
-The Seed Specification Language (Seed Spec) is built on several key concepts that work together to create a powerful yet approachable development experience:
+SeedML is built on simple but powerful concepts that work together:
 
-## Foundation
-- **Single Source of Truth**: One specification describes your entire application
-- **LLM-Native Design**: Optimized for AI generation and modification
-- **Smart Defaults**: Common patterns built-in with explicit overrides
-- **Technology Independence**: Target any modern tech stack
+## Key Ideas
 
-## Key Features
-- Type System: Rich types with validation and inference
-- Business Rules: Express complex logic clearly
-- UI Patterns: Standard layouts and components
-- Integration: Built-in connectivity
+```yaml
+# Everything in one place
+app TodoList {
+  # Data model
+  entity Task {
+    title: string
+    done: bool
+  }
 
-## Advanced Capabilities
-- Multi-tenant architecture
-- Plugin systems
-- Event sourcing
-- AI integration
-- Time-based patterns
+  # Business rules
+  rules {
+    complete: {
+      validate: !done
+      then: done = true
+    }
+  }
 
-See the individual concept guides for detailed information on each topic.
+  # User interface
+  screen Tasks {
+    list: [title, done]
+    actions: [create, complete]
+  }
+}
+```
 
-## Next Steps
+## Core Features
 
-1. Core Concepts:
-   - [Architecture](architecture.md)
-   - [Type System](type-system.md)
-   - [Business Rules](business-rules.md)
-   - [UI Patterns](ui-patterns.md)
+1. **Smart Defaults**
+   - Production patterns built-in
+   - Override only when needed
+   - Progressive enhancement
 
-2. Examples:
-   - [Basic CRUD](../examples/basic-crud.md)
-   - [Business App](../examples/business-app.md)
+2. **Clear Intent**
+   - Express what you want
+   - Not how to build it
+   - Natural language
 
-3. Reference:
-   - [Types](../reference/types.md)
-   - [Patterns](../reference/patterns.md)
+3. **Full Stack**
+   - One specification
+   - Complete application
+   - Modern tech stack
+
+## Learn More
+
+1. [Type System](type-system.md)
+   - Basic types
+   - Validation
+   - Relationships
+
+2. [Business Rules](business-rules.md)
+   - Simple validation
+   - Clear workflows
+   - Computed fields
+
+3. [UI Patterns](ui-patterns.md)
+   - Standard layouts
+   - Common components
+   - Best practices
