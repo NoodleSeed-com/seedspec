@@ -4,17 +4,9 @@
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-The Seed Specification Language (Seed Spec) is an AI-native programming language that aims to generate production-ready applications from simple, intent-focused specifications. It bridges the gap between human ideas and working software through a minimal yet expressive syntax that both humans and AI can easily understand.
+Seed Spec is an AI-native language that generates production-ready applications from simple specifications. Write what you want, get working software.
 
-## 🚀 Current Status
-
-Seed Spec is currently in the language design phase. We are:
-1. Defining the core language syntax and semantics
-2. Documenting patterns and best practices
-3. Creating example specifications
-4. Planning the implementation architecture
-
-The code generation tooling and runtime environment are not yet implemented.
+## Quick Example
 
 ## Example Specification
 
