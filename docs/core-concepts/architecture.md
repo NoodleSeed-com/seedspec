@@ -320,6 +320,65 @@ The system uses a comprehensive error handling approach:
    - Permission issues
    - Verification failures
 
+## Cross-Compilation Architecture
+
+The Seed Specification Language uses a sophisticated cross-compilation pipeline to transform declarative specifications into implementation-specific code:
+
+### Cross-Compiler Components
+
+```ascii
+┌─────────────────────────────────────────────────────┐
+│              Specification Parser                    │
+│  • YAML/JSON parsing                                │
+│  • Schema validation                                │
+│  • Intermediate representation                      │
+├─────────────────────────────────────────────────────┤
+│               Template Engine                        │
+│  • Implementation-specific templates                │
+│  • Component generation                             │
+│  • Layout processing                                │
+├─────────────────────────────────────────────────────┤
+│               Code Generator                         │
+│  • Target platform adaptation                       │
+│  • Project structure generation                     │
+│  • Dependency management                            │
+└─────────────────────────────────────────────────────┘
+```
+
+The cross-compiler follows these key principles:
+
+1. **Clean Separation**
+   - Parser independent of implementation
+   - Template system isolation
+   - Generator modularity
+
+2. **Implementation Support**
+   - Multiple frontend frameworks (React, Vue, Angular)
+   - Backend technology options
+   - Database flexibility
+
+3. **Template Organization**
+   - Component templates
+   - Layout patterns
+   - Style definitions
+   - Configuration templates
+
+### Cross-Compilation Process
+
+```python
+class CrossCompiler:
+    def compile(self, spec):
+        """Transform spec to implementation"""
+        # 1. Parse and validate
+        ir = self.parser.parse(spec)
+        
+        # 2. Load templates
+        templates = self.template_engine.load()
+        
+        # 3. Generate code
+        self.generator.generate(ir, templates)
+```
+
 ## Future Directions
 
 ### 1. Near-term Improvements

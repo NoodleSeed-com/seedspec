@@ -6,6 +6,8 @@ Before installing Seed Spec, ensure you have:
 - Python 3.8 or higher
 - pip package manager
 - Anthropic API key (for Claude access)
+- Node.js 16+ (for frontend implementations)
+- Docker (optional, for containerized builds)
 
 ## Installation
 
@@ -37,8 +39,12 @@ seedspec --version
 
 Seed Spec is in early development (v0.1.0). Current features:
 - Basic application generation from .seed files
-- React + FastAPI stack generation
+- Cross-compilation to multiple implementations:
+  - React + FastAPI stack
+  - Vue + Express stack
+  - Angular + NestJS stack
 - Simple CRUD operations
+- Template customization support
 
 Many planned features are still in development.
 
