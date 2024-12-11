@@ -2,6 +2,30 @@
 
 SeedML is built on simple but powerful concepts that work together:
 
+## Modular Specifications
+
+Apps can be defined across multiple files:
+
+```yaml
+# app.seed - Core app definition
+app TodoList {
+  # Data model
+  entity Task {
+    title: string
+    done: bool
+  }
+}
+
+# ui.seed - UI components
+extend TodoList {
+  # User interface
+  screen Tasks {
+    list: [title, done]
+    actions: [create, complete]
+  }
+}
+```
+
 ## Key Ideas
 
 ```yaml

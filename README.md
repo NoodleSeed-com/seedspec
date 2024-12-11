@@ -11,13 +11,17 @@ Seed Spec is an AI-native language that generates production-ready applications 
 ## Example Specification
 
 ```yaml
+# core.seed - Domain model
 app TodoApp {
   # Core domain model
   entity Task {
     title: string
     done: bool = false
   }
+}
 
+# ui.seed - User interface
+extend TodoApp {
   # UI definition (implies standard patterns)
   screen Tasks {
     list: [title, done]    # Will imply search, sort, pagination
@@ -25,6 +29,11 @@ app TodoApp {
   }
 }
 ```
+
+The `extend` keyword allows modular app definitions across files, enabling:
+- Separation of concerns
+- Team collaboration
+- Reusable components
 
 This specification will eventually generate a complete application, but the generation tools are still under development.
 
