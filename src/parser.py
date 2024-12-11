@@ -86,6 +86,10 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
         if block_count > 0:
             raise SeedParseError(f"Unclosed blocks: missing {block_count} closing braces")
                 
+        # Check for unclosed blocks
+        if block_count > 0:
+            raise SeedParseError(f"Unclosed blocks: missing {block_count} closing braces")
+                
         return result
         
     except Exception as e:
