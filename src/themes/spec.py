@@ -1,6 +1,6 @@
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
-from ..stdlib.themes import (
+from ..stdlib.themes.seed import (
     DEFAULT_COLORS,
     DEFAULT_FONT_FAMILIES,
     DEFAULT_FONT_SIZES,
