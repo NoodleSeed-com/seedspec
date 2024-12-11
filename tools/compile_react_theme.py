@@ -44,43 +44,78 @@ export function useTheme() {{
 }}
 """
 
+def extract_theme_from_app_spec(spec: dict) -> dict:
+    """Extract theme configuration from app specification"""
+    if 'ui' not in spec:
+        return {}
+        
+    ui_config = spec['ui']
+    
+    # Case 1: Direct theme definition
+    if 'theme' in ui_config and isinstance(ui_config['theme'], dict):
+        theme_spec = ui_config['theme']
+        
+    # Case 2: Theme reference
+    elif 'theme' in ui_config and isinstance(ui_config['theme'], str):
+        theme_name = ui_config['theme']
+        theme_spec = load_predefined_theme(theme_name)
+    else:
+        theme_spec = load_predefined_theme('default')
+    
+    # Apply any overrides
+    if 'overrides' in ui_config:
+        theme_spec = apply_theme_overrides(theme_spec, ui_config['overrides'])
+        
+    return theme_spec
+
+def load_predefined_theme(theme_name: str) -> dict:
+    """Load a predefined theme from stdlib"""
+    themes_file = Path(__file__).parent.parent / "src" / "stdlib" / "themes.seed"
+    themes = parse_seed_file(themes_file)
+    return themes.get(theme_name, themes['default'])
+
+def apply_theme_overrides(theme_spec: dict, overrides: dict) -> dict:
+    """Apply theme overrides to base theme"""
+    from copy import deepcopy
+    result = deepcopy(theme_spec)
+    
+    for path, value in overrides.items():
+        keys = path.split('.')
+        target = result
+        for key in keys[:-1]:
+            target = target.setdefault(key, {})
+        target[keys[-1]] = value
+        
+    return result
+
 def main():
     parser = argparse.ArgumentParser(description='Compile Seed theme to React')
-    parser.add_argument('theme_file', type=Path, help='Input theme.seed file')
-    parser.add_argument('--theme', type=str, help='Theme name to compile')
+    parser.add_argument('spec_file', type=Path, help='Input .seed file')
     parser.add_argument('--output', type=Path, default=Path('src/theme'),
                       help='Output directory (default: src/theme)')
     
     args = parser.parse_args()
     
-    if not args.theme_file.exists():
-        print(f"Error: Theme file {args.theme_file} not found")
+    if not args.spec_file.exists():
+        print(f"Error: Spec file {args.spec_file} not found")
         sys.exit(1)
     
-    # Parse theme file
-    theme_spec = parse_seed_file(args.theme_file)
+    # Parse app specification
+    app_spec = parse_seed_file(args.spec_file)
     
-    # Use specified theme or first theme found
-    theme_name = args.theme
-    if not theme_name:
-        theme_name = next(iter(theme_spec))
-        print(f"No theme specified, using: {theme_name}")
-    
-    if theme_name not in theme_spec:
-        print(f"Error: Theme '{theme_name}' not found in {args.theme_file}")
-        print(f"Available themes: {', '.join(theme_spec.keys())}")
-        sys.exit(1)
+    # Extract theme configuration
+    theme_spec = extract_theme_from_app_spec(app_spec)
     
     # Create output directory
     args.output.mkdir(parents=True, exist_ok=True)
     
     # Generate CSS
-    css = generate_css(theme_spec[theme_name])
+    css = generate_css(theme_spec)
     css_file = args.output / "theme.css"
     css_file.write_text(css)
     
     # Generate Theme Context
-    context = generate_theme_context(theme_spec[theme_name])
+    context = generate_theme_context(theme_spec)
     context_file = args.output / "ThemeContext.tsx"
     context_file.write_text(context)
     

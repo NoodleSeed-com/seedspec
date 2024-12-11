@@ -1,6 +1,11 @@
 import pytest
 from pathlib import Path
-from tools.compile_react_theme import generate_css, generate_theme_context
+from tools.compile_react_theme import (
+    generate_css, 
+    generate_theme_context,
+    extract_theme_from_app_spec,
+    apply_theme_overrides
+)
 
 SAMPLE_THEME = {
     "colors": {
@@ -11,6 +16,20 @@ SAMPLE_THEME = {
         "fontSize": {
             "base": "1rem",
             "lg": "1.25rem"
+        }
+    }
+}
+
+SAMPLE_APP_SPEC = {
+    "ui": {
+        "theme": {
+            "colors": {
+                "primary": "#3b82f6",
+                "secondary": "#6366f1"
+            }
+        },
+        "overrides": {
+            "colors.primary": "#0070f3"
         }
     }
 }
@@ -60,3 +79,24 @@ def test_css_generation_nested_properties():
     css_normalized = "".join(css.split())  # Remove all whitespace
     assert "--typography-fontFamily-base:Inter,sans-serif;" in css_normalized
     assert "--typography-fontFamily-heading-primary:Poppins,sans-serif;" in css_normalized
+
+def test_extract_theme_from_app_spec():
+    """Test theme extraction from app specification"""
+    theme = extract_theme_from_app_spec(SAMPLE_APP_SPEC)
+    assert theme["colors"]["primary"] == "#0070f3"  # Overridden value
+    assert theme["colors"]["secondary"] == "#6366f1"
+
+def test_apply_theme_overrides():
+    """Test applying theme overrides"""
+    base_theme = {
+        "colors": {
+            "primary": "#000000",
+            "secondary": "#ffffff"
+        }
+    }
+    overrides = {
+        "colors.primary": "#ff0000"
+    }
+    result = apply_theme_overrides(base_theme, overrides)
+    assert result["colors"]["primary"] == "#ff0000"
+    assert result["colors"]["secondary"] == "#ffffff"
