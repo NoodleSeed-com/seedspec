@@ -70,8 +70,13 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    # Extract the value between quotes and preserve it exactly
-                    value = value[1:-1]  # This correctly extracts "#000000"
+                    # Extract value between quotes, preserving hex colors exactly
+                    raw_value = value[1:-1]
+                    # Preserve hex colors as-is
+                    if raw_value.startswith('#'):
+                        value = raw_value
+                    else:
+                        value = raw_value
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
