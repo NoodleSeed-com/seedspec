@@ -70,7 +70,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]  # Just remove the quotes, keep everything else
+                    value = value[1:-1].strip()  # Remove quotes and whitespace
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
@@ -80,9 +80,6 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 elif not value:  # Handle empty values
                     value = ""
 
-                # Handle string values
-                if isinstance(value, str):
-                    value = value.strip()  # Just strip whitespace, keep the content
                 current_context[-1][key] = value
                 
         # Check for unclosed blocks
