@@ -7,29 +7,29 @@ The Seed Specification Language lets you express what you want to build, not how
 ### 1. Express Intent, Not Implementation
 
 ```yaml
-# Just describe what you want
+// Just describe what you want
 app TodoList {
-  # Core data
+  // Core data
   entity Task {
     title: string
     done: bool
     due?: date
   }
   
-  # User interface
+  // User interface
   screen Tasks {
     list: [title, done, due]
     actions: [create, complete]
   }
 }
 
-# SeedML infers the rest:
-# - Database schema
-# - API endpoints
-# - UI components
-# - Business logic
-# - Validation
-# - Error handling
+// SeedML infers the rest:
+// - Database schema
+// - API endpoints
+// - UI components
+// - Business logic
+// - Validation
+// - Error handling
 ```
 
 ### 2. Progressive Complexity

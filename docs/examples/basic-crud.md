@@ -3,21 +3,21 @@
 The simplest possible SeedML application showing smart defaults in action.
 
 ```seedml
-# core.seed - Core domain model
+// core.seed - Core domain model
 app Contacts {
   entity Contact {
-    # Required fields
-    name: string!         # Full name
-    email: email!         # Email with validation
+    // Required fields
+    name: string!         // Full name
+    email: email!        // Email with validation
     
-    # Optional fields with validation
-    phone?: phone {       # Phone number
+    // Optional fields with validation
+    phone?: phone {      // Phone number
       format: international
     }
   }
 }
 
-# ui.seed - UI components
+// ui.seed - UI components
 extend Contacts {
   # Theme configuration
   ui {

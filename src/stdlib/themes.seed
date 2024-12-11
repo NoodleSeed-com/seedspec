@@ -68,7 +68,7 @@ DEFAULT_SHADOWS = {
     "md": "0 4px 6px rgba(0,0,0,0.1)",
     "lg": "0 10px 15px rgba(0,0,0,0.1)"
 }
-# Standard theme definitions for SeedML
+// Standard theme definitions for SeedML
 theme default {
   colors {
     primary: "#0066cc"
@@ -135,7 +135,7 @@ theme default {
   }
 }
 
-# Light theme extends default
+// Light theme extends default
 theme light extends default {
   colors {
     background: "#ffffff"
@@ -144,7 +144,7 @@ theme light extends default {
   }
 }
 
-# Dark theme extends default
+// Dark theme extends default
 theme dark extends default {
   colors {
     background: "#212529"
