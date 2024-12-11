@@ -1,74 +1,59 @@
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
+from ..stdlib.themes import (
+    DEFAULT_COLORS,
+    DEFAULT_FONT_FAMILIES,
+    DEFAULT_FONT_SIZES,
+    DEFAULT_FONT_WEIGHTS,
+    DEFAULT_LINE_HEIGHTS,
+    DEFAULT_SPACING,
+    DEFAULT_BORDER_RADIUS,
+    DEFAULT_BORDER_WIDTH,
+    DEFAULT_SHADOWS
+)
 
 @dataclass
 class ColorSpec:
     """Color palette specification"""
-    primary: str = "#0066cc"
-    secondary: str = "#6c757d" 
-    background: str = "#ffffff"
-    surface: str = "#f8f9fa"
-    text: str = "#212529"
-    error: str = "#dc3545"
-    warning: str = "#ffc107"
-    success: str = "#28a745"
+    primary: str = DEFAULT_COLORS["primary"]
+    secondary: str = DEFAULT_COLORS["secondary"]
+    background: str = DEFAULT_COLORS["background"]
+    surface: str = DEFAULT_COLORS["surface"]
+    text: str = DEFAULT_COLORS["text"]
+    error: str = DEFAULT_COLORS["error"]
+    warning: str = DEFAULT_COLORS["warning"]
+    success: str = DEFAULT_COLORS["success"]
 
 @dataclass
 class TypographySpec:
     """Typography specification"""
-    fontFamily: Dict[str, str] = field(default_factory=lambda: {
-        "base": "Inter, system-ui, sans-serif",
-        "heading": "Poppins, sans-serif"
-    })
-    fontSize: Dict[str, str] = field(default_factory=lambda: {
-        "xs": "0.75rem",
-        "sm": "0.875rem", 
-        "base": "1rem",
-        "lg": "1.125rem",
-        "xl": "1.25rem"
-    })
-    fontWeight: Dict[str, str] = field(default_factory=lambda: {
-        "normal": "400",
-        "medium": "500",
-        "bold": "700"
-    })
-    lineHeight: Dict[str, str] = field(default_factory=lambda: {
-        "tight": "1.25",
-        "normal": "1.5", 
-        "relaxed": "1.75"
-    })
+    fontFamily: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_FAMILIES)
+    fontSize: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_SIZES)
+    fontWeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_WEIGHTS)
+    lineHeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_LINE_HEIGHTS)
 
 @dataclass
 class SpacingSpec:
     """Spacing specification"""
-    xs: str = "0.25rem"
-    sm: str = "0.5rem"
-    md: str = "1rem"
-    lg: str = "1.5rem"
-    xl: str = "2rem"
-    xxl: str = "3rem"
+    xs: str = DEFAULT_SPACING["xs"]
+    sm: str = DEFAULT_SPACING["sm"]
+    md: str = DEFAULT_SPACING["md"]
+    lg: str = DEFAULT_SPACING["lg"]
+    xl: str = DEFAULT_SPACING["xl"]
+    xxl: str = DEFAULT_SPACING["xxl"]
 
 @dataclass 
 class BordersSpec:
     """Borders specification"""
-    radius: Dict[str, str] = field(default_factory=lambda: {
-        "sm": "0.25rem",
-        "md": "0.5rem",
-        "lg": "1rem",
-        "full": "9999px"
-    })
-    width: Dict[str, str] = field(default_factory=lambda: {
-        "thin": "1px",
-        "medium": "2px",
-        "thick": "4px"
-    })
+    radius: Dict[str, str] = field(default_factory=lambda: DEFAULT_BORDER_RADIUS)
+    width: Dict[str, str] = field(default_factory=lambda: DEFAULT_BORDER_WIDTH)
 
 @dataclass
 class ShadowsSpec:
     """Shadows specification"""
-    sm: str = "0 1px 2px rgba(0,0,0,0.05)"
-    md: str = "0 4px 6px rgba(0,0,0,0.1)"
-    lg: str = "0 10px 15px rgba(0,0,0,0.1)"
+    sm: str = DEFAULT_SHADOWS["sm"]
+    md: str = DEFAULT_SHADOWS["md"]
+    lg: str = DEFAULT_SHADOWS["lg"]
 
 @dataclass
 class ThemeSpec:
