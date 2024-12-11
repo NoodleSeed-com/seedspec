@@ -32,7 +32,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
         block_count = 0  # Track opening/closing blocks
         
         # Process each non-empty line
-        for line in content.split('\n'):
+        for line_num, line in enumerate(content.split('\n'), 1):
             line = line.strip()
             if not line:
                 continue
