@@ -14,14 +14,14 @@ DEFAULT_THEMES = load_default_themes()
 @dataclass
 class ColorSpec:
     """Color palette specification"""
-    primary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("primary", "#0066cc"))
-    secondary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("secondary", "#6c757d"))
-    background: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("background", "#ffffff"))
-    surface: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("surface", "#f8f9fa"))
-    text: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("text", "#212529"))
-    error: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("error", "#dc3545"))
-    warning: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("warning", "#ffc107"))
-    success: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("success", "#28a745"))
+    primary: str = "#0066cc"
+    secondary: str = "#6c757d"
+    background: str = "#ffffff"
+    surface: str = "#f8f9fa"
+    text: str = "#212529"
+    error: str = "#dc3545"
+    warning: str = "#ffc107"
+    success: str = "#28a745"
 
 @dataclass
 class TypographySpec:
