@@ -1,0 +1,14 @@
+app MyApp {
+  ui {
+    // Use the light theme as base
+    theme: "light"
+    
+    // Override some colors and typography
+    overrides: {
+      colors.primary: "#0070f3"
+      colors.secondary: "#7928ca"
+      typography.fontSize.base: "16px"
+      typography.fontFamily.base: "Inter, system-ui, sans-serif"
+    }
+  }
+}
