@@ -70,7 +70,11 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].strip()  # Strip quotes but preserve the actual value including #
+                    # Handle quoted strings, including hex colors
+                    value = value[1:-1].strip()
+                elif value.startswith('#'):
+                    # Preserve unquoted hex colors
+                    value = value
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
@@ -79,10 +83,6 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                     value = float(value) if '.' in value else int(value)
                 elif not value:  # Handle empty values
                     value = ""
-                
-                # Special handling for hex colors - ensure they're preserved
-                if value.startswith('#'):
-                    value = value  # Explicitly preserve hex values
 
                 # Store the value directly without any additional processing
                 current_context[-1][key] = value
