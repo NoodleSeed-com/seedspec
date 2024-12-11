@@ -73,9 +73,9 @@ class ThemeSpec:
 """
 app MyApp {
   ui {
-    theme: "light"  # Use preset theme
+    theme: "light"  // Use preset theme
     overrides: {
-      colors.primary: "#FF0000",  # Override specific values
+      colors.primary: "#FF0000",  // Override specific values
       typography.fontSize.base: "16px",
       spacing.md: "1.25rem"
     }
