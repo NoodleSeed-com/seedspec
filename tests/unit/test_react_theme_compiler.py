@@ -47,7 +47,7 @@ def test_generate_css():
     css = generate_css(theme)
     css_normalized = "".join(css.split())  # Remove all whitespace
     assert ":root{" in css_normalized
-    assert "--colors-primary:#3b82f6;" in css_normalized
+    assert "--colors-primary:#0070f3;" in css_normalized
     assert "--typography-fontSize-base:1rem;" in css_normalized
     assert "}" in css_normalized
 
@@ -58,7 +58,7 @@ def test_generate_theme_context():
     assert "import { createContext, useContext, ReactNode } from 'react';" in context
     assert "export const theme =" in context
     assert '"colors": {' in context
-    assert '"primary": "#3b82f6"' in context
+    assert '"primary": "#0070f3"' in context
     assert "export function ThemeProvider" in context
     assert "export function useTheme()" in context
 
