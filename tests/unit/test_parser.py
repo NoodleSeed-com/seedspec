@@ -81,7 +81,7 @@ def test_parse_invalid_syntax():
     theme invalid {
         unclosed {
             key: value
-        # Missing closing brace
+        // Missing closing brace
     """
     with Path("test_theme.seed").open("w") as f:
         f.write(content)

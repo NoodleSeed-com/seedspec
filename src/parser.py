@@ -23,7 +23,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
             content = f.read()
             
         # Remove comments
-        content = re.sub(r'#.*$', '', content, flags=re.MULTILINE)
+        content = re.sub(r'//.*$', '', content, flags=re.MULTILINE)
         
         # Track current context for nested structures
         result = {}
