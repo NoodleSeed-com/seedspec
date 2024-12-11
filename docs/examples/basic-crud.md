@@ -3,8 +3,8 @@
 The simplest possible SeedML application showing smart defaults in action.
 
 ```seedml
+# core.seed - Core domain model
 app Contacts {
-  # Core domain model
   entity Contact {
     # Required fields
     name: string!         # Full name
@@ -14,6 +14,15 @@ app Contacts {
     phone?: phone {       # Phone number
       format: international
     }
+  }
+}
+
+# ui.seed - UI components
+extend Contacts {
+  # Theme configuration
+  ui {
+    theme: "light"  # Use built-in theme
+  }
     location?: location { # Location with defaults
       validate: {
         region: service_area
