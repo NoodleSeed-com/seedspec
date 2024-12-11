@@ -29,17 +29,17 @@ app TodoList {
 
 // ui.seed - UI components
 extend TodoList {
-  # UI definition with theme
+  // UI definition with theme
   ui {
-    theme: "light"  # Use built-in light theme
+    theme: "light"  // Use built-in light theme
   }
   
   screen Tasks {
-    # List view with location awareness
+    // List view with location awareness
     list: [title, done, due, location]
     actions: [create, toggle-done]
     
-    # Optional map view
+    // Optional map view
     map?: {
       markers: incomplete_tasks
       cluster: true

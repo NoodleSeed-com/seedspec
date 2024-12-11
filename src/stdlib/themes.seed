@@ -1,6 +1,6 @@
-"""Standard library default theme values"""
+// Standard library default theme values
 
-# Color palette defaults
+// Color palette defaults
 DEFAULT_COLORS = {
     "primary": "#0066cc",
     "secondary": "#6c757d",
@@ -12,7 +12,7 @@ DEFAULT_COLORS = {
     "success": "#28a745"
 }
 
-# Typography defaults
+// Typography defaults
 DEFAULT_FONT_FAMILIES = {
     "base": "Inter, system-ui, sans-serif",
     "heading": "Poppins, sans-serif"
@@ -38,7 +38,7 @@ DEFAULT_LINE_HEIGHTS = {
     "relaxed": "1.75"
 }
 
-# Spacing defaults
+// Spacing defaults
 DEFAULT_SPACING = {
     "xs": "0.25rem",
     "sm": "0.5rem",
@@ -48,7 +48,7 @@ DEFAULT_SPACING = {
     "xxl": "3rem"
 }
 
-# Border defaults
+// Border defaults
 DEFAULT_BORDER_RADIUS = {
     "sm": "0.25rem",
     "md": "0.5rem",
@@ -62,7 +62,7 @@ DEFAULT_BORDER_WIDTH = {
     "thick": "4px"
 }
 
-# Shadow defaults
+// Shadow defaults
 DEFAULT_SHADOWS = {
     "sm": "0 1px 2px rgba(0,0,0,0.05)",
     "md": "0 4px 6px rgba(0,0,0,0.1)",

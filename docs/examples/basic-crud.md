@@ -19,23 +19,23 @@ app Contacts {
 
 // ui.seed - UI components
 extend Contacts {
-  # Theme configuration
+  // Theme configuration
   ui {
-    theme: "light"  # Use built-in theme
+    theme: "light"  // Use built-in theme
   }
-    location?: location { # Location with defaults
+    location?: location { // Location with defaults
       validate: {
         region: service_area
       }
     }
     
-    # Metadata
+    // Metadata
     created: timestamp = now()
     updated: timestamp
     version: int = 1
   }
 
-  # Complete UI with maps
+  // Complete UI with maps
   screen Contacts {
     views: {
       list: {
@@ -97,7 +97,7 @@ When you need customization:
 
 ```seedml
 app Contacts {
-  # Override specific defaults
+  // Override specific defaults
   entity Contact {
     name: string {
       min: 2,            # Min length
@@ -115,16 +115,16 @@ app Contacts {
     }
   }
 
-  # Customize UI
+  // Customize UI
   screen Contacts {
-    # Enhanced list view
+    // Enhanced list view
     list {
       show: [name, email, location]
       group: region
       sort: distance(current_location)
     }
     
-    # Enhanced map view
+    // Enhanced map view
     map {
       cluster: true
       search: {
