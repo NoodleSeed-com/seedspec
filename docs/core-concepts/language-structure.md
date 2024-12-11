@@ -37,13 +37,13 @@ app TodoList {
 Start simple, add detail only when needed:
 
 ```yaml
-# Minimal version
+// Minimal version
 entity User {
   name: string
   email: email
 }
 
-# Add validation when needed
+// Add validation when needed
 entity User {
   name: string {
     min: 2
@@ -55,7 +55,7 @@ entity User {
   }
 }
 
-# Add behavior when needed
+// Add behavior when needed
 entity User {
   name: string
   email: email
@@ -78,14 +78,14 @@ Combine patterns to express complex intent:
 
 ```yaml
 app OrderSystem {
-  # Core domain
+  // Core domain
   entity Order {
     status: draft->submitted->approved
     items: [OrderItem]
     total: money
   }
-  
-  # Business rules
+
+  // Business rules
   rules {
     submit: {
       require: [
@@ -95,14 +95,14 @@ app OrderSystem {
       then: notify@customer
     }
   }
-  
-  # User interface
+
+  // User interface
   screen Orders {
     list: [id, customer, total, status]
     actions: [create, submit, approve]
   }
-  
-  # Integration
+
+  // Integration
   integrate {
     payment: stripe {
       on: order.submit
