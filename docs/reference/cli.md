@@ -5,10 +5,10 @@ SeedML CLI focuses on simplicity with smart defaults. Most commands require mini
 ## Quick Start
 
 ```bash
-# Generate app from spec (uses all smart defaults)
+// Generate app from spec (uses all smart defaults)
 seedml create myapp.seed
 
-# Run the generated app
+// Run the generated app
 cd myapp
 seedml run
 ```
@@ -37,19 +37,19 @@ seedml maps config test  # Test maps configuration
 Configure maps features through command line options or environment variables:
 
 ```bash
-# Provider Selection
---maps-provider google|mapbox|osm  # Select maps provider
---maps-version latest|legacy       # API version
+// Provider Selection
+--maps-provider google|mapbox|osm  // Select maps provider
+--maps-version latest|legacy       // API version
 
-# Geocoding Options
---geocoding-cache true|false       # Enable caching
---geocoding-precision high|normal  # Coordinate precision
---geocoding-regions [codes]        # Restrict to regions
+// Geocoding Options
+--geocoding-cache true|false       // Enable caching
+--geocoding-precision high|normal  // Coordinate precision
+--geocoding-regions [codes]        // Restrict to regions
 
-# Performance
---maps-clustering auto|manual      # Clustering strategy
---maps-cache-size 100MB           # Cache size limit
---maps-rate-limit 100/min         # API rate limit
+// Performance
+--maps-clustering auto|manual      // Clustering strategy
+--maps-cache-size 100MB           // Cache size limit
+--maps-rate-limit 100/min         // API rate limit
 ```
 
 ## Configuration
@@ -57,19 +57,19 @@ Configure maps features through command line options or environment variables:
 Configuration uses smart defaults - override only when needed:
 
 ```bash
-# Environment (optional)
-export SEEDML_ENV=dev              # dev/staging/prod
-export ANTHROPIC_API_KEY=xxx       # For AI features
-export GOOGLE_MAPS_KEY=xxx         # For maps features
-export MAPS_CACHE_DIR=./cache      # For geocoding cache
+// Environment (optional)
+export SEEDML_ENV=dev              // dev/staging/prod
+export ANTHROPIC_API_KEY=xxx       // For AI features
+export GOOGLE_MAPS_KEY=xxx         // For maps features
+export MAPS_CACHE_DIR=./cache      // For geocoding cache
 
-# Command options (all optional)
+// Command options (all optional)
 seedml create myapp.seed \
-  --stack modern                   # Use latest tech stack
-  --db postgres                    # Override default DB
-  --port 3000                      # Override default port
-  --maps-provider google           # Maps provider
-  --geocoding-strategy cached      # Geocoding approach
+  --stack modern                   // Use latest tech stack
+  --db postgres                    // Override default DB
+  --port 3000                      // Override default port
+  --maps-provider google           // Maps provider
+  --geocoding-strategy cached      // Geocoding approach
 ```
 
 ## Generated Stack

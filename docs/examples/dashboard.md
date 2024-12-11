@@ -1,15 +1,15 @@
 # Analytics Dashboard Example
 
 ```yaml
-# Real-time analytics dashboard with location intelligence
+// Real-time analytics dashboard with location intelligence
 app Analytics {
-  # Data models
+  // Data models
   entity Metric {
     name: string
     value: number
     timestamp: datetime
     category: string
-    location?: location    # Optional location data
+    location?: location    // Optional location data
   }
 
   entity LocationMetric {
@@ -23,7 +23,7 @@ app Analytics {
   screen Dashboard {
     layout: grid(2x2)
     
-    # Multiple visualization types
+    // Multiple visualization types
     widgets: [
       {
         type: map
@@ -75,7 +75,7 @@ app Analytics {
       }
     ]
     
-    # Interactive features 
+    // Interactive features 
     features: [
       time-range-selector,
       region-filter,
