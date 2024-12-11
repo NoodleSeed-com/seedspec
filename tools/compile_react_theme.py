@@ -97,7 +97,8 @@ def apply_theme_overrides(theme_spec: dict, overrides: dict) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description='Compile Seed theme to React')
-    parser.add_argument('spec_file', type=Path, help='Input .seed file')
+    parser.add_argument('spec_file', type=Path, default=Path('examples/app-theme.seed'),
+                      help='Input .seed file (default: examples/app-theme.seed)')
     parser.add_argument('--output', type=Path, default=Path('examples/react-theme'),
                       help='Output directory (default: examples/react-theme)')
     
