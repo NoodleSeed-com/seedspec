@@ -80,7 +80,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 elif not value:  # Handle empty values
                     value = ""
                     
-                current_context[-1][key] = value
+                current_context[-1][key] = value.strip(',')  # Remove trailing commas
                 
         # Check for unclosed blocks
         if block_count > 0:
