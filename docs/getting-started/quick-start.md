@@ -17,16 +17,23 @@ export GOOGLE_MAPS_KEY='your-maps-key'
 1. Create a new file `todo.seed`:
 
 ```yaml
+# core.seed - Core domain model
 app TodoList {
-  # Core domain model
   entity Task {
     title: string
     done: bool = false
     due?: date
     location?: location    # Optional location
   }
+}
+
+# ui.seed - UI components
+extend TodoList {
+  # UI definition with theme
+  ui {
+    theme: "light"  # Use built-in light theme
+  }
   
-  # UI definition
   screen Tasks {
     # List view with location awareness
     list: [title, done, due, location]

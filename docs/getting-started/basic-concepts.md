@@ -4,7 +4,34 @@ Learn the core concepts of SeedML development.
 
 ## Application Structure
 
-Every SeedML application has three main parts:
+SeedML applications can be organized in multiple files using the `extend` keyword:
+
+```yaml
+# core.seed - Core app definition
+app MyApp {
+  # Data models
+  entity Task {
+    title: string
+    done: bool
+  }
+}
+
+# ui.seed - UI components
+extend MyApp {
+  # Theme configuration
+  ui {
+    theme: "light"  # Use built-in theme
+  }
+
+  # Screens
+  screen Tasks {
+    list: [title, done]
+    actions: [create, complete]
+  }
+}
+```
+
+Every SeedML application has these main parts:
 
 ### 1. Data Models (Entities)
 
