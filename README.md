@@ -11,21 +11,21 @@ Seed Spec is an AI-native language that generates production-ready applications 
 ## Example Specification
 
 ```yaml
-# core.seed - Domain model
+// core.seed - Domain model
 app TodoApp {
-  # Core domain model
+  // Core domain model
   entity Task {
     title: string
     done: bool = false
   }
 }
 
-# ui.seed - User interface
+// ui.seed - User interface
 extend TodoApp {
-  # UI definition (implies standard patterns)
+  // UI definition (implies standard patterns)
   screen Tasks {
-    list: [title, done]    # Will imply search, sort, pagination
-    actions: [create, done] # Will imply proper handlers
+    list: [title, done]    // Will imply search, sort, pagination
+    actions: [create, done] // Will imply proper handlers
   }
 }
 ```
@@ -61,23 +61,23 @@ Seed Spec minimizes boilerplate through intelligent defaults:
 Override defaults only when needed:
 ```bash
 entity User {
-  # Override string defaults
+  // Override string defaults
   name: string {
     min: 3,
     max: 50
   }
   
-  # Use defaults
-  email: email  # Implies validation, uniqueness
+  // Use defaults
+  email: email  // Implies validation, uniqueness
 }
 
-# Maps integration with smart defaults
+// Maps integration with smart defaults
 entity Store {
-  location: location  # Implies geocoding, validation, map rendering
+  location: location  // Implies geocoding, validation, map rendering
 }
 
 screen StoreLocator {
-  map: [location]     # Implies clustering, search, radius filters
+  map: [location]     // Implies clustering, search, radius filters
 }
 ```
 
