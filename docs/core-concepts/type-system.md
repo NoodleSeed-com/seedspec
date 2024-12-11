@@ -5,56 +5,56 @@ The Seed Specification Language's type system combines simplicity with power.
 ## Core Types
 
 ```yaml
-# Basic Types
-string              # Text
-number              # Numbers
-bool                # True/False
-date                # Dates
-time                # Time
-datetime            # Date+Time
-money               # Currency
-email               # Email
-phone               # Phone
-url                 # URLs
+// Basic Types
+string              // Text
+number              // Numbers
+bool                // True/False
+date                // Dates
+time                // Time
+datetime            // Date+Time
+money               // Currency
+email               // Email
+phone               // Phone
+url                 // URLs
 
-# Complex Types
-[Type]              # Lists
-Type?               # Optional
-Type!               # Required
-map<Key,Value>      # Maps
-enum(v1,v2)         # Enums
+// Complex Types
+[Type]              // Lists
+Type?               // Optional
+Type!               // Required
+map<Key,Value>      // Maps
+enum(v1,v2)         // Enums
 
-# Special Types
-id                  # Unique IDs
-timestamp           # Timestamps
-file                # Files
-image               # Images
+// Special Types
+id                  // Unique IDs
+timestamp           // Timestamps
+file                // Files
+image               // Images
 
-# Location Types
-location            # Geographic coordinates with address
-place               # Place details with metadata
-region              # Geographic boundary
-distance            # Distance with units
+// Location Types
+location            // Geographic coordinates with address
+place               // Place details with metadata
+region              // Geographic boundary
+distance            // Distance with units
 ```
 
 ## Type Usage
 
 ```yaml
-# Validation
+// Validation
 age: number {
   min: 0
   max: 150
 }
 
-# Collections
+// Collections
 tags: [string]
 metadata: map<string,any>
 
-# Inference
+// Inference
 entity Product {
-  price: 0.00      # money
-  created: now()    # timestamp
-  active: true     # bool
+  price: 0.00      // money
+  created: now()    // timestamp
+  active: true     // bool
 }
 ```
 
