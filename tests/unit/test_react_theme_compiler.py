@@ -48,7 +48,7 @@ def test_generate_css():
     css_normalized = "".join(css.split())  # Remove all whitespace
     assert ":root{" in css_normalized
     assert "--colors-primary:#0070f3;" in css_normalized
-    assert "--typography-fontSize-base:1rem;" in css_normalized
+    assert "--typography-fontSize-base:16px;" in css_normalized
     assert "}" in css_normalized
 
 def test_generate_theme_context():
