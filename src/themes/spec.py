@@ -26,33 +26,33 @@ class ColorSpec:
 @dataclass
 class TypographySpec:
     """Typography specification"""
-    fontFamily: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_FAMILIES)
-    fontSize: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_SIZES)
-    fontWeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_FONT_WEIGHTS)
-    lineHeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_LINE_HEIGHTS)
+    fontFamily: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["typography"]["fontFamily"])
+    fontSize: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["typography"]["fontSize"])
+    fontWeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["typography"]["fontWeight"])
+    lineHeight: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["typography"]["lineHeight"])
 
 @dataclass
 class SpacingSpec:
     """Spacing specification"""
-    xs: str = DEFAULT_SPACING["xs"]
-    sm: str = DEFAULT_SPACING["sm"]
-    md: str = DEFAULT_SPACING["md"]
-    lg: str = DEFAULT_SPACING["lg"]
-    xl: str = DEFAULT_SPACING["xl"]
-    xxl: str = DEFAULT_SPACING["xxl"]
+    xs: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["xs"])
+    sm: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["sm"])
+    md: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["md"])
+    lg: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["lg"])
+    xl: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["xl"])
+    xxl: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["spacing"]["xxl"])
 
 @dataclass 
 class BordersSpec:
     """Borders specification"""
-    radius: Dict[str, str] = field(default_factory=lambda: DEFAULT_BORDER_RADIUS)
-    width: Dict[str, str] = field(default_factory=lambda: DEFAULT_BORDER_WIDTH)
+    radius: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["borders"]["radius"])
+    width: Dict[str, str] = field(default_factory=lambda: DEFAULT_THEMES["default"]["borders"]["width"])
 
 @dataclass
 class ShadowsSpec:
     """Shadows specification"""
-    sm: str = DEFAULT_SHADOWS["sm"]
-    md: str = DEFAULT_SHADOWS["md"]
-    lg: str = DEFAULT_SHADOWS["lg"]
+    sm: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["shadows"]["sm"])
+    md: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["shadows"]["md"])
+    lg: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["shadows"]["lg"])
 
 @dataclass
 class ThemeSpec:
