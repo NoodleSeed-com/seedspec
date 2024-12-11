@@ -69,7 +69,7 @@ class ThemeSpec:
         if self.overrides is None:
             self.overrides = {}
 
-# Example usage in spec:
+// Example usage in spec:
 """
 app MyApp {
   ui {
