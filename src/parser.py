@@ -29,6 +29,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
         result = {}
         current_context = [result]
         current_keys = []
+        block_count = 0  # Track opening/closing blocks
         
         # Process each non-empty line
         for line in content.split('\n'):
@@ -38,6 +39,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
             # Handle block start
             if line.endswith('{'):
+                block_count += 1
                 key = line.split('{')[0].strip()
                 if key.startswith('theme'):
                     # Handle theme declaration
@@ -54,6 +56,9 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                     
             # Handle block end
             elif line == '}':
+                block_count -= 1
+                if block_count < 0:
+                    raise SeedParseError(f"Unexpected closing brace on line {line_num}")
                 current_context.pop()
                 current_keys.pop()
                 
@@ -61,19 +66,25 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
             elif ':' in line:
                 key, value = line.split(':', 1)
                 key = key.strip()
-                value = value.strip()
+                value = value.strip().strip(',')  # Remove trailing commas too
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]  # Strip quotes
+                    value = value[1:-1].strip()  # Strip quotes and whitespace
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
                     value = False
                 elif value.replace('.','',1).isdigit():
                     value = float(value) if '.' in value else int(value)
+                elif not value:  # Handle empty values
+                    value = ""
                     
                 current_context[-1][key] = value
+                
+        # Check for unclosed blocks
+        if block_count > 0:
+            raise SeedParseError(f"Unclosed blocks: missing {block_count} closing braces")
                 
         return result
         

@@ -14,14 +14,14 @@ DEFAULT_THEMES = load_default_themes()
 @dataclass
 class ColorSpec:
     """Color palette specification"""
-    primary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["primary"])
-    secondary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["secondary"])
-    background: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["background"])
-    surface: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["surface"])
-    text: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["text"])
-    error: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["error"])
-    warning: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["warning"])
-    success: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["success"])
+    primary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("primary", "#0066cc"))
+    secondary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("secondary", "#6c757d"))
+    background: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("background", "#ffffff"))
+    surface: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("surface", "#f8f9fa"))
+    text: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("text", "#212529"))
+    error: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("error", "#dc3545"))
+    warning: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("warning", "#ffc107"))
+    success: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"].get("success", "#28a745"))
 
 @dataclass
 class TypographySpec:
