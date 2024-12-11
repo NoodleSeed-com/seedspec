@@ -66,11 +66,13 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
             elif ':' in line:
                 key, value = line.split(':', 1)
                 key = key.strip()
-                value = value.strip().strip(',')  # Remove trailing commas too
+                value = value.strip()
+                print(f"Before processing - value: '{value}'")  # Debug
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
                     value = value[1:-1].strip()  # Remove quotes and whitespace
+                    print(f"After quote removal - value: '{value}'")  # Debug
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
@@ -83,6 +85,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 # Handle string values
                 if isinstance(value, str):
                     value = value.strip(',')
+                print(f"Final value: '{value}'")  # Debug
                 current_context[-1][key] = value
                 
         # Check for unclosed blocks
