@@ -70,8 +70,8 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    # Preserve quoted strings exactly as they appear between the quotes
-                    value = value[1:-1]
+                    # Extract the value between quotes and preserve it exactly
+                    value = value[1:-1]  # This correctly extracts "#000000"
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
@@ -81,9 +81,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 elif not value:  # Handle empty values
                     value = ""
 
-                # Only strip whitespace from unquoted string values
-                if isinstance(value, str) and not (value.startswith('"') and value.endswith('"')):
-                    value = value.strip()
+                # Store the value directly without any additional processing
                 current_context[-1][key] = value
                 
         # Check for unclosed blocks
