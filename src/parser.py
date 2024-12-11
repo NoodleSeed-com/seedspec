@@ -71,7 +71,7 @@ def parse_seed_file(file_path: Path) -> Dict[str, Any]:
                 
                 # Convert value types
                 if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].strip()  # Remove quotes and whitespace
+                    value = value.strip('"').strip()  # Use strip('"') to remove quotes
                     print(f"After quote removal - value: '{value}'")  # Debug
                 elif value.lower() == 'true':
                     value = True
