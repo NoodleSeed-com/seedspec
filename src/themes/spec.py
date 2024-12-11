@@ -1,28 +1,27 @@
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
-from ..stdlib.themes.seed import (
-    DEFAULT_COLORS,
-    DEFAULT_FONT_FAMILIES,
-    DEFAULT_FONT_SIZES,
-    DEFAULT_FONT_WEIGHTS,
-    DEFAULT_LINE_HEIGHTS,
-    DEFAULT_SPACING,
-    DEFAULT_BORDER_RADIUS,
-    DEFAULT_BORDER_WIDTH,
-    DEFAULT_SHADOWS
-)
+from pathlib import Path
+from ..parser import parse_seed_file
+
+def load_default_themes():
+    """Load theme definitions from stdlib/themes.seed"""
+    themes_file = Path(__file__).parent.parent / "stdlib" / "themes.seed"
+    return parse_seed_file(themes_file)
+
+# Load themes at module import
+DEFAULT_THEMES = load_default_themes()
 
 @dataclass
 class ColorSpec:
     """Color palette specification"""
-    primary: str = DEFAULT_COLORS["primary"]
-    secondary: str = DEFAULT_COLORS["secondary"]
-    background: str = DEFAULT_COLORS["background"]
-    surface: str = DEFAULT_COLORS["surface"]
-    text: str = DEFAULT_COLORS["text"]
-    error: str = DEFAULT_COLORS["error"]
-    warning: str = DEFAULT_COLORS["warning"]
-    success: str = DEFAULT_COLORS["success"]
+    primary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["primary"])
+    secondary: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["secondary"])
+    background: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["background"])
+    surface: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["surface"])
+    text: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["text"])
+    error: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["error"])
+    warning: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["warning"])
+    success: str = field(default_factory=lambda: DEFAULT_THEMES["default"]["colors"]["success"])
 
 @dataclass
 class TypographySpec:
