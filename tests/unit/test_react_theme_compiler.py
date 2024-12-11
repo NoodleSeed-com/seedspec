@@ -18,10 +18,11 @@ SAMPLE_THEME = {
 def test_generate_css():
     """Test CSS variable generation"""
     css = generate_css(SAMPLE_THEME)
-    assert ":root {" in css
-    assert "--colors-primary: #3b82f6;" in css.replace(" ", "")
-    assert "--typography-fontSize-base: 1rem;" in css.replace(" ", "")
-    assert "}" in css
+    css_normalized = "".join(css.split())  # Remove all whitespace
+    assert ":root{" in css_normalized
+    assert "--colors-primary:#3b82f6;" in css_normalized
+    assert "--typography-fontSize-base:1rem;" in css_normalized
+    assert "}" in css_normalized
 
 def test_generate_theme_context():
     """Test React context generation"""
@@ -56,5 +57,6 @@ def test_css_generation_nested_properties():
         }
     }
     css = generate_css(theme)
-    assert "--typography-fontFamily-base: Inter, sans-serif;" in css.replace(" ", "")
-    assert "--typography-fontFamily-heading-primary: Poppins, sans-serif;" in css.replace(" ", "")
+    css_normalized = "".join(css.split())  # Remove all whitespace
+    assert "--typography-fontFamily-base:Inter,sans-serif;" in css_normalized
+    assert "--typography-fontFamily-heading-primary:Poppins,sans-serif;" in css_normalized
