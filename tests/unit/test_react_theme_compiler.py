@@ -43,7 +43,8 @@ SAMPLE_THEME_REFERENCE_SPEC = {
 
 def test_generate_css():
     """Test CSS variable generation"""
-    css = generate_css(SAMPLE_THEME)
+    theme = extract_theme_from_app_spec(SAMPLE_APP_SPEC)
+    css = generate_css(theme)
     css_normalized = "".join(css.split())  # Remove all whitespace
     assert ":root{" in css_normalized
     assert "--colors-primary:#3b82f6;" in css_normalized
@@ -52,7 +53,8 @@ def test_generate_css():
 
 def test_generate_theme_context():
     """Test React context generation"""
-    context = generate_theme_context(SAMPLE_THEME)
+    theme = extract_theme_from_app_spec(SAMPLE_APP_SPEC)
+    context = generate_theme_context(theme)
     assert "import { createContext, useContext, ReactNode } from 'react';" in context
     assert "export const theme =" in context
     assert '"colors": {' in context
