@@ -3,7 +3,13 @@
 A complete order management system showing how intent-focused patterns scale to larger applications.
 
 ```seedml
+# core.seed - Core domain model
 app OrderSystem {
+  # Theme configuration
+  ui {
+    theme: "modern"  # Use modern theme
+  }
+  
   # 1. Domain Model
   entity Customer {
     # Basic information

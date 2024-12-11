@@ -16,7 +16,8 @@ seedml run
 ## Essential Commands
 
 ```bash
-seedml create <spec>     # Generate new app from spec
+seedml create <spec>     # Generate new app from spec(s)
+seedml extend <app>      # Add components to existing app
 seedml run              # Run the app locally
 seedml deploy           # Deploy to production
 seedml test             # Run all tests
