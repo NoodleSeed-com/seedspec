@@ -62,3 +62,8 @@ app TodoList {
    - Standard layouts
    - Common components
    - Best practices
+
+4. [Theming](theming.md)
+   - Hierarchical themes
+   - Simple overrides
+   - Visual consistency
