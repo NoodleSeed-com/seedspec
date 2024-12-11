@@ -1,0 +1,112 @@
+// Example of custom theme definitions in Seed
+
+// Create a completely custom theme from scratch
+theme customTheme {
+  colors {
+    primary: "#4a90e2"
+    secondary: "#50e3c2"
+    background: "#f5f8fa"
+    surface: "#ffffff"
+    text: "#2c3e50"
+    error: "#e74c3c"
+    warning: "#f39c12"
+    success: "#2ecc71"
+  }
+
+  typography {
+    fontFamily {
+      base: "Roboto, sans-serif"
+      heading: "Montserrat, sans-serif"
+    }
+    fontSize {
+      xs: "0.75rem"
+      sm: "0.875rem"
+      base: "1rem"
+      lg: "1.25rem"
+      xl: "1.5rem"
+    }
+    fontWeight {
+      normal: "400"
+      medium: "500"
+      bold: "700"
+    }
+    lineHeight {
+      tight: "1.2"
+      normal: "1.5"
+      relaxed: "1.8"
+    }
+  }
+
+  spacing {
+    xs: "0.5rem"
+    sm: "1rem"
+    md: "1.5rem"
+    lg: "2rem"
+    xl: "3rem"
+    xxl: "4rem"
+  }
+
+  borders {
+    radius {
+      sm: "4px"
+      md: "8px"
+      lg: "12px"
+      full: "9999px"
+    }
+    width {
+      thin: "1px"
+      medium: "2px"
+      thick: "3px"
+    }
+  }
+
+  shadows {
+    sm: "0 2px 4px rgba(0,0,0,0.1)"
+    md: "0 4px 8px rgba(0,0,0,0.1)"
+    lg: "0 8px 16px rgba(0,0,0,0.1)"
+  }
+}
+
+// Extend an existing theme and override specific values
+theme modernLight extends light {
+  colors {
+    primary: "#0070f3"
+    secondary: "#7928ca"
+  }
+  
+  typography {
+    fontFamily {
+      base: "SF Pro Text, system-ui, sans-serif"
+      heading: "SF Pro Display, system-ui, sans-serif"
+    }
+    fontSize {
+      base: "16px"
+      lg: "1.2rem"
+    }
+  }
+
+  borders {
+    radius {
+      sm: "6px"
+      md: "10px"
+    }
+  }
+}
+
+// Example of using themes in an app
+app MyApp {
+  ui {
+    // Use the custom theme
+    theme: "customTheme"
+    
+    // Or use the extended light theme
+    // theme: "modernLight"
+    
+    // Override specific values
+    overrides: {
+      colors.primary: "#1a73e8"
+      typography.fontSize.base: "18px"
+      spacing.md: "2rem"
+    }
+  }
+}
