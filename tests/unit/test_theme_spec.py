@@ -16,8 +16,8 @@ def test_color_spec_defaults():
     theme_spec = parse_seed_file(Path("src/stdlib/themes.seed"))
     colors = theme_spec["default"]["colors"]
     
-    assert colors["primary"] == "#0066cc"
-    assert colors["secondary"] == "#6c757d"
+    assert colors["primary"] == "#3b82f6"
+    assert colors["secondary"] == "#6366f1"
     assert colors["background"] == "#ffffff"
 
 def test_typography_spec_defaults():
