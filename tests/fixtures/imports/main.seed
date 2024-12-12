@@ -1,0 +1,9 @@
+import "theme.seed"
+import "components.seed"
+
+app MyApp {
+  ui {
+    theme: light
+    components: [Button]
+  }
+}

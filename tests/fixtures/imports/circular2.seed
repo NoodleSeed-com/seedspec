@@ -1,0 +1,5 @@
+import "circular1.seed"
+
+component Second {
+  type: "test"
+}

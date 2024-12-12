@@ -1,0 +1,13 @@
+theme light {
+  colors {
+    primary: "#ffffff"
+    secondary: "#000000"
+  }
+}
+
+theme dark {
+  colors {
+    primary: "#000000"
+    secondary: "#ffffff"
+  }
+}
