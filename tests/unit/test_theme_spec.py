@@ -6,10 +6,10 @@ def test_theme_spec_parsing():
     """Test parsing theme spec from seed file"""
     theme_spec = parse_seed_file(Path("src/stdlib/themes.seed"))
     
-    assert "ThemeSpec" in theme_spec
-    assert "colors" in theme_spec["ThemeSpec"]
-    assert "typography" in theme_spec["ThemeSpec"]
-    assert "spacing" in theme_spec["ThemeSpec"]
+    assert "default" in theme_spec
+    assert "colors" in theme_spec["default"]
+    assert "typography" in theme_spec["default"]
+    assert "spacing" in theme_spec["default"]
 
 def test_color_spec_defaults():
     """Test color spec default values"""
