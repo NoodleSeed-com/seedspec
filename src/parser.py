@@ -113,6 +113,11 @@ def parse_seed_file(file_path: Path, imported_files: Set[Path] = None) -> Dict[s
                 elif value.startswith('#'):
                     # Preserve unquoted hex colors
                     value = value
+                elif value.startswith('[') and value.endswith(']'):
+                    # Convert string lists to actual lists and strip whitespace
+                    value = [v.strip() for v in value[1:-1].split(',')]
+                    # Filter out empty strings
+                    value = [v for v in value if v]
                 elif value.lower() == 'true':
                     value = True
                 elif value.lower() == 'false':
