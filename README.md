@@ -44,6 +44,7 @@ This specification will eventually generate a complete application, but the gene
 - **Smart Defaults**: Production patterns built-in, override only when needed
 - **Full Stack**: One specification drives all application layers
 - **Tech Independent**: Target any modern technology stack
+- **Standard Library**: Rich set of pre-built components and themes
 - **Maps Integration**: Built-in support for location-based features and mapping
 
 ## 🎯 Smart Defaults
@@ -59,7 +60,18 @@ Seed Spec minimizes boilerplate through intelligent defaults:
 - `map` screens imply clustering, search radius, and interactive controls
 
 Override defaults only when needed:
-```bash
+```yaml
+// Use standard library theme with overrides
+app MyApp {
+  theme: "modern-light" {
+    colors: {
+      primary: "#0066cc"
+      accent: "#ff4081"
+    }
+  }
+}
+
+// Use standard components with customization
 entity User {
   // Override string defaults
   name: string {

@@ -96,17 +96,37 @@ Themes inherit from parent themes:
     └───────┘       └───────┘
 ```
 
-## Theme Overrides
+## Theme Usage
 
-Override specific values while keeping other defaults:
+Use a standard theme with optional overrides:
 
 ```yaml
 app MyApp {
-  ui {
-    theme: "light"
-    overrides: {
-      colors.primary: "#0066cc"
+  // Use a standard theme
+  theme: "modern-light"
+}
+
+// Or with overrides
+app CustomApp {
+  theme: "modern-light" {
+    colors: {
+      primary: "#0066cc"
+      accent: "#ff4081"
     }
+    typography: {
+      fontFamily: {
+        base: "Roboto, sans-serif"
+      }
+    }
+  }
+}
+
+// Or create a custom theme extending a base
+theme CustomTheme {
+  extends: "modern-light"
+  colors: {
+    primary: "#0066cc"
+    // ... other overrides
   }
 }
 ```
