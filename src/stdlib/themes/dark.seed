@@ -1,0 +1,21 @@
+import "base.seed"
+
+// Dark theme - Optimized for dark mode
+theme dark extends default {
+  colors {
+    background: "#0f172a"    // Dark blue
+    surface: "#1e293b"      // Lighter dark blue
+    text: "#f8fafc"         // Very light gray
+    textLight: "#94a3b8"    // Light gray
+    border: "#334155"       // Medium gray
+    primary: "#60a5fa"      // Lighter blue
+    secondary: "#818cf8"    // Lighter indigo
+    accent: "#a78bfa"       // Lighter purple
+  }
+
+  shadows {
+    sm: "0 1px 3px rgba(0,0,0,0.2)"
+    md: "0 4px 6px rgba(0,0,0,0.25)"
+    lg: "0 10px 15px rgba(0,0,0,0.3)"
+  }
+}
