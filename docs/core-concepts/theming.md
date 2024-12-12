@@ -14,7 +14,16 @@ app MyApp {
 
 ## Theme Properties
 
-Themes control these visual aspects:
+Seed Spec includes a standard library of production-ready themes. The built-in themes include:
+
+- modern-light
+- modern-dark
+- classic-light
+- classic-dark
+- minimal
+- corporate
+
+Each theme controls these visual aspects:
 
 ### Colors
 ```yaml
