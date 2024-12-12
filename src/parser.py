@@ -92,7 +92,7 @@ def parse_seed_file(file_path: Path, imported_files: Set[Path] = None) -> Dict[s
             elif line == '}':
                 block_count -= 1
                 if block_count < 0:
-                    raise SeedParseError(f"Unexpected closing brace on line {line_num}")
+                    raise SeedParseError(f"Unexpected closing brace on line {i}")
                 current_context.pop()
                 current_keys.pop()
                 
