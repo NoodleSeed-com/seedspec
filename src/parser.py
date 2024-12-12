@@ -26,14 +26,18 @@ def parse_seed_file(file_path: Path, imported_files: Set[Path] = None) -> Dict[s
             
         # Resolve the full path
         file_path = file_path.resolve()
-        
+            
+        # Check if file exists
+        if not file_path.exists():
+            raise SeedParseError("Import file not found")
+            
         # Check for circular imports
         if file_path in imported_files:
             raise SeedParseError(f"Circular import detected: {file_path}")
-            
+                
         # Add to imported files set
         imported_files.add(file_path)
-        
+            
         # Read and process file
         with open(file_path) as f:
             content = f.read()
