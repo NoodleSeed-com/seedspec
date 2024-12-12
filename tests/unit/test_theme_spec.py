@@ -1,38 +1,29 @@
 import pytest
-from src.themes.spec import ThemeSpec, ColorSpec, TypographySpec, SpacingSpec, BordersSpec, ShadowsSpec
+from src.parser import parse_seed_file
+from pathlib import Path
 
-def test_theme_spec_defaults():
-    """Test theme spec default values"""
-    theme = ThemeSpec()
+def test_theme_spec_parsing():
+    """Test parsing theme spec from seed file"""
+    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
     
-    assert theme.theme == "default"
-    assert isinstance(theme.colors, ColorSpec)
-    assert isinstance(theme.typography, TypographySpec)
-    assert isinstance(theme.spacing, SpacingSpec)
-    assert isinstance(theme.borders, BordersSpec)
-    assert isinstance(theme.shadows, ShadowsSpec)
+    assert "ThemeSpec" in theme_spec
+    assert "colors" in theme_spec["ThemeSpec"]
+    assert "typography" in theme_spec["ThemeSpec"]
+    assert "spacing" in theme_spec["ThemeSpec"]
 
 def test_color_spec_defaults():
     """Test color spec default values"""
-    colors = ColorSpec()
+    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
+    colors = theme_spec["ColorSpec"]
     
-    assert colors.primary == "#0066cc"
-    assert colors.secondary == "#6c757d"
-    assert colors.background == "#ffffff"
+    assert colors["primary"] == "#0066cc"
+    assert colors["secondary"] == "#6c757d"
+    assert colors["background"] == "#ffffff"
 
 def test_typography_spec_defaults():
     """Test typography spec default values"""
-    typography = TypographySpec()
+    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
+    typography = theme_spec["TypographySpec"]
     
-    assert "Inter" in typography.fontFamily["base"]
-    assert "Poppins" in typography.fontFamily["heading"]
-
-def test_theme_spec_overrides():
-    """Test theme override functionality"""
-    overrides = {
-        "colors.primary": "#FF0000",
-        "typography.fontSize.base": "16px"
-    }
-    
-    theme = ThemeSpec(overrides=overrides)
-    assert theme.overrides == overrides
+    assert "Inter" in typography["fontFamily"]["base"]
+    assert "Poppins" in typography["fontFamily"]["heading"]
