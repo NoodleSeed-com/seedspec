@@ -1,6 +1,6 @@
 # Theming
 
-Seed Spec provides a simple hierarchical theming system that controls all visual aspects of your application.
+Seed Spec provides themes through its standard library (`src/stdlib/themes.seed`) that controls all visual aspects of your application. These themes are part of the standard library and provide a simple hierarchical theming system.
 
 ## Basic Usage
 

@@ -4,7 +4,7 @@ from pathlib import Path
 
 def test_theme_spec_parsing():
     """Test parsing theme spec from seed file"""
-    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
+    theme_spec = parse_seed_file(Path("src/stdlib/themes.seed"))
     
     assert "ThemeSpec" in theme_spec
     assert "colors" in theme_spec["ThemeSpec"]
@@ -13,8 +13,8 @@ def test_theme_spec_parsing():
 
 def test_color_spec_defaults():
     """Test color spec default values"""
-    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
-    colors = theme_spec["ColorSpec"]
+    theme_spec = parse_seed_file(Path("src/stdlib/themes.seed"))
+    colors = theme_spec["default"]["colors"]
     
     assert colors["primary"] == "#0066cc"
     assert colors["secondary"] == "#6c757d"
@@ -22,8 +22,8 @@ def test_color_spec_defaults():
 
 def test_typography_spec_defaults():
     """Test typography spec default values"""
-    theme_spec = parse_seed_file(Path("src/themes/spec.seed"))
-    typography = theme_spec["TypographySpec"]
+    theme_spec = parse_seed_file(Path("src/stdlib/themes.seed"))
+    typography = theme_spec["default"]["typography"]
     
     assert "Inter" in typography["fontFamily"]["base"]
-    assert "Poppins" in typography["fontFamily"]["heading"]
+    assert "Inter" in typography["fontFamily"]["heading"]
