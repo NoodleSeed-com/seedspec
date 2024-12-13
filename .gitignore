@@ -1,8 +1,18 @@
-# Environment
+# Environment files
 .env
+.env.*
+.venv
+env/
+venv/
+ENV/
 
-# Aider tool files
-.aider*
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
 
 # Python
 __pycache__/
@@ -23,3 +33,49 @@ sdist/
 var/
 wheels/
 *.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+
+# JavaScript/Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+coverage/
+.next/
+out/
+build/
+.DS_Store
+*.pem
+
+# Build outputs
+dist/
+build/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Local development
+.aider*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache directories
+.cache/
+.parcel-cache/
+.npm/
+.yarn/
