@@ -1,0 +1,20 @@
+theme invalid {
+  button: {
+    primary: {
+      // Invalid token format - should be a string like "blue.500"
+      bg: 123
+      text: "white"
+      hover: {
+        // Invalid token format - should be a string
+        bg: true
+      }
+    }
+  }
+
+  card: {
+    bg: "white"
+    border: "gray.200"
+    // Invalid token format - should be a string like "sm" or "md"
+    shadow: 2.5
+  }
+}

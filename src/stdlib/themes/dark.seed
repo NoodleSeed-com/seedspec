@@ -1,21 +1,58 @@
-import "base.seed"
-
-// Dark theme - Optimized for dark mode
-theme dark extends default {
-  colors {
-    background: "#0f172a"    // Dark blue
-    surface: "#1e293b"      // Lighter dark blue
-    text: "#f8fafc"         // Very light gray
-    textLight: "#94a3b8"    // Light gray
-    border: "#334155"       // Medium gray
-    primary: "#60a5fa"      // Lighter blue
-    secondary: "#818cf8"    // Lighter indigo
-    accent: "#a78bfa"       // Lighter purple
+// Dark theme using Tailwind tokens
+theme dark extends base {
+  button {
+    primary {
+      bg: "blue.400"
+      text: "white"
+      hover {
+        bg: "blue.300"
+      }
+      focus {
+        ring: "blue.400"
+      }
+    }
+    secondary {
+      bg: "gray.700"
+      text: "gray.100"
+      hover {
+        bg: "gray.600"
+      }
+      focus {
+        ring: "gray.500"
+      }
+    }
   }
 
-  shadows {
-    sm: "0 1px 3px rgba(0,0,0,0.2)"
-    md: "0 4px 6px rgba(0,0,0,0.25)"
-    lg: "0 10px 15px rgba(0,0,0,0.3)"
+  card {
+    bg: "gray.800"
+    border: "gray.700"
+    shadow: "lg"
+    hover {
+      shadow: "xl"
+    }
+  }
+
+  input {
+    bg: "gray.800"
+    border: "gray.600"
+    text: "gray.100"
+    placeholder: "gray.400"
+    focus {
+      border: "blue.400"
+      ring: "blue.400"
+    }
+    error {
+      border: "red.400"
+      text: "red.400"
+    }
+  }
+
+  typography {
+    heading {
+      color: "gray.100"
+    }
+    body {
+      color: "gray.300"
+    }
   }
 }

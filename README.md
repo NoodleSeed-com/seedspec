@@ -4,119 +4,146 @@
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-Seed Spec is an AI-native language that generates production-ready applications from simple specifications. Write what you want, get working software.
+SeedSpec is a type-safe, AI-native language that generates production-ready applications from clear specifications. Write what you want with strong typing, get working software.
 
 ## Quick Example
 
-## Example Specification
+```seed
+// Import standard library
+import "@stdlib/core"
+use { Button, Card } from "@stdlib/components"
 
-```yaml
-// core.seed - Domain model
+// Core application
 app TodoApp {
-  // Core domain model
+  // Type-safe domain model
   entity Task {
-    title: string
-    done: bool = false
+    title: string {
+      min: 3
+      max: 100
+    }
+    done: boolean
+    due: datetime {
+      min: now()  // Must be in future
+    }
   }
-}
-
-// ui.seed - User interface
-extend TodoApp {
-  // UI definition (implies standard patterns)
+  
+  // Strongly typed theme
+  theme MainTheme {
+    tokens {
+      colors {
+        primary: color(#0066cc)
+        success: color(green.500)
+        error: color(red.500)
+      }
+      spacing {
+        small: size(4px)
+        medium: size(8px)
+      }
+    }
+  }
+  
+  // Component with schema validation
+  component TaskCard {
+    required {
+      task: Task
+      onComplete: function
+    }
+    
+    styles {
+      background: color(white)
+      padding: spacing(medium)
+      border: {
+        width: size(1px)
+        style: solid
+        color: color(tokens.colors.primary)
+      }
+    }
+  }
+  
+  // Type-safe screen definition
   screen Tasks {
-    list: [title, done]    // Will imply search, sort, pagination
-    actions: [create, done] // Will imply proper handlers
+    layout: grid(3)
+    components: [TaskCard]
+    actions: [
+      create: {
+        validate: [
+          task.title.length > 0,
+          task.due > now()
+        ]
+      }
+    ]
   }
 }
 ```
 
-The `extend` keyword allows modular app definitions across files, enabling:
-- Separation of concerns
-- Team collaboration
-- Reusable components
-
-This specification will eventually generate a complete application, but the generation tools are still under development.
-
 ## 🌟 Key Features
 
-- **AI-First Design**: Optimized for LLM generation and modification
-- **Intent-Focused**: Express what you want, not how to build it
-- **Smart Defaults**: Production patterns built-in, override only when needed
+- **Type Safety First**: Catch errors at compile time with explicit types and validation
+- **Clear Module System**: Explicit imports/exports and module boundaries
+- **Component Schemas**: Define reusable contracts for components
+- **Smart Defaults**: Production patterns built-in, override when needed
 - **Full Stack**: One specification drives all application layers
 - **Tech Independent**: Target any modern technology stack
-- **Standard Library**: Rich set of pre-built components and themes
-- **Maps Integration**: Built-in support for location-based features and mapping
+- **Standard Library**: Rich set of pre-built, type-safe components and themes
 
-## 🎯 Smart Defaults
+## 🎯 Type System
 
-Seed Spec minimizes boilerplate through intelligent defaults:
+SeedSpec enforces type safety through explicit type declarations:
 
-- `string` fields imply validation, indexing, and proper UI handling
-- `list` screens imply pagination, sorting, and search
-- `actions` imply proper handlers, validation, and error handling
-- All entities get automatic CRUD operations
-- Security best practices are automatically applied
-- `location` fields imply geocoding, map rendering, and distance calculations
-- `map` screens imply clustering, search radius, and interactive controls
-
-Override defaults only when needed:
-```yaml
-// Use standard library theme with overrides
-app MyApp {
-  theme: "modern-light" {
-    colors: {
-      primary: "#0066cc"
-      accent: "#ff4081"
-    }
-  }
-}
-
-// Use standard components with customization
-entity User {
-  // Override string defaults
-  name: string {
-    min: 3,
-    max: 50
+```seed
+types {
+  // Basic types with validation
+  string {
+    min?: number
+    max?: number
+    pattern?: regex
   }
   
-  // Use defaults
-  email: email  // Implies validation, uniqueness
-}
-
-// Maps integration with smart defaults
-entity Store {
-  location: location  // Implies geocoding, validation, map rendering
-}
-
-screen StoreLocator {
-  map: [location]     // Implies clustering, search, radius filters
+  // UI-specific types
+  color {
+    type: hex | rgb | hsl | token
+    value: string
+  }
+  
+  // Component schemas
+  schema Button {
+    required {
+      text: string
+      onClick: function
+    }
+    optional {
+      disabled: boolean
+      variant: enum {
+        values: ["primary", "secondary"]
+      }
+    }
+  }
 }
 ```
 
 ## 🏗️ Generated Stack
 
-Seed Spec generates a complete, production-ready stack:
+SeedSpec generates a complete, type-safe stack:
 
 ### Frontend
 - React + TypeScript
-- Responsive UI components
-- State management
-- Form handling
-- API integration
-- Maps components
+- Type-safe components
+- Strongly typed state management
+- Validated forms
+- Type-safe API integration
 
 ### Backend
 - FastAPI + SQLAlchemy
-- REST endpoints
-- Authentication
-- Validation
+- Type-safe endpoints
+- Schema validation
 - Error handling
+- Database type safety
 
 ### Infrastructure
-- Database migrations
-- Docker configuration
-- API documentation
-- Testing setup
+- Type-safe migrations
+- Configuration validation
+- API type definitions
+- Test type coverage
 
 ## 📚 Documentation
 
@@ -128,8 +155,8 @@ Seed Spec generates a complete, production-ready stack:
 
 - **[Core Concepts](docs/core-concepts/)**
   - [Type System](docs/core-concepts/type-system.md)
+  - [Language Structure](docs/core-concepts/language-structure.md)
   - [Business Rules](docs/core-concepts/business-rules.md)
-  - [UI Patterns](docs/core-concepts/ui-patterns.md)
   - [Architecture](docs/core-concepts/architecture.md)
 
 - **[Examples](docs/examples/)**
@@ -138,39 +165,34 @@ Seed Spec generates a complete, production-ready stack:
   - [Dashboard](docs/examples/dashboard.md)
   - [SaaS](docs/examples/saas.md)
 
-- **[Reference](docs/reference/)**
-  - [Types](docs/reference/types.md)
-  - [Patterns](docs/reference/patterns.md)
-  - [CLI](docs/reference/cli.md)
-
 ## 🛠️ Development Status
 
-Seed Spec is in active development (v0.1.0) with a focus on:
+SeedSpec is in active development (v0.1.0) with a focus on:
 
-1. **Language Evolution**
-   - Expanding core patterns
-   - Enhancing type system
-   - Adding advanced features
-   - Improving validation
+1. **Type System**
+   - Strong type checking
+   - Compile-time validation
+   - Clear error messages
+   - IDE integration
 
-2. **Generation Pipeline**
-   - LLM prompt optimization
-   - Code quality improvements
-   - Performance tuning
-   - Testing automation
+2. **Module System**
+   - Explicit imports/exports
+   - Clear boundaries
+   - Dependency management
+   - Version control
 
 3. **Developer Experience**
-   - IDE integration
-   - Live preview
+   - Type-aware IDE support
+   - Real-time validation
    - Debug tools
-   - Error messages
+   - Error tracing
 
 4. **Enterprise Features**
-   - Multi-tenancy
-   - Authentication
-   - Authorization
+   - Type-safe multi-tenancy
+   - Authentication schemas
+   - Authorization rules
    - Audit logging
-   - Compliance
+   - Compliance validation
 
 ## 🤝 Contributing
 
@@ -214,6 +236,5 @@ Special thanks to:
 <div align="center">
   Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a>
   <br>
-  Making software development more natural for humans and machines
+  Making software development more type-safe and maintainable
 </div>
-

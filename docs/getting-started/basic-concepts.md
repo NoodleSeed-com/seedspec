@@ -1,160 +1,224 @@
 # Basic Concepts
 
-The Seed Specification Language is built around simple, intuitive concepts that map to common application needs.
+The Seed Specification Language (SeedSpec) is built around type-safe, modular concepts that ensure reliability and maintainability.
 
 ## Core Structure
 
-```javascript
-// core.seed - Core app definition
+```seed
+// Import standard library components
+import "@stdlib/core"
+use { Button, Card } from "@stdlib/components"
 
 app TaskManager {
-  // Core domain model
+  // Core domain model with type validation
   entity Task {
-    title: string
-    done: bool
-    due?: date
+    title: string {
+      min: 3
+      max: 100
+    }
+    done: boolean
+    due: datetime {
+      min: now()  // Must be in future
+    }
   }
   
-  // User interface
-  screen TaskList {
-    list: [title, done, due]
-    actions: [create, complete]
-  }
-}
-```
-
-### 1. Entities
-
-```javascript
-entity Task {
-  // Fields
-  title: string
-  done: bool
-  due?: date
-  
-  // Relations
-  assignee: User
-  project: Project
-}
-```
-
-### 2. Screens
-
-```javascript
-screen TaskList {
-  // Data
-  list: [title, done, due]
-  
-  // Actions
-  actions: [create, complete]
-  
-  // Layout
-  layout: grid(3)
-}
-```
-
-### 3. Rules
-
-```javascript
-rules {
-  // Validation
-  validate {
-    title: required
-    due: future
+  // Type-safe theme definition
+  theme MainTheme {
+    tokens {
+      colors {
+        primary: color(#0066cc)
+        success: color(green.500)
+        error: color(red.500)
+      }
+      spacing {
+        small: size(4px)
+        medium: size(8px)
+      }
+    }
   }
   
-  // Behavior
-  on_complete {
-    notify: assignee
-    update: project.progress
+  // Strongly typed UI components
+  component TaskCard {
+    required {
+      task: Task
+      onComplete: function
+    }
+    
+    styles {
+      background: color(white)
+      padding: spacing(medium)
+      border: {
+        width: size(1px)
+        style: solid
+        color: color(tokens.colors.primary)
+      }
+    }
   }
 }
 ```
 
-## Field Types
+## Type System
 
-```javascript
-// Available field types
+### 1. Basic Types
 
-fields {
-  // Text
-  name: string
-  description: text
-  email: email
-  phone: phone
+```seed
+types {
+  // Text with validation
+  string {
+    min?: number
+    max?: number
+    pattern?: regex
+  }
   
-  // Numbers
-  age: int
-  price: decimal
-  rating: float
+  // Numbers with constraints
+  number {
+    min?: number
+    max?: number
+    integer?: boolean
+  }
   
-  // Dates
-  created: datetime
-  due: date
-  time: time
+  // Dates and times
+  datetime {
+    min?: datetime
+    max?: datetime
+    timezone?: string
+  }
   
-  // Other
-  done: bool
-  status: draft/active/done
-  tags: [string]
+  // Boolean values
+  boolean
 }
 ```
 
-## Views
+### 2. UI-Specific Types
 
-```javascript
-screens {
-  // List view
-  list {
-    columns: [title, status, due]
-    actions: [create, edit, delete]
-    filter: status
-    sort: due
+```seed
+types {
+  // Colors with format validation
+  color {
+    type: hex | rgb | hsl | token
+    value: string
   }
   
-  // Detail view
-  detail {
-    fields: [title, description, status]
-    related: [comments, history]
-    actions: [save, archive]
+  // Sizes with units
+  size {
+    type: px | rem | em
+    value: number
+    unit: string
+  }
+  
+  // Typography settings
+  font {
+    family: string
+    size: size
+    weight: number
+    lineHeight?: number
   }
 }
 ```
 
-## Actions
+## Modules and Components
 
-```javascript
-actions: [
-  create {
-    fields: [title, description]
-    validate: required
-  },
-  
-  complete {
-    confirm: "Mark as done?"
-    then: notify@assignee
+### 1. Module Structure
+
+```seed
+// Explicit imports
+import "@stdlib/core"
+use { Button, Input } from "@stdlib/components"
+
+// Explicit exports
+export {
+  TaskCard,
+  TaskList
+} from "./components"
+
+// Module definition
+module Tasks {
+  // Components
+  component TaskCard {
+    // Type-safe props
+    required {
+      task: Task
+      onComplete: function
+    }
+    
+    // Styled variants
+    variants {
+      default: {
+        background: color(white)
+        padding: spacing(medium)
+      }
+      highlighted: {
+        background: color(yellow.100)
+        padding: spacing(large)
+      }
+    }
   }
-]
+}
+```
+
+### 2. Component Schema
+
+```seed
+// Define reusable component contract
+schema Button {
+  required {
+    text: string
+    onClick: function
+  }
+  
+  optional {
+    disabled: boolean
+    variant: enum {
+      values: ["primary", "secondary"]
+    }
+  }
+}
+
+// Implement component
+component Button {
+  // Implement required schema
+  implements: Button
+  
+  // Style variants
+  variants {
+    primary: {
+      background: color(tokens.colors.primary)
+      text: color(white)
+    }
+    secondary: {
+      background: color(transparent)
+      text: color(tokens.colors.primary)
+      border: {
+        color: color(tokens.colors.primary)
+      }
+    }
+  }
+}
 ```
 
 ## Best Practices
 
-1. **Start Simple**
-   - Begin with core entities
-   - Add screens for basic operations
-   - Layer in rules as needed
+1. **Use Strong Typing**
+   - Always specify types explicitly
+   - Add validation constraints
+   - Use schema definitions
 
-2. **Use Clear Names**
-   - Choose descriptive entity names
-   - Use business terminology
-   - Keep field names intuitive
+2. **Structure Code Clearly**
+   - One component per file
+   - Group related functionality
+   - Use clear module boundaries
 
-3. **Think in Workflows**
-   - Model natural user flows
-   - Group related actions
-   - Consider the full lifecycle
+3. **Follow Type Patterns**
+   - Use consistent type definitions
+   - Validate at compile time
+   - Handle all edge cases
 
-4. **Stay Consistent**
-   - Follow naming conventions
-   - Use similar patterns
-   - Maintain clear structure
+4. **Write Clear Contracts**
+   - Define explicit schemas
+   - Document requirements
+   - Use descriptive names
+
+5. **Think in Components**
+   - Break down into small pieces
+   - Make components reusable
+   - Define clear interfaces

@@ -1,145 +1,155 @@
-# Theming
+# Component-Based Theming
 
-Seed Spec provides themes through its standard library (`src/stdlib/themes.seed`) that controls all visual aspects of your application. These themes are part of the standard library and provide a simple hierarchical theming system.
+Seed Spec provides a component-based theming system that uses Tailwind tokens to define styles. Themes are defined in the standard library (`src/stdlib/themes.seed`) and compile to Tailwind utility classes.
 
 ## Basic Usage
 
+Define component styles using Tailwind tokens:
+
 ```javascript
-app MyApp {
-  ui {
-    theme: "light"  # Use built-in light theme
+theme default {
+  button {
+    primary: {
+      bg: "blue.500"          // Uses Tailwind color token
+      text: "white"           // Uses Tailwind color token
+      hover: {
+        bg: "blue.600"        // Uses Tailwind color token
+      }
+      focus: {
+        ring: "blue.500"      // Uses Tailwind color token
+      }
+    }
+  }
+
+  card {
+    bg: "white"              // Uses Tailwind color token
+    border: "gray.200"       // Uses Tailwind color token
+    shadow: "sm"             // Uses Tailwind shadow token
+    hover: {
+      shadow: "md"           // Uses Tailwind shadow token
+    }
   }
 }
 ```
 
-## Theme Properties
+Use the compiled theme tokens in components:
 
-Seed Spec includes a standard library of production-ready themes. The built-in themes include:
+```jsx
+function Button() {
+  const classes = useThemeTokens("button.primary")
+  // Compiles to: "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500"
+  return <button className={classes}>Click Me</button>
+}
 
-- default (base theme with default styles)
-- light (light mode theme extending default)
-- dark (dark mode theme extending default)
+function Card() {
+  const classes = useThemeTokens("card")
+  // Compiles to: "bg-white border-gray-200 shadow-sm hover:shadow-md"
+  return <div className={classes}>Content</div>
+}
+```
 
-Each theme controls these visual aspects:
+## Component Tokens
 
-### Colors
+Theme tokens are organized by component and variant:
+
+### Button Variants
 ```javascript
-colors {
-  primary: "#0066cc"
-  secondary: "#6c757d"
-  background: "#ffffff"
-  surface: "#f8f9fa"
-  text: "#212529"
-  error: "#dc3545"
-  warning: "#ffc107"
-  success: "#28a745"
+button {
+  primary: {
+    bg: "blue.500"
+    text: "white"
+  }
+  secondary: {
+    bg: "gray.100"
+    text: "gray.800"
+  }
+}
+```
+
+### Form Elements
+```javascript
+input {
+  base: {
+    bg: "white"
+    border: "gray.300"
+    focus: {
+      border: "blue.500"
+      ring: "blue.500"
+    }
+  }
+}
 ```
 
 ### Typography
 ```javascript
 typography {
-  fontFamily: 
-    base: "Inter, system-ui, sans-serif"
-    heading: "Poppins, sans-serif"
-  fontSize:
-    xs: "0.75rem"
-    sm: "0.875rem"
-    base: "1rem"
-    lg: "1.125rem"
-    xl: "1.25rem"
-  fontWeight:
-    normal: "400"
-    medium: "500"
-    bold: "700"
-  lineHeight:
-    tight: "1.25"
-    normal: "1.5"
-    relaxed: "1.75"
-```
-
-### Spacing
-```javascript
-spacing {
-  xs: "0.25rem"
-  sm: "0.5rem"
-  md: "1rem"
-  lg: "1.5rem"
-  xl: "2rem"
-  xxl: "3rem"
-```
-
-### Borders & Shadows
-```javascript
-borders {
-  radius:
-    sm: "0.25rem"
-    md: "0.5rem"
-    lg: "1rem"
-    full: "9999px"
-  width:
-    thin: "1px"
-    medium: "2px"
-    thick: "4px"
-
-shadows:
-  sm: "0 1px 2px rgba(0,0,0,0.05)"
-  md: "0 4px 6px rgba(0,0,0,0.1)"
-  lg: "0 10px 15px rgba(0,0,0,0.1)"
-```
-
-## Theme Hierarchy
-
-Themes inherit from parent themes:
-```ascii
-           ┌─────────┐
-           │ default │ Default theme
-           └────┬────┘
-                │
-        ┌───────┴───────┐
-        │               │
-    ┌───┴───┐       ┌───┴───┐
-    │ light │       │ dark  │
-    └───────┘       └───────┘
-```
-
-## Theme Usage
-
-Use a standard theme with optional overrides:
-
-```javascript
-app MyApp {
-  // Use a standard theme
-  theme: "light"
-}
-
-// Or with overrides
-app CustomApp {
-  theme: "light" {
-    colors: {
-      primary: "#0066cc"
-      accent: "#ff4081"
-    }
-    typography: {
-      fontFamily: {
-        base: "Roboto, sans-serif"
-      }
-    }
+  heading: {
+    color: "gray.900"
+    font: "sans"
+    weight: "bold"
+  }
+  body: {
+    color: "gray.600"
+    font: "sans"
   }
 }
+```
 
-// Or create a custom theme extending default
-theme CustomTheme {
-  extends: "light"
-  colors: {
-    primary: "#0066cc"
-    // ... other overrides
+## Dark Mode
+
+Define dark mode variants using Tailwind tokens:
+
+```javascript
+theme dark extends default {
+  button {
+    primary: {
+      bg: "blue.400"
+      text: "white"
+    }
+  }
+
+  card {
+    bg: "gray.800"
+    border: "gray.700"
+  }
+}
+```
+
+The tokens compile to dark mode classes:
+```jsx
+function Card() {
+  const classes = useThemeTokens("card")
+  // Compiles to: "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+  return <div className={classes}>Content</div>
+}
+```
+
+## Theme Composition
+
+Themes support token composition and inheritance:
+
+```javascript
+theme default {
+  // Base tokens can be extended
+  button {
+    base: {
+      px: "4"
+      py: "2"
+      rounded: "md"
+    }
+    primary: {
+      extends: "base"     // Inherits base tokens
+      bg: "blue.500"
+      text: "white"
+    }
   }
 }
 ```
 
 ## Smart Defaults
 
-The theme system follows Seed's smart defaults principle:
-- Built-in themes provide production-ready styling
-- Override only what needs to be different
-- Maintain consistent visual patterns
+The theme system provides:
+- Component-based organization of design tokens
+- Automatic compilation to Tailwind classes
+- Theme inheritance and composition
+- Dark mode support out of the box

@@ -1,0 +1,10 @@
+import "theme_b.seed"
+
+theme a extends b {
+  button {
+    primary {
+      bg: "blue.500"
+      text: "white"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+
+    theme test {
+        button {
+            primary {
+                // Invalid: color token doesn't exist
+                background: color(nonexistent.500)
+                
+                // Invalid: size without unit
+                padding: size(4)
+                
+                // Invalid: number as color
+                text: color(42)
+                
+                // Invalid: string as number
+                opacity: number("0.5")
+            }
+        }
+    }
+    

@@ -1,0 +1,39 @@
+theme default {
+  colors {
+    primary: "#3b82f6"    // Tailwind blue-500
+    secondary: "#6366f1"  // Tailwind indigo-500
+    background: "#ffffff"
+    surface: "#f8fafc"    // Tailwind slate-50
+    text: "#1e293b"       // Tailwind slate-800
+  }
+  typography {
+    fontFamily {
+      base: "Inter, system-ui, sans-serif"
+      heading: "Inter, system-ui, sans-serif"
+    }
+    fontSize {
+      base: "1rem"     // Tailwind text-base
+      lg: "1.25rem"    // Tailwind text-lg
+      xl: "1.5rem"     // Tailwind text-xl
+    }
+  }
+  animation {
+    duration {
+      fast: "150ms"
+      normal: "300ms"
+    }
+    easing {
+      default: "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  }
+}
+
+theme dark {
+  colors {
+    primary: "#60a5fa"    // Tailwind blue-400
+    secondary: "#818cf8"  // Tailwind indigo-400
+    background: "#1e293b" // Tailwind slate-800
+    surface: "#334155"    // Tailwind slate-700
+    text: "#f8fafc"       // Tailwind slate-50
+  }
+}

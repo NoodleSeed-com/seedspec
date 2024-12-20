@@ -1,112 +1,80 @@
-# Intent-Focused Language Structure
+# Seed Specification Language Structure
 
-The Seed Specification Language lets you express what you want to build, not how to build it.
+The Seed Specification Language (SeedML) provides a type-safe, modular way to define consistent design systems and applications.
 
 ## Core Principles
 
-### 1. Express Intent, Not Implementation
+### 1. Type Safety First
 
-```javascript
-// Just describe what you want
-app TodoList {
-  // Core data
-  entity Task {
-    title: string
-    done: bool
-    due?: date
-  }
-  
-  // User interface
-  screen Tasks {
-    list: [title, done, due]
-    actions: [create, complete]
-  }
-}
+All values must have explicit types to prevent ambiguity and catch errors early:
 
-// SeedML infers the rest:
-// - Database schema
-// - API endpoints
-// - UI components
-// - Business logic
-// - Validation
-// - Error handling
-```
-
-### 2. Progressive Complexity
-
-Start simple, add detail only when needed:
-
-```javascript
-// Minimal version
-entity User {
-  name: string
-  email: email
-}
-
-// Add validation when needed
-entity User {
-  name: string {
-    min: 2
-    max: 50
-  }
-  email: email {
-    unique: true
-    domain: company.com
-  }
-}
-
-// Add behavior when needed
-entity User {
-  name: string
-  email: email
-  
-  rules {
-    on_create: send_welcome_email
-    on_delete: archive_data
-  }
-  
-  compute {
-    full_name: name + " " + surname
-    age: birthday.years_since()
-  }
-}
-```
-
-### 3. Smart Composition
-
-Combine patterns to express complex intent:
-
-```javascript
-app OrderSystem {
-  // Core domain
-  entity Order {
-    status: draft->submitted->approved
-    items: [OrderItem]
-    total: money
-  }
-
-  // Business rules
-  rules {
-    submit {
-      require: [
-        items.length > 0,
-        total > 0
-      ]
-      then: notify@customer
+```seed
+app TodoApp {
+  theme MainTheme {
+    tokens {
+      colors {
+        primary: color(#0066cc)      // Explicit color type
+        secondary: color(blue.500)    // Color token reference
+      }
+      
+      spacing {
+        small: size(4px)             // Explicit size type
+        medium: size(8px)
+        large: size(16px)
+      }
     }
   }
+}
+```
 
-  // User interface
-  screen Orders {
-    list: [id, customer, total, status]
-    actions: [create, submit, approve]
+### 2. Modular Design
+
+Clear module system with explicit imports and exports:
+
+```seed
+// Import from standard library
+import "@stdlib/core"
+
+// Use specific exports
+use { colors, spacing } from theme
+
+// Export your own components
+export {
+  Button,
+  Card
+} from "./components"
+```
+
+### 3. Component-Based Structure
+
+Components are first-class citizens with schema validation:
+
+```seed
+// Define component schema
+schema Button {
+  required {
+    background: color
+    text: color
   }
+  optional {
+    padding: spacing
+    border: border
+  }
+}
 
-  // Integration
-  integrate {
-    payment: stripe {
-      on: order.submit
-      charge: total
+// Implement component
+component Button {
+  variants {
+    primary: {
+      background: color(blue.500)
+      text: color(white)
+      padding: spacing(4)
+    }
+    
+    secondary: {
+      background: color(gray.100)
+      text: color(gray.900)
+      padding: spacing(4)
     }
   }
 }
@@ -114,108 +82,160 @@ app OrderSystem {
 
 ## Key Components
 
-### 1. Domain Model
-Define your core business entities:
+### 1. Type System
 
-```javascript
-entity Product {
-  name: string
-  price: money
-  category: electronics/books/clothing
+Built-in types ensure values are valid:
+
+```seed
+types {
+  // Core data types
+  string: {
+    min: number
+    max: number
+    pattern?: regex
+  }
   
-  // Relations
-  vendor: Vendor
-  reviews: [Review]
+  number: {
+    min?: number
+    max?: number
+    integer?: boolean
+  }
+  
+  // UI specific types
+  color: hex | token        // #fff or blue.500
+  size: px | rem | token    // 16px or 1rem or sm
+  spacing: size | array     // 16px or [16px, 32px]
+  
+  // Complex types
+  entity: {
+    fields: [Field]
+    rules?: [Rule]
+  }
+  
+  screen: {
+    layout: grid | list
+    components: [Component]
+  }
 }
 ```
 
-### 2. Business Rules
-Express logic and workflows:
+### 2. Design System
 
-```javascript
-rules {
-  approve_order {
-    when: status -> approved
-    require: [
-      total < 10000,
-      items.all(in_stock)
+Reusable design tokens with explicit types:
+
+```seed
+app MyApp {
+  theme MainTheme {
+    // Color palette
+    tokens {
+      colors {
+        primary: color(#0066cc)
+        secondary: color(#666666)
+        success: color(green.500)
+        error: color(red.500)
+      }
+      
+      // Typography scale
+      typography {
+        body: {
+          size: size(16px)
+          lineHeight: size(1.5)
+          family: font("Inter")
+        }
+        heading: {
+          size: size(24px)
+          lineHeight: size(1.2)
+          family: font("Inter")
+          weight: number(600)
+        }
+      }
+    }
+  }
+  
+  // Business entities
+  entity User {
+    name: string {
+      min: 2
+      max: 50
+    }
+    email: email {
+      unique: true
+    }
+  }
+  
+  // UI screens
+  screen UserList {
+    layout: grid(3)
+    components: [
+      UserCard,
+      Pagination
     ]
-    then: [
-      notify@customer,
-      update@inventory
-    ]
+    actions: [create, edit, delete]
   }
 }
 ```
 
-### 3. User Interface
-Define screens and interactions:
+### 3. Components
 
-```javascript
-screen Products {
-  // Layout
-  layout: grid(3)
-  
-  // Data display
-  show: [image, name, price]
-  
-  // User actions
-  actions: [
-    create: button,
-    edit: menu,
-    delete: confirm
-  ]
-  
-  // Behavior
-  search: [name, category]
-  sort: price
-  filter: category
-}
-```
+Reusable UI components with variants:
 
-### 4. Integration
-Connect external services:
-
-```javascript
-integrate {
-  // Authentication
-  auth {
-    provider: google
-    roles: [user, admin]
+```seed
+component Button {
+  // Base styles
+  base {
+    padding: spacing(4)
+    border: none
+    borderRadius: size(4px)
   }
   
-  // Storage
-  files: s3 {
-    bucket: uploads
-    types: [image, pdf]
+  // Variants
+  variants {
+    primary: {
+      background: color(tokens.colors.primary)
+      text: color(white)
+    }
+    secondary: {
+      background: color(transparent)
+      text: color(tokens.colors.primary)
+      border: {
+        width: size(1px)
+        style: solid
+        color: color(tokens.colors.primary)
+      }
+    }
   }
   
-  // Notifications
-  notify {
-    email: sendgrid
-    sms: twilio
+  // States
+  states {
+    hover: {
+      opacity: number(0.9)
+    }
+    disabled: {
+      opacity: number(0.5)
+      cursor: not-allowed
+    }
   }
 }
 ```
 
 ## Best Practices
 
-1. **Start Simple**
-   - Begin with core entities
-   - Add complexity gradually
-   - Let defaults work for you
+1. **Use Types Consistently**
+   - Always specify value types
+   - Use token references when possible
+   - Validate values at parse time
 
-2. **Focus on Intent**
-   - Describe what, not how
-   - Use business terminology
-   - Express natural workflows
+2. **Structure Modules Clearly**
+   - One component per file
+   - Group related tokens
+   - Use explicit imports/exports
 
-3. **Leverage Patterns**
-   - Use built-in components
-   - Combine existing patterns
-   - Stay consistent
+3. **Follow Component Patterns**
+   - Define clear schemas
+   - Use consistent variant names
+   - Handle all states
 
-4. **Think in Domains**
-   - Model business concepts
-   - Group related features
-   - Maintain boundaries
+4. **Maintain Application Structure**
+   - Separate concerns (entities, UI, themes)
+   - Use consistent naming
+   - Follow domain-driven design principles

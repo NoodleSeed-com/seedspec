@@ -1,0 +1,63 @@
+// Base theme using Tailwind tokens
+theme default {
+  button {
+    primary: {
+      bg: "blue.500"
+      text: "white"
+      hover: {
+        bg: "blue.600"
+      }
+      focus: {
+        ring: "blue.500"
+      }
+    }
+    secondary: {
+      bg: "gray.100" 
+      text: "gray.800"
+      hover: {
+        bg: "gray.200"
+      }
+      focus: {
+        ring: "gray.500"
+      }
+    }
+  }
+
+  card {
+    bg: "white"
+    border: "gray.200"
+    shadow: "sm"
+    hover: {
+      shadow: "md"
+    }
+    rounded: "lg"
+  }
+
+  input {
+    bg: "white"
+    border: "gray.300"
+    text: "gray.900"
+    placeholder: "gray.500"
+    focus: {
+      border: "blue.500"
+      ring: "blue.500"
+    }
+    error: {
+      border: "red.500"
+      text: "red.500"
+    }
+  }
+
+  typography {
+    heading: {
+      color: "gray.900"
+      font: "sans"
+      weight: "bold"
+    }
+    body: {
+      color: "gray.600"
+      font: "sans"
+      weight: "normal"
+    }
+  }
+}

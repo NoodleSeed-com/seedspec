@@ -1,0 +1,28 @@
+// Invalid: Missing type declarations and improper syntax
+import "@stdlib/themes/theme_b"
+
+theme a extends b {
+  button {
+    primary {
+      // Invalid: Missing color type declaration
+      bg: "red.500"
+      // Invalid: Missing color type declaration
+      text: "white"
+      // Invalid: Missing proper nesting
+      hover.bg: "red.600"
+    }
+  }
+
+  card {
+    // Invalid: Missing size type declaration
+    padding: 4
+    // Invalid: Improper color value
+    background: invalid-color
+    // Invalid: Missing border type declaration
+    border: {
+      width: "1px"
+      style: dotted
+      color: "#xyz"  // Invalid hex color
+    }
+  }
+}

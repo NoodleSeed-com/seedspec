@@ -1,158 +1,227 @@
 # Type System
 
-The Seed Specification Language's type system combines simplicity with power.
+The Seed Specification Language's type system provides strict typing with explicit validation.
 
 ## Core Types
 
-```javascript
-// Basic Types
-string              // Text
-number              // Numbers
-bool                // True/False
-date                // Dates
-time                // Time
-datetime            // Date+Time
-money               // Currency
-email               // Email
-phone               // Phone
-url                 // URLs
+```seed
+types {
+  // Basic Types
+  string {
+    min?: number        // Minimum length
+    max?: number        // Maximum length
+    pattern?: regex     // Regex pattern
+    format?: email | url | phone  // Format validation
+  }
+  
+  number {
+    min?: number        // Minimum value
+    max?: number        // Maximum value
+    integer?: boolean   // Must be integer
+    positive?: boolean  // Must be positive
+  }
+  
+  boolean              // true/false
+  
+  // Collection Types
+  array {
+    type: Type         // Array element type
+    min?: number       // Minimum length
+    max?: number       // Maximum length
+    unique?: boolean   // Elements must be unique
+  }
+  
+  map {
+    key: Type          // Key type
+    value: Type        // Value type
+  }
+  
+  enum {
+    values: [string]   // Allowed values
+  }
+}
+```
 
-// Complex Types
-[Type]              // Lists
-Type?               // Optional
-Type!               // Required
-map<Key,Value>      // Maps
-enum(v1,v2)         // Enums
+## UI-Specific Types
 
-// Special Types
-id                  // Unique IDs
-timestamp           // Timestamps
-file                // Files
-image               // Images
-
-// Location Types
-location            // Geographic coordinates with address
-place               // Place details with metadata
-region              // Geographic boundary
-distance            // Distance with units
+```seed
+types {
+  // Color Values
+  color {
+    type: hex | rgb | hsl | token
+    value: string
+  }
+  
+  // Size Values
+  size {
+    type: px | rem | em | token
+    value: number
+    unit?: string
+  }
+  
+  // Spacing Values
+  spacing {
+    type: size | array
+    value: size | [size, size, size, size]
+  }
+  
+  // Typography Values
+  font {
+    family: string
+    size: size
+    weight: number | token
+    style?: normal | italic
+    lineHeight?: number | size
+  }
+  
+  // Border Values
+  border {
+    width: size
+    style: solid | dashed | dotted
+    color: color
+    radius?: size
+  }
+}
 ```
 
 ## Type Usage
 
-```javascript
-// Validation
-age: number {
-  min: 0
-  max: 150
-}
+### 1. Explicit Type Declaration
 
-// Collections
-tags: [string]
-metadata: map<string,any>
+All values must have explicit types:
 
-// Inference
-entity Product {
-  price: 0.00      // money
-  created: now()    // timestamp
-  active: true     // bool
-}
-```
-
-## Location Type System
-
-```javascript
-// Location Types
-location {
-  lat: number        // Latitude
-  lng: number        // Longitude
-  address?: string   // Optional formatted address
-  placeId?: string   // Optional place identifier
-}
-
-place {
-  location: location
-  name: string
-  type: string
-  metadata: map<string, any>
-}
-
-region {
-  type: circle/polygon/bounds
-  center?: location   // For circle
-  radius?: distance   // For circle
-  points?: [location] // For polygon
-  bounds?: {          // For bounds
-    ne: location
-    sw: location
-  }
-}
-
-distance {
-  value: number
-  unit: km/mi/m
-}
-
-// Location Validation
-location {
-  within: region          // Must be within region
-  near: location, radius  // Must be near point
-  type: business/postal   // Place type constraints
-}
-
-// Location Formatting
-location {
-  format: full/short     // Address format
-  components: [street, city, country]
-  language: string       // Localization
-}
-
-// Usage Examples
-stores: [location]           // List of locations
-coverage: region            // Service area
-distance: number as km      // Distance in kilometers
-
-entity Store {
-  location: location {
-    within: service_area
-    type: commercial
-  }
-  compute {
-    distance: from(user.location)
-    nearby: stores.within(5km)
-    region: coverage_area()
+```seed
+theme MainTheme {
+  tokens {
+    colors {
+      primary: color(#0066cc)
+      secondary: color(blue.500)
+    }
+    
+    spacing {
+      small: size(4px)
+      medium: size(8px)
+      large: size(16px)
+    }
   }
 }
 ```
 
-## Custom & Composite Types
+### 2. Component Type Validation
 
-```javascript
-// Custom Types
+Components define required and optional typed properties:
+
+```seed
+schema Button {
+  required {
+    background: color
+    text: color
+    padding: spacing
+  }
+  
+  optional {
+    border: border
+    hover: {
+      background: color
+      text: color
+    }
+  }
+}
+```
+
+### 3. Entity Type Validation
+
+Business entities use type validation:
+
+```seed
+entity User {
+  name: string {
+    min: 2
+    max: 50
+    pattern: "[A-Za-z ]+"
+  }
+  
+  email: string {
+    format: email
+    unique: true
+  }
+  
+  age: number {
+    min: 0
+    max: 150
+    integer: true
+  }
+  
+  roles: array {
+    type: enum {
+      values: ["user", "admin", "moderator"]
+    }
+  }
+}
+```
+
+## Type Composition
+
+Types can be composed to create complex structures:
+
+```seed
+// Custom type definitions
 types {
-  Currency: money {
-    precision: 2
-    positive: true
+  UserRole: enum {
+    values: ["user", "admin", "moderator"]
   }
-  Status: enum(active, pending)
+  
+  Address: {
+    street: string
+    city: string
+    country: string
+    postal: string {
+      pattern: "[0-9]{5}"
+    }
+  }
 }
 
-// Composition
-entity Order {
-  items: [{
-    product: Product
-    quantity: number > 0
-    price: Currency
-  }]
-  shipping: {
+// Using composed types
+entity User {
+  profile: {
+    name: string
+    avatar: string {
+      format: url
+    }
     address: Address
-    method: standard/express
+  }
+  
+  settings: map {
+    key: string
+    value: string | number | boolean
+  }
+  
+  permissions: array {
+    type: UserRole
+    unique: true
   }
 }
 ```
 
 ## Benefits
 
-- Type Safety: Compile-time & runtime validation
-- Clear Modeling: Self-documenting schemas
-- Code Generation: DB, API, UI components
-- IDE Support: Completion, validation, docs
+1. **Type Safety**
+   - Compile-time validation
+   - Runtime type checking
+   - No implicit conversions
+
+2. **Clear Contracts**
+   - Self-documenting schemas
+   - Explicit validation rules
+   - IDE support
+
+3. **Error Prevention**
+   - Early error detection
+   - Clear error messages
+   - Validation at parse time
+
+4. **Code Generation**
+   - Type-safe APIs
+   - Database schemas
+   - UI components
+   - Form validation
