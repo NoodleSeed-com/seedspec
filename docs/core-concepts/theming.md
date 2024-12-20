@@ -16,12 +16,9 @@ app MyApp {
 
 Seed Spec includes a standard library of production-ready themes. The built-in themes include:
 
-- modern-light
-- modern-dark
-- classic-light
-- classic-dark
-- minimal
-- corporate
+- default (base theme with default styles)
+- light (light mode theme extending default)
+- dark (dark mode theme extending default)
 
 Each theme controls these visual aspects:
 
@@ -95,7 +92,7 @@ shadows:
 Themes inherit from parent themes:
 ```ascii
            ┌─────────┐
-           │ default │ Base theme
+           │ default │ Default theme
            └────┬────┘
                 │
         ┌───────┴───────┐
@@ -112,12 +109,12 @@ Use a standard theme with optional overrides:
 ```yaml
 app MyApp {
   // Use a standard theme
-  theme: "modern-light"
+  theme: "light"
 }
 
 // Or with overrides
 app CustomApp {
-  theme: "modern-light" {
+  theme: "light" {
     colors: {
       primary: "#0066cc"
       accent: "#ff4081"
@@ -130,9 +127,9 @@ app CustomApp {
   }
 }
 
-// Or create a custom theme extending a base
+// Or create a custom theme extending default
 theme CustomTheme {
-  extends: "modern-light"
+  extends: "light"
   colors: {
     primary: "#0066cc"
     // ... other overrides
