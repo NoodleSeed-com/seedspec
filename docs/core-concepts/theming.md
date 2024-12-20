@@ -4,7 +4,7 @@ Seed Spec provides themes through its standard library (`src/stdlib/themes.seed`
 
 ## Basic Usage
 
-```yaml
+```javascript
 app MyApp {
   ui {
     theme: "light"  # Use built-in light theme
@@ -23,8 +23,8 @@ Seed Spec includes a standard library of production-ready themes. The built-in t
 Each theme controls these visual aspects:
 
 ### Colors
-```yaml
-colors:
+```javascript
+colors {
   primary: "#0066cc"
   secondary: "#6c757d"
   background: "#ffffff"
@@ -36,8 +36,8 @@ colors:
 ```
 
 ### Typography
-```yaml
-typography:
+```javascript
+typography {
   fontFamily: 
     base: "Inter, system-ui, sans-serif"
     heading: "Poppins, sans-serif"
@@ -58,8 +58,8 @@ typography:
 ```
 
 ### Spacing
-```yaml
-spacing:
+```javascript
+spacing {
   xs: "0.25rem"
   sm: "0.5rem"
   md: "1rem"
@@ -69,8 +69,8 @@ spacing:
 ```
 
 ### Borders & Shadows
-```yaml
-borders:
+```javascript
+borders {
   radius:
     sm: "0.25rem"
     md: "0.5rem"
@@ -106,7 +106,7 @@ Themes inherit from parent themes:
 
 Use a standard theme with optional overrides:
 
-```yaml
+```javascript
 app MyApp {
   // Use a standard theme
   theme: "light"

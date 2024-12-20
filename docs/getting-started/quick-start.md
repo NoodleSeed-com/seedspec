@@ -1,73 +1,69 @@
 # Quick Start Guide
 
-## Prerequisites
+Get up and running with Seed Spec quickly.
 
-1. Install SeedML following the [installation guide](installation.md)
-2. Set up your Anthropic API key:
-```bash
-export ANTHROPIC_API_KEY='your-api-key'
-```
-3. Set up your Google Maps API key (optional):
-```bash
-export GOOGLE_MAPS_KEY='your-maps-key'
-```
+## 1. Create Your First File
 
-## Your First SeedML App
+Create a new file `core.seed`:
 
-1. Create a new file `todo.seed`:
-
-```yaml
+```javascript
 // core.seed - Core domain model
-app TodoList {
-  entity Task {
-    title: string
-    done: bool = false
-    due?: date
-    location?: location    // Optional location
-  }
-}
 
-// ui.seed - UI components
-extend TodoList {
-  // UI definition with theme
-  ui {
-    theme: "light"  // Use built-in light theme
+app MyApp {
+  // Define your core entities
+  entity User {
+    name: string
+    email: email
+    role: admin/user
   }
   
-  screen Tasks {
-    // List view with location awareness
-    list: [title, done, due, location]
-    actions: [create, toggle-done]
+  entity Product {
+    name: string
+    price: money
+    stock: int
+  }
+  
+  // Define your screens
+  screen Products {
+    list: [name, price, stock]
+    actions: [create, edit, delete]
+    filter: stock > 0
+  }
+  
+  // Define your rules
+  rules {
+    validate {
+      price: positive
+      stock: min(0)
+    }
     
-    // Optional map view
-    map?: {
-      markers: incomplete_tasks
-      cluster: true
+    on_low_stock {
+      when: stock < 10
+      then: notify@admin
     }
   }
 }
 ```
 
-2. Generate the application:
+## 2. Run the Generator
 
 ```bash
-seedml todo.seed
+seed generate core.seed
 ```
 
-This will create a basic application with:
-- React + TypeScript frontend (alpha)
-- FastAPI backend (alpha)
-- MySQL database schema
-- Basic API documentation
-- Interactive maps (when location fields are used)
-- Geocoding support
+## 3. Start the App
 
-Note: SeedML is currently in early alpha. Many features are still under development and the generated code should be reviewed carefully before use in production.
+```bash
+seed start
+```
 
-Note: Location features require a Google Maps API key. Without the key, the application will still work but location features will be disabled. Features can be enabled later by adding the API key to your environment.
+Your app is now running at http://localhost:3000
 
 ## Next Steps
 
-1. Add more features to your todo app
-2. Learn about [Core Concepts](../core-concepts/overview.md)
-3. Try the [First Application Tutorial](first-app.md)
+1. Add more entities and screens
+2. Define business rules
+3. Customize the theme
+4. Add integrations
+
+See the [Full Guide](first-app.md) for a more detailed walkthrough.

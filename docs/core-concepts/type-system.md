@@ -4,7 +4,7 @@ The Seed Specification Language's type system combines simplicity with power.
 
 ## Core Types
 
-```yaml
+```javascript
 // Basic Types
 string              // Text
 number              // Numbers
@@ -39,7 +39,7 @@ distance            // Distance with units
 
 ## Type Usage
 
-```yaml
+```javascript
 // Validation
 age: number {
   min: 0
@@ -60,13 +60,13 @@ entity Product {
 
 ## Location Type System
 
-```yaml
-# Location Types
+```javascript
+// Location Types
 location {
-  lat: number        # Latitude
-  lng: number        # Longitude
-  address?: string   # Optional formatted address
-  placeId?: string   # Optional place identifier
+  lat: number        // Latitude
+  lng: number        // Longitude
+  address?: string   // Optional formatted address
+  placeId?: string   // Optional place identifier
 }
 
 place {
@@ -78,10 +78,10 @@ place {
 
 region {
   type: circle/polygon/bounds
-  center?: location   # For circle
-  radius?: distance   # For circle
-  points?: [location] # For polygon
-  bounds?: {          # For bounds
+  center?: location   // For circle
+  radius?: distance   // For circle
+  points?: [location] // For polygon
+  bounds?: {          // For bounds
     ne: location
     sw: location
   }
@@ -92,24 +92,24 @@ distance {
   unit: km/mi/m
 }
 
-# Location Validation
+// Location Validation
 location {
-  within: region          # Must be within region
-  near: location, radius  # Must be near point
-  type: business/postal   # Place type constraints
+  within: region          // Must be within region
+  near: location, radius  // Must be near point
+  type: business/postal   // Place type constraints
 }
 
-# Location Formatting
+// Location Formatting
 location {
-  format: full/short     # Address format
+  format: full/short     // Address format
   components: [street, city, country]
-  language: string       # Localization
+  language: string       // Localization
 }
 
-# Usage Examples
-stores: [location]           # List of locations
-coverage: region            # Service area
-distance: number as km      # Distance in kilometers
+// Usage Examples
+stores: [location]           // List of locations
+coverage: region            // Service area
+distance: number as km      // Distance in kilometers
 
 entity Store {
   location: location {
@@ -126,8 +126,8 @@ entity Store {
 
 ## Custom & Composite Types
 
-```yaml
-# Custom Types
+```javascript
+// Custom Types
 types {
   Currency: money {
     precision: 2
@@ -136,7 +136,7 @@ types {
   Status: enum(active, pending)
 }
 
-# Composition
+// Composition
 entity Order {
   items: [{
     product: Product

@@ -1,144 +1,160 @@
 # Basic Concepts
 
-Learn the core concepts of SeedML development.
+The Seed Specification Language is built around simple, intuitive concepts that map to common application needs.
 
-## Application Structure
+## Core Structure
 
-SeedML applications can be organized in multiple files using the `extend` keyword:
+```javascript
+// core.seed - Core app definition
 
-```yaml
-# core.seed - Core app definition
-app MyApp {
-  # Data models
+app TaskManager {
+  // Core domain model
   entity Task {
     title: string
     done: bool
+    due?: date
   }
-}
-
-# ui.seed - UI components
-extend MyApp {
-  # Theme configuration
-  ui {
-    theme: "light"  # Use built-in theme
-  }
-
-  # Screens
-  screen Tasks {
-    list: [title, done]
+  
+  // User interface
+  screen TaskList {
+    list: [title, done, due]
     actions: [create, complete]
   }
 }
 ```
 
-Every SeedML application has these main parts:
+### 1. Entities
 
-### 1. Data Models (Entities)
-
-Define your data structure:
-
-```yaml
+```javascript
 entity Task {
-  title: string           # Text fields
-  done: bool = false      # Boolean with default
-  due: date              # Date field
-  assigned: User         # Reference another entity
-  items: [Item]          # Simple list
+  // Fields
+  title: string
+  done: bool
+  due?: date
+  
+  // Relations
+  assignee: User
+  project: Project
 }
 ```
 
-### 2. User Interface (Screens)
+### 2. Screens
 
-Define your views:
-
-```yaml
+```javascript
 screen TaskList {
-  # List view
+  // Data
   list: [title, done, due]
-  actions: [create, edit, delete]
-}
-
-screen TaskForm {
-  # Form view  
-  form: [title, due, assigned]
-  actions: [save]
+  
+  // Actions
+  actions: [create, complete]
+  
+  // Layout
+  layout: grid(3)
 }
 ```
 
-### 3. Business Rules
+### 3. Rules
 
-Define basic validation and logic:
-
-```yaml
+```javascript
 rules {
-  # Validation
-  validate: due > today
-  require: title != null
-
-  # Simple actions
-  then: notify_assigned
+  // Validation
+  validate {
+    title: required
+    due: future
+  }
+  
+  // Behavior
+  on_complete {
+    notify: assignee
+    update: project.progress
+  }
 }
 ```
 
-## Key Principles
+## Field Types
 
-### 1. Keep It Simple
-- Focus on core features
-- Use basic types
-- Minimal configuration
+```javascript
+// Available field types
 
-### 2. Smart Defaults
-- Common patterns built-in
-- Sensible behaviors
-- Easy to get started
-
-### 3. Full Stack
-- One specification
-- Generates complete app
-- Ready to run
-
-## Basic Types
-
-```yaml
-# Available field types
-string              # Text
-number              # Numbers
-bool                # True/False
-date                # Dates
-[Type]              # Lists
-Reference           # Entity references
-```
-
-## Common Patterns
-
-### 1. Fields
-```yaml
 fields {
-  required: string         # Required field
-  optional: string?        # Optional field
-  default: bool = false    # Default value
+  // Text
+  name: string
+  description: text
+  email: email
+  phone: phone
+  
+  // Numbers
+  age: int
+  price: decimal
+  rating: float
+  
+  // Dates
+  created: datetime
+  due: date
+  time: time
+  
+  // Other
+  done: bool
+  status: draft/active/done
+  tags: [string]
 }
 ```
 
-### 2. Views
-```yaml
+## Views
+
+```javascript
 screens {
-  list: [field1, field2]   # List view
-  form: [field1, field2]   # Form view
+  // List view
+  list {
+    columns: [title, status, due]
+    actions: [create, edit, delete]
+    filter: status
+    sort: due
+  }
+  
+  // Detail view
+  detail {
+    fields: [title, description, status]
+    related: [comments, history]
+    actions: [save, archive]
+  }
 }
 ```
 
-### 3. Actions
-```yaml
+## Actions
+
+```javascript
 actions: [
-  create,                  # Create new
-  edit,                    # Edit existing
-  delete                   # Delete item
+  create {
+    fields: [title, description]
+    validate: required
+  },
+  
+  complete {
+    confirm: "Mark as done?"
+    then: notify@assignee
+  }
 ]
 ```
 
-## Next Steps
+## Best Practices
 
-1. Try the [Quick Start Guide](quick-start.md)
-2. Build your [First Application](first-app.md)
-3. See [Examples](../examples/basic-crud.md)
+1. **Start Simple**
+   - Begin with core entities
+   - Add screens for basic operations
+   - Layer in rules as needed
+
+2. **Use Clear Names**
+   - Choose descriptive entity names
+   - Use business terminology
+   - Keep field names intuitive
+
+3. **Think in Workflows**
+   - Model natural user flows
+   - Group related actions
+   - Consider the full lifecycle
+
+4. **Stay Consistent**
+   - Follow naming conventions
+   - Use similar patterns
+   - Maintain clear structure

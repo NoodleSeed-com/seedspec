@@ -1,350 +1,209 @@
 # Security
 
-The Seed Specification Language implements comprehensive security patterns to protect applications and data.
+Seed Spec provides comprehensive security features built into the language.
 
-## Access Control
-
-### 1. Role-Based Access
-```yaml
-app SecureApp {
-  # Define roles
-  roles: {
-    admin: full_access,
-    manager: [read_all, write_own],
-    user: read_own
-  }
-
-  entity Document {
-    access: {
-      view: authenticated
-      edit: role.manager
-      delete: role.admin
-    }
-
-    fields: {
-      total: view@finance,
-      notes: edit@owner
-    }
-  }
-}
-```
-
-### 2. Data-Level Security
-```yaml
-entity Order {
-  # Row-level security
-  access: {
-    view: owner or role.manager
-    edit: owner and status == draft
-  }
-
-  # Field-level security
-  fields: {
-    total: view@finance,
-    notes: edit@owner
-  }
-}
-```
-
-## Authentication
-
-### 1. Configuration
-```yaml
-auth {
-  providers: [
-    oauth: [google, github],
-    saml: corporate,
-    mfa: optional
-  ]
-  
-  session: {
-    duration: 24h
-    refresh: true
-    secure: true
-  }
-}
-```
-
-### 2. User Management
-```yaml
-entity User {
-  auth: {
-    password: {
-      min_length: 12
-      require: [letter, number, special]
-      expire: 90d
-    }
-    
-    mfa: {
-      methods: [app, sms]
-      required: role.admin
-    }
-  }
-}
-```
-
-## Data Protection
-
-### 1. Encryption
-```yaml
-entity Customer {
-  # Field encryption
-  fields: {
-    ssn: encrypted,
-    card: encrypted(PCI)
-  }
-
-  # Data classification
-  classify: {
-    pii: [name, email, phone],
-    sensitive: [ssn, card]
-  }
-}
-```
-
-### 2. Audit Trails
-```yaml
-audit {
-  # What to track
-  track: [
-    data_access,
-    changes,
-    auth_events
-  ]
-
-  # How to store
-  store: {
-    retention: 1y
-    tamper_proof: true
-  }
-}
-```
-
-### 3. Location Privacy
-```yaml
-entity UserLocation {
-  # Location privacy controls
-  location: location {
-    precision: reduced     # Reduce coordinate precision
-    mask: radius(1km)     # Area-based masking
-    share: opt_in         # Explicit sharing consent
-  }
-  
-  # Data classification
-  classify: {
-    location: sensitive,
-    history: restricted,
-    patterns: protected
-  }
-  
-  # Access controls
-  access: {
-    exact: role.admin,
-    approximate: authenticated,
-    history: owner
-  }
-}
-
-# Location data lifecycle
-location_data {
-  retention: {
-    live: 30d,            # Live data retention
-    history: 90d,         # Historical data
-    analytics: 1y         # Aggregated data
-  }
-  
-  disposal: {
-    method: secure_erase,
-    schedule: automatic,
-    audit: required
-  }
-}
-```
-
-## Best Practices
-
-1. **Authentication**
-   - Strong password policies
-   - Multi-factor authentication
-   - Secure session management
-   - Regular credential rotation
-   
-# Maps API security
-maps_api {
-  keys: {
-    rotation: 90d,        # Key rotation period
-    restrict: {
-      domains: [list],    # Domain restrictions
-      usage: rate_limit,  # Usage limits
-      features: minimal   # Minimal permissions
-    }
-  }
-  
-  requests: {
-    sign: required,       # Request signing
-    encrypt: transit,     # Transport encryption
-    validate: origin      # Origin validation
-  }
-}
-
-# Location audit
-audit {
-  track: [
-    location.access,      # Location data access
-    location.changes,     # Location updates
-    boundary.cross,       # Region transitions
-    pattern.detect        # Movement patterns
-  ]
-  
-  location_events: {
-    precision: city,      # Audit trail precision
-    retain: 1y,          # Retention period
-    encrypt: always       # Encryption requirement
-  }
-}
-
-2. **Authorization**
-   - Principle of least privilege
-   - Granular permissions
-   - Context-aware access
-   - Regular access review
-
-3. **Data Security**
-   - Encryption at rest
-   - Encryption in transit
-   - Secure key management
-   - Data classification
-
-4. **Operational Security**
-   - Security logging
-   - Intrusion detection
-   - Regular audits
-   - Incident response
-
-5. **Location Data Security**
-   - Data Collection
-     • Collect minimum necessary data
-     • Clear consent requirements
-     • Purpose specification
-     • Retention limits
-
-   - Data Access
-     • Role-based access control
-     • Location data masking
-     • Audit trail requirement
-     • Privacy by default
-
-   - Data Storage
-     • Encrypted at rest
-     • Secure transmission
-     • Geographic restrictions
-     • Backup controls
-
-   - Data Usage
-     • Purpose limitations
-     • Usage transparency
-     • Access notifications
-     • Pattern detection alerts
-# Security
-
-SeedML provides comprehensive security through intent-focused patterns that automatically implement industry best practices.
-
-## Core Concepts
-
-```yaml
-app SecureApp {
-  # Declare security needs
-  security {
-    auth: [oauth2, mfa]     # Authentication
-    roles: [admin, user]    # Authorization
-    audit: all              # Logging
-    encrypt: sensitive      # Data protection
-  }
-
-  # Intent-focused usage
-  entity Payment {
-    amount: money
-    card: encrypted     # Automatic protection
-    access: admin      # Role-based control
-  }
-}
-```
-
-## Key Features
+## Core Security Features
 
 ### 1. Authentication
-```yaml
-auth {
-  # Complete auth patterns
-  type: oauth2
-  providers: [google, github]
-  features: [
-    mfa,              # Multi-factor
-    sso,              # Single sign-on
-    passwordless      # Modern auth
-  ]
+
+```javascript
+app SecureApp {
+  // Authentication configuration
+  auth {
+    // Providers
+    providers: [
+      google {
+        clientId: env.GOOGLE_CLIENT_ID
+        scopes: [profile, email]
+      },
+      github {
+        clientId: env.GITHUB_CLIENT_ID
+        scopes: [user]
+      }
+    ]
+    
+    // Session management
+    session {
+      duration: 24h
+      renewal: true
+      singleDevice: false
+    }
+    
+    // Two-factor auth
+    twoFactor {
+      required: true
+      methods: [app, sms]
+    }
+  }
 }
 ```
 
 ### 2. Authorization
-```yaml
+
+```javascript
 roles {
-  # Declarative permissions
-  admin: {
-    access: all
-    except: [audit.delete]
+  // Role definitions
+  admin {
+    permissions: [all]
   }
   
-  manager: {
-    create: [orders, reports]
-    approve: expenses
+  manager {
+    permissions: [
+      users.view,
+      users.edit,
+      orders.manage
+    ]
+  }
+  
+  user {
+    permissions: [
+      profile.edit,
+      orders.create
+    ]
   }
 }
 ```
 
 ### 3. Data Protection
-```yaml
+
+```javascript
 protect {
-  # Automatic encryption
-  fields: {
-    pii: encrypted       # Personal data
-    card: tokenized      # Payment info
-    notes: redacted      # Sensitive text
+  // Encryption
+  encrypt {
+    fields: [ssn, creditCard]
+    algorithm: aes-256-gcm
   }
   
-  backup: encrypted      # Data at rest
-  transit: tls          # Data in motion
+  // Data masking
+  mask {
+    fields: [email, phone]
+    pattern: "***-***-**{last4}"
+  }
+  
+  // Access control
+  access {
+    rules: [
+      "user.id = record.userId",
+      "user.role = 'admin'"
+    ]
+  }
 }
 ```
 
 ### 4. Audit Logging
-```yaml
+
+```javascript
 audit {
-  # Comprehensive tracking
-  track: [
-    auth.login,          # Access events
-    data.modify,         # Changes
-    api.access           # Usage
-  ]
+  // What to log
+  track {
+    changes: [create, update, delete]
+    access: [view, export]
+    auth: [login, logout, failed]
+  }
   
-  retain: 1year          # Compliance
-  alert: suspicious      # Monitoring
+  // Log details
+  details {
+    user: true
+    timestamp: true
+    location: true
+    changes: diff
+  }
+  
+  // Retention
+  retain {
+    duration: 1y
+    backup: true
+  }
 }
 ```
 
-## Best Practices
+## Security Patterns
 
-1. **Security by Default**
-   - Everything private unless exposed
-   - Encryption always on
-   - Least privilege access
+### 1. Data-Level Security
 
-2. **Compliance Ready**
-   - GDPR patterns built-in
-   - Audit trails automatic
-   - Data protection standard
+```javascript
+entity Order {
+  // Fields
+  id: uuid
+  total: money
+  status: pending/paid/shipped
+  
+  // Security rules
+  security {
+    view: ["user.id = userId", "user.role = 'admin'"]
+    edit: ["user.role in ['admin', 'manager']"]
+    delete: ["user.role = 'admin'"]
+  }
+  
+  // Field-level security
+  fields {
+    creditCard {
+      view: ["user.role = 'admin'"]
+      encrypt: true
+    }
+    
+    notes {
+      edit: ["user.id = assignedTo"]
+    }
+  }
+}
+```
 
-3. **Modern Standards**
-   - Zero trust architecture
-   - Defense in depth
-   - Regular updates
+### 2. User Management
+
+```javascript
+entity User {
+  // Core fields
+  id: uuid
+  email: email
+  password: password
+  role: admin/manager/user
+  
+  // Security features
+  security {
+    password {
+      minLength: 12
+      require: [number, special, mixed]
+      expire: 90d
+    }
+    
+    lockout {
+      attempts: 5
+      duration: 15m
+    }
+    
+    mfa {
+      required: true
+      methods: [app, sms]
+    }
+  }
+}
+```
+
+### 3. Location Privacy
+
+```javascript
+entity UserLocation {
+  // Location data
+  location: location
+  timestamp: datetime
+  accuracy: float
+  
+  // Privacy rules
+  privacy {
+    // Precision control
+    precision: city
+    
+    // Access rules
+    access {
+      exact: ["user.role = 'admin'"]
+      approximate: ["user.role = 'manager'"]
+    }
+    
+    // Retention
+    retain {
+      duration: 30d
+      anonymize: true
+    }
+  }
+}

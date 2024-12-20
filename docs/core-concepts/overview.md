@@ -8,24 +8,24 @@ Split app definitions across multiple files for better organization and team col
 
 ## Key Ideas
 
-```yaml
-# Everything in one place
+```javascript
+// Everything in one place
 app TodoList {
-  # Data model
+  // Data model
   entity Task {
     title: string
     done: bool
   }
 
-  # Business rules
+  // Business rules
   rules {
-    complete: {
+    complete {
       validate: !done
       then: done = true
     }
   }
 
-  # User interface
+  // User interface
   screen Tasks {
     list: [title, done]
     actions: [create, complete]

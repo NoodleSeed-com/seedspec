@@ -6,7 +6,7 @@ The Seed Specification Language lets you express what you want to build, not how
 
 ### 1. Express Intent, Not Implementation
 
-```yaml
+```javascript
 // Just describe what you want
 app TodoList {
   // Core data
@@ -36,7 +36,7 @@ app TodoList {
 
 Start simple, add detail only when needed:
 
-```yaml
+```javascript
 // Minimal version
 entity User {
   name: string
@@ -76,7 +76,7 @@ entity User {
 
 Combine patterns to express complex intent:
 
-```yaml
+```javascript
 app OrderSystem {
   // Core domain
   entity Order {
@@ -87,7 +87,7 @@ app OrderSystem {
 
   // Business rules
   rules {
-    submit: {
+    submit {
       require: [
         items.length > 0,
         total > 0
@@ -117,13 +117,13 @@ app OrderSystem {
 ### 1. Domain Model
 Define your core business entities:
 
-```yaml
+```javascript
 entity Product {
   name: string
   price: money
   category: electronics/books/clothing
   
-  # Relations
+  // Relations
   vendor: Vendor
   reviews: [Review]
 }
@@ -132,9 +132,9 @@ entity Product {
 ### 2. Business Rules
 Express logic and workflows:
 
-```yaml
+```javascript
 rules {
-  approve_order: {
+  approve_order {
     when: status -> approved
     require: [
       total < 10000,
@@ -151,22 +151,22 @@ rules {
 ### 3. User Interface
 Define screens and interactions:
 
-```yaml
+```javascript
 screen Products {
-  # Layout
+  // Layout
   layout: grid(3)
   
-  # Data display
+  // Data display
   show: [image, name, price]
   
-  # User actions
+  // User actions
   actions: [
     create: button,
     edit: menu,
     delete: confirm
   ]
   
-  # Behavior
+  // Behavior
   search: [name, category]
   sort: price
   filter: category
@@ -176,22 +176,22 @@ screen Products {
 ### 4. Integration
 Connect external services:
 
-```yaml
+```javascript
 integrate {
-  # Authentication
-  auth: {
+  // Authentication
+  auth {
     provider: google
     roles: [user, admin]
   }
   
-  # Storage
+  // Storage
   files: s3 {
     bucket: uploads
     types: [image, pdf]
   }
   
-  # Notifications
-  notify: {
+  // Notifications
+  notify {
     email: sendgrid
     sms: twilio
   }

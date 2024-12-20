@@ -1,130 +1,157 @@
-# Building Your First Application
+# Creating Your First App
 
-This tutorial walks through creating a complete task management application with SeedML.
+This guide walks you through creating your first Seed Spec application.
 
-## 1. Project Setup
+## 1. Basic Structure
 
-Create a new directory and file:
+Start with a simple task management app:
 
-```bash
-mkdir task-manager
-cd task-manager
-touch app.seed
-```
-
-## 2. Basic Structure
-
-Add this initial structure to `app.seed`:
-
-```yaml
+```javascript
 app TaskManager {
-  # We'll add components here
-}
-```
-
-## 3. Adding Data Models
-
-Expand your app with data models:
-
-```yaml
-app TaskManager {
+  // Core domain model
   entity Task {
-    title: string!
-    description: text
-    status: todo->doing->done
-    priority: low/medium/high = medium
+    title: string
+    done: bool
     due?: date
-    assigned?: User
   }
-
-  entity User {
-    name: string!
-    email: email!
-    role: member/admin = member
+  
+  // User interface
+  screen TaskList {
+    list: [title, done, due]
+    actions: [create, complete]
   }
 }
 ```
 
-## 4. Creating Screens
+## 2. Add Features
 
-Add user interface screens:
+Enhance the app with more features:
 
-```yaml
+```javascript
 app TaskManager {
-  # ... previous code ...
-
-  screen TaskBoard {
-    list: [title, assigned, priority, due]
-    view: kanban(status)
-    actions: [create, edit, assign]
-    search: [title, assigned]
+  // Expanded task model
+  entity Task {
+    title: string {
+      min: 3
+      max: 100
+    }
+    description: text
+    done: bool
+    due?: date
+    priority: low/medium/high
+    tags: [string]
+    
+    // Relations
+    assignee?: User
+    project?: Project
   }
-
+  
+  // Task list screen
+  screen TaskList {
+    // Data display
+    list: [
+      title,
+      done,
+      due,
+      priority,
+      assignee
+    ]
+    
+    // Available actions
+    actions: [
+      create,
+      edit,
+      complete,
+      delete
+    ]
+    
+    // List behavior
+    filter: [done, priority]
+    sort: [due, priority]
+    search: [title, description]
+  }
+  
+  // Task detail screen
   screen TaskDetail {
-    layout: split
-    left: [title, description, status]
-    right: [assigned, due, priority]
-    actions: [save, delete]
+    // Form fields
+    fields: [
+      title,
+      description,
+      due,
+      priority,
+      assignee
+    ]
+    
+    // Related data
+    related: [comments, history]
+    
+    // Available actions
+    actions: [save, complete, delete]
   }
 }
 ```
 
-## 5. Adding Business Rules
+## 3. Add Business Rules
 
-Implement task management logic:
+Define validation and behavior:
 
-```yaml
+```javascript
 app TaskManager {
-  # ... previous code ...
-
+  // Previous code...
+  
   rules {
-    assign_task: {
-      require: role.member
-      validate: assigned != null
-      then: notify@assigned
+    // Validation rules
+    validate {
+      title: required
+      due: future
+      assignee: exists
     }
-
-    complete_task: {
-      require: [
-        status == doing,
-        assigned == current_user
-      ]
-      then: [
-        update_status(done),
-        notify@created_by
-      ]
+    
+    // Business logic
+    on_complete {
+      // Update project progress
+      update: project.progress
+      
+      // Notify relevant users
+      notify: [assignee, project.owner]
+      
+      // Archive if needed
+      if: project.autoArchive {
+        archive: task
+      }
+    }
+    
+    // Automation rules
+    automate {
+      // Auto-assign based on tags
+      assign_by_tags {
+        when: tags.changed
+        then: auto_assign
+      }
+      
+      // Due date reminders
+      remind_due {
+        when: due - 1.day
+        then: notify@assignee
+      }
     }
   }
 }
 ```
-
-## 6. Running Your App
-
-Generate and run the application:
-
-```bash
-seedml generate app.seed
-cd task-manager-app
-seedml run
-```
-
-## What You've Learned
-
-- Basic SeedML project structure
-- Entity definition and relationships
-- Screen layouts and components
-- Business rules and validation
-- Application generation and deployment
 
 ## Next Steps
 
-1. Add more features:
-   - Comments on tasks
+1. **Add More Features**
+   - User authentication
+   - Comments system
    - File attachments
-   - Time tracking
-   - Reports
-
-2. Learn about:
-   - [Advanced Patterns](../reference/patterns.md)
-   - [Integration](../core-concepts/integration.md)
-   - [Security](../core-concepts/security.md)
+   
+2. **Enhance the UI**
+   - Custom layouts
+   - Rich interactions
+   - Mobile views
+   
+3. **Integrate Services**
+   - Email notifications
+   - Calendar sync
+   - External APIs

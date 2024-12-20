@@ -5,13 +5,13 @@ The Seed Specification Language provides a simplified approach to business rules
 ## Core Concepts
 
 ### 1. Basic Validation
-```yaml
+```javascript
 entity User {
   email: email
   password: string
   
   rules {
-    validate: {
+    validate {
       email: required,
       password: length >= 8
     }
@@ -20,17 +20,17 @@ entity User {
 ```
 
 ### 2. Simple State Transitions
-```yaml
+```javascript
 entity Task {
   status: string = "todo"
   
   rules {
-    start: {
+    start {
       validate: status == "todo"
       then: updateStatus("in-progress")
     }
     
-    complete: {
+    complete {
       validate: status == "in-progress"
       then: updateStatus("done")
     }
@@ -39,12 +39,12 @@ entity Task {
 ```
 
 ### 3. Basic Computations
-```yaml
+```javascript
 entity Invoice {
   items: [InvoiceItem]
   
   rules {
-    calculate: {
+    calculate {
       then: [
         updateSubtotal(sum(items.amount)),
         updateTotal(subtotal + tax)
@@ -57,10 +57,10 @@ entity Invoice {
 ## Common Patterns
 
 ### 1. Field Validation
-```yaml
+```javascript
 entity Product {
   rules {
-    validate: {
+    validate {
       name: required,
       price: positive,
       stock: minimum(0)
@@ -70,10 +70,10 @@ entity Product {
 ```
 
 ### 2. Cross-field Validation
-```yaml
+```javascript
 entity Booking {
   rules {
-    validate: {
+    validate {
       endDate: after(startDate),
       capacity: lessThan(maxCapacity)
     }
@@ -82,12 +82,12 @@ entity Booking {
 ```
 
 ### 3. Simple Workflows
-```yaml
+```javascript
 entity Leave {
   status: string = "requested"
   
   rules {
-    approve: {
+    approve {
       validate: status == "requested"
       then: [
         updateStatus("approved"),
@@ -95,7 +95,7 @@ entity Leave {
       ]
     }
     
-    reject: {
+    reject {
       validate: status == "requested"
       then: [
         updateStatus("rejected"),
@@ -109,11 +109,11 @@ entity Leave {
 ## Best Practices
 
 ### 1. Keep Validations Simple
-```yaml
-# DO - Use simple validations
+```javascript
+// DO - Use simple validations
 entity Order {
   rules {
-    submit: {
+    submit {
       validate: [
         items.length > 0,
         total > 0
@@ -124,11 +124,11 @@ entity Order {
 ```
 
 ### 2. Use Clear State Transitions
-```yaml
-# DO - Simple state changes
+```javascript
+// DO - Simple state changes
 entity Task {
   rules {
-    complete: {
+    complete {
       validate: status == "active"
       then: updateStatus("completed")
     }
