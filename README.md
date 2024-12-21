@@ -4,120 +4,103 @@
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 [![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg)]()
 
-SeedSpec is a type-safe, AI-native language that generates production-ready applications from clear specifications. Write what you want with strong typing, get working software.
+SeedSpec is a token-efficient, declarative language optimized for LLM generation that produces full-stack business applications from clear specifications. Write what you want with strong typing, get working software.
 
 ## Quick Example
 
 ```seed
-// Import standard library
-import "@stdlib/core"
-use { Button, Card } from "@stdlib/components"
-
-// Core application
-app TodoApp {
-  // Type-safe domain model
-  entity Task {
-    title: string {
-      min: 3
-      max: 100
-    }
-    done: boolean
-    due: datetime {
-      min: now()  // Must be in future
+mod todo {
+  use { @core, @ui }
+  
+  // Domain model
+  data {
+    Task {
+      title str(3..100)
+      done bool
+      due @future
     }
   }
   
-  // Strongly typed theme
-  theme MainTheme {
-    tokens {
-      colors {
-        primary: color(#0066cc)
-        success: color(green.500)
-        error: color(red.500)
-      }
-      spacing {
-        small: size(4px)
-        medium: size(8px)
-      }
+  // Business process
+  flow TaskFlow {
+    new -> active: assign
+    active -> done: complete
+    * -> archived: archive
+  }
+  
+  // UI components
+  comp task_card {
+    in { task Task, done fn }
+    style {
+      bg white
+      pad med
+      border @primary
     }
   }
   
-  // Component with schema validation
-  component TaskCard {
-    required {
-      task: Task
-      onComplete: function
-    }
-    
-    styles {
-      background: color(white)
-      padding: spacing(medium)
-      border: {
-        width: size(1px)
-        style: solid
-        color: color(tokens.colors.primary)
+  // Screens
+  ui {
+    TaskList {
+      layout grid(3)
+      show task_card
+      acts { create, done }
+      rules {
+        create needs title
+        done when all done
       }
     }
   }
   
-  // Type-safe screen definition
-  screen Tasks {
-    layout: grid(3)
-    components: [TaskCard]
-    actions: [
-      create: {
-        validate: [
-          task.title.length > 0,
-          task.due > now()
-        ]
-      }
-    ]
+  // Theme
+  theme {
+    colors {
+      primary #0066cc
+      success @green.5
+      error @red.5
+    }
+    space {
+      sm 4
+      med 8
+    }
   }
 }
 ```
 
 ## 🌟 Key Features
 
-- **Type Safety First**: Catch errors at compile time with explicit types and validation
-- **Clear Module System**: Explicit imports/exports and module boundaries
-- **Component Schemas**: Define reusable contracts for components
-- **Smart Defaults**: Production patterns built-in, override when needed
-- **Full Stack**: One specification drives all application layers
+- **Token Efficient**: Optimized syntax for LLM generation while maintaining readability
+- **Pure Declarative**: Clear separation of what vs how across all features
+- **Full Stack**: Complete coverage from UI to database, workflows, and agents
+- **Smart Defaults**: Production patterns built-in with context-aware inference
+- **Type Safety**: Catch errors at compile time with explicit types and validation
 - **Tech Independent**: Target any modern technology stack
-- **Standard Library**: Rich set of pre-built, type-safe components and themes
+- **Standard Library**: Rich set of pre-built components, themes, and patterns
 
 ## 🎯 Type System
 
-SeedSpec enforces type safety through explicit type declarations:
+SeedSpec uses a token-efficient type system with smart inference:
 
 ```seed
-types {
-  // Basic types with validation
-  string {
-    min?: number
-    max?: number
-    pattern?: regex
-  }
-  
-  // UI-specific types
-  color {
-    type: hex | rgb | hsl | token
-    value: string
-  }
-  
-  // Component schemas
-  schema Button {
-    required {
-      text: string
-      onClick: function
-    }
-    optional {
-      disabled: boolean
-      variant: enum {
-        values: ["primary", "secondary"]
-      }
-    }
-  }
+// Core types
+type str(min?..max?) {
+  match?: regex
+  format?: @email|@url
+}
+
+type num(min?..max?) {
+  int?: bool
+  pos?: bool
+}
+
+// UI types 
+type color = hex|rgb|@token
+type size = px|rem|@token
+
+// Components
+comp btn {
+  in { txt str, click fn }
+  opt { disabled bool }
+  var { pri, sec }
 }
 ```
 
