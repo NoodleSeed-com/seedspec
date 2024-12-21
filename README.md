@@ -3,46 +3,57 @@
 [![Project Status: Prototype](https://img.shields.io/badge/Project%20Status-Prototype-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 
-SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Write simple specifications with basic typing and get working UI prototypes.
+SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Write simple specifications with basic typing and get working UI prototypes with built-in UI/UX best practices.
 
 ## Quick Example
 
 ```seed
-mod todo {
-  // Simple data model
-  data {
+app todo {
+  model {
     Task {
-      title str(3..100)
-      done bool
+      title "Task Title" text(3..100)
+      done "Completed" bool
+      priority "Priority Level" num(1..5)
     }
   }
   
-  // Basic UI component
-  comp task_card {
-    in { task Task }
+  data {
+    // Positional style - matches field sequence
+    tasks: Task[] = [
+      ["Create mockups", false, 1],
+      ["Review design", true, 2]
+    ]
+    
+    // Explicit style - when field clarity preferred
+    featured: Task[] = [
+      {
+        title: "Important Task",
+        done: false,
+        priority: 5
+      }
+    ]
+  }
+  
+  component task_card {
+    input { task Task }
     style {
-      bg white
-      pad med
+      // Only override built-in defaults when needed
+      surface accent
+      spacing.lg
     }
   }
   
-  // Simple screen
-  ui {
+  screen {
     TaskList {
-      layout grid(3)
-      show task_card
+      use task_card
+      data tasks
     }
   }
   
-  // Basic theme
-  theme {
-    colors {
-      primary #0066cc
-    }
-    space {
-      sm 4
-      med 8
-    }
+  // Minimal theme overrides - rest uses built-in defaults
+  styles {
+    brand: colors.indigo.600
+    radius: 0
   }
 }
 ```
