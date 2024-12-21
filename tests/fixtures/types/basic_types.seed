@@ -1,0 +1,49 @@
+// Basic type definitions for testing
+type User {
+    name str(3..50)
+    email str(format: @email)
+    age num(0..150, int: true)
+    active bool
+}
+
+type Product {
+    id str(format: @uuid)
+    name str(5..100)
+    price num(0..)
+    inStock bool
+}
+
+// Composite type example
+type Order {
+    id str(format: @uuid)
+    customer User
+    items [Product]
+    total num(0..)
+    status str(match: "^(pending|processing|shipped|delivered)$")
+}
+
+// Type with all string formats
+type StringFormats {
+    email str(format: @email)
+    url str(format: @url)
+    uuid str(format: @uuid)
+    date str(format: @date)
+    time str(format: @time)
+    phone str(format: @phone)
+}
+
+// Type with number variations
+type Numbers {
+    integer num(int: true)
+    positive num(0..)
+    percentage num(0..100)
+    rating num(1..5, int: true)
+    temperature num(-50..150)
+}
+
+// Type with regex patterns
+type Patterns {
+    username str(match: "^[a-zA-Z0-9_]{3,16}$")
+    zipcode str(match: "^\\d{5}(-\\d{4})?$")
+    hex_color str(match: "^#[0-9a-fA-F]{6}$")
+}

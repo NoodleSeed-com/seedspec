@@ -1,0 +1,10 @@
+
+        import "theme_a.seed"
+        theme b extends a {
+            button {
+                primary {
+                    background: color(blue.500)
+                }
+            }
+        }
+        

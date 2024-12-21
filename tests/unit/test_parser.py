@@ -88,22 +88,37 @@ def test_parse_value_types():
     Path("test_theme.seed").unlink()
 
 def test_parse_invalid_types():
-    """Test handling of invalid type declarations"""
+    """Test handling of invalid type declarations according to spec"""
     content = """
     theme invalid {
         colors {
-            // Missing type declaration
+            // Invalid: Missing explicit type declaration
             primary: "#000000"
-            // Invalid color value
-            secondary: color(invalid)
+            
+            // Invalid: Color token doesn't exist
+            secondary: color(invalid.500)
+            
+            // Invalid: Wrong type format
+            tertiary: rgb(invalid)
+            
+            // Invalid: Missing unit in size
+            spacing: size(4)
+            
+            // Invalid: Wrong enum value
+            variant: enum(invalid)
         }
     }
     """
     with Path("test_theme.seed").open("w") as f:
         f.write(content)
         
-    with pytest.raises(SeedParseError, match=r".*Missing type declaration.*"):
+    with pytest.raises(SeedParseError) as exc_info:
         parse_seed_file(Path("test_theme.seed"))
+    
+    error = str(exc_info.value)
+    assert "Missing explicit type declaration" in error
+    assert "Invalid color token" in error
+    assert "Invalid size format" in error
     
     Path("test_theme.seed").unlink()
 
@@ -128,31 +143,52 @@ def test_parse_invalid_syntax():
     Path("test_theme.seed").unlink()
 
 def test_parse_schema_validation():
-    """Test component schema validation"""
+    """Test component schema validation according to spec"""
     content = """
     // Define button schema
     schema Button {
         required {
             background: color
             text: color
+            padding: spacing
         }
         optional {
-            padding: size
+            border: border
+            hover: {
+                background: color
+                text: color
+            }
         }
     }
     
     theme test {
-        // Missing required background property
         button {
+            // Missing required padding property
+            background: color(blue.500)
             text: color(white)
+            
+            // Invalid: Unknown property
+            shadow: size(2px)
+            
+            // Invalid: Wrong type for border
+            border: color(black)
+            
+            // Invalid hover structure
+            hover: color(blue.600)
         }
     }
     """
     with Path("test_theme.seed").open("w") as f:
         f.write(content)
         
-    with pytest.raises(SeedParseError, match=r".*Missing required property: background.*"):
+    with pytest.raises(SeedParseError) as exc_info:
         parse_seed_file(Path("test_theme.seed"))
+    
+    error = str(exc_info.value)
+    assert "Missing required property: padding" in error
+    assert "Unknown property: shadow" in error
+    assert "Invalid type for property: border" in error
+    assert "Invalid hover structure" in error
     
     Path("test_theme.seed").unlink()
 
@@ -191,30 +227,153 @@ def test_circular_imports():
     Path("theme_b.seed").unlink()
 
 def test_type_validation():
-    """Test type validation rules"""
+    """Test type validation rules according to spec"""
     content = """
     theme test {
-        button {
-            primary {
-                // Invalid: color token doesn't exist
-                background: color(nonexistent.500)
-                
-                // Invalid: size without unit
-                padding: size(4)
-                
-                // Invalid: number as color
-                text: color(42)
-                
-                // Invalid: string as number
-                opacity: number("0.5")
+        typography {
+            // String validation
+            title: string {
+                min: 2
+                max: 50
+                pattern: "[A-Za-z ]+"
+            }
+            
+            // Number validation
+            fontSize: number {
+                min: 12
+                max: 96
+                integer: true
+                positive: true
+            }
+            
+            // Size validation
+            spacing: size {
+                type: px
+                value: 16
+            }
+            
+            // Color validation
+            textColor: color {
+                type: hex
+                value: "#000000"
+            }
+            
+            // Font validation
+            font: {
+                family: string("Inter")
+                size: size(16px)
+                weight: number(600)
+                lineHeight: number(1.5)
             }
         }
     }
     """
     with Path("test_theme.seed").open("w") as f:
         f.write(content)
+    
+    result = parse_seed_file(Path("test_theme.seed"))
+    
+    assert "typography" in result["test"]
+    assert result["test"]["typography"]["fontSize"]["value"] == 16
+    assert result["test"]["typography"]["textColor"]["value"] == "#000000"
+    
+    Path("test_theme.seed").unlink()
+
+def test_responsive_values():
+    """Test responsive value definitions according to spec"""
+    content = """
+    theme test {
+        typography {
+            heading {
+                // Responsive size values
+                size: {
+                    base: size(24px)
+                    sm: size(20px)
+                    md: size(28px)
+                    lg: size(32px)
+                }
+                // Responsive line height
+                lineHeight: {
+                    base: number(1.2)
+                    sm: number(1.1)
+                    lg: number(1.3)
+                }
+            }
+        }
+    }
+    """
+    with Path("test_theme.seed").open("w") as f:
+        f.write(content)
+    
+    result = parse_seed_file(Path("test_theme.seed"))
+    heading = result["test"]["typography"]["heading"]
+    
+    assert heading["size"]["base"] == "size(24px)"
+    assert heading["size"]["sm"] == "size(20px)"
+    assert heading["size"]["lg"] == "size(32px)"
+    assert heading["lineHeight"]["base"] == "number(1.2)"
+    
+    Path("test_theme.seed").unlink()
+
+def test_theme_composition():
+    """Test theme composition and inheritance"""
+    # Create base theme
+    with Path("base.seed").open("w") as f:
+        f.write("""
+        theme base {
+            colors {
+                primary: color(#0066cc)
+                secondary: color(#666666)
+            }
+            typography {
+                body: {
+                    size: size(16px)
+                    lineHeight: number(1.5)
+                }
+            }
+        }
+        """)
+    
+    # Create extended theme
+    with Path("custom.seed").open("w") as f:
+        f.write("""
+        import "./base.seed"
         
-    with pytest.raises(SeedParseError, match=r".*Invalid type.*"):
+        theme custom extends base {
+            colors {
+                // Override primary color
+                primary: color(#ff0000)
+                // Add new color
+                accent: color(#00ff00)
+            }
+            // Keep typography from base
+        }
+        """)
+    
+    result = parse_seed_file(Path("custom.seed"))
+    
+    assert result["custom"]["colors"]["primary"] == "color(#ff0000)"
+    assert result["custom"]["colors"]["secondary"] == "color(#666666)"
+    assert result["custom"]["colors"]["accent"] == "color(#00ff00)"
+    assert result["custom"]["typography"]["body"]["size"] == "size(16px)"
+    
+    Path("base.seed").unlink()
+    Path("custom.seed").unlink()
+
+def test_invalid_theme_composition():
+    """Test invalid theme composition scenarios"""
+    # Create theme with invalid extension
+    content = """
+    theme invalid extends nonexistent {
+        colors {
+            primary: color(#ff0000)
+        }
+    }
+    """
+    with Path("test_theme.seed").open("w") as f:
+        f.write(content)
+    
+    with pytest.raises(SeedParseError, match=r".*Unknown base theme.*"):
         parse_seed_file(Path("test_theme.seed"))
     
     Path("test_theme.seed").unlink()
