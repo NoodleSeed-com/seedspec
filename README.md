@@ -8,7 +8,7 @@ SeedSpec is a minimal, declarative language for rapidly prototyping web applicat
 ## Quick Example
 
 ```seed
-app todo {
+app "Task Management App" todo {
   model {
     Task {
       title "Task Title" text(3..100)
