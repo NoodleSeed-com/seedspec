@@ -26,21 +26,15 @@ app Todo "Task Management App" {
   }
 
   data {
-    data Users "User Data" {
-      use Users
-      data [
-        { name: "John Doe", email: "john@example.com", role: "admin" },
-        { name: "Jane Smith", email: "jane@example.com", role: "member" }
-      ]
-    }
+    Users "User Data" [
+      { name: "John Doe", email: "john@example.com", role: "admin" },
+      { name: "Jane Smith", email: "jane@example.com", role: "member" }
+    ]
 
-    data Tasks "Task Data" {
-      use Tasks
-      data [
-        { title: "Create mockups", done: false, priority: 1 },
-        { title: "Review design", done: true, priority: 2 }
-      ]
-    }
+    Tasks "Task Data" [
+      { title: "Create mockups", done: false, priority: 1 },
+      { title: "Review design", done: true, priority: 2 }
+    ]
   }
 
   component task_card "Task Card Component" {
