@@ -1,5 +1,0 @@
-import "../components.seed"
-
-app SubApp {
-  components: [Button]
-}

@@ -1,6 +1,6 @@
-# Contributing to SeedML
+# Contributing to SeedSpec
 
-Thank you for your interest in contributing to SeedML! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to SeedSpec! This document provides guidelines and information for contributors.
 
 ## Getting Started
 
@@ -21,16 +21,13 @@ pip install -e .
 # Set your API key
 export ANTHROPIC_API_KEY='your-api-key'
 
-# Run tests
-python -m pytest
-
 # Build documentation
 mkdocs build
 ```
 
 ## CLI Development
 
-The SeedML CLI tool generates applications from specifications:
+The SeedSpec CLI tool generates applications from specifications:
 
 ```bash
 # Generate application from spec
@@ -72,22 +69,18 @@ We welcome contributions in these areas:
 4. Tools
    - IDE plugins
    - Development tools
-   - Testing utilities
 
 ## Code Style
 
 - Follow existing patterns
-- Add tests for new features
 - Document your changes
 - Keep commits focused
 
 ## Pull Request Process
 
 1. Update documentation
-2. Add tests if needed
-3. Ensure all tests pass
-4. Update CHANGELOG.md
-5. Submit PR with clear description
+2. Update CHANGELOG.md
+3. Submit PR with clear description
 
 ## Questions?
 

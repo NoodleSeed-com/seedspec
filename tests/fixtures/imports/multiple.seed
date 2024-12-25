@@ -1,7 +1,0 @@
-import "theme.seed"
-import "components.seed"
-
-app MultiApp {
-  themes: [light, dark]
-  components: [Button, Card]
-}

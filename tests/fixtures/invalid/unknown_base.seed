@@ -1,9 +1,0 @@
-theme custom {
-  extends: "nonexistent_theme"  // Trying to extend from a theme that doesn't exist
-  button: {
-    primary: {
-      bg: "purple.500"
-      text: "white"
-    }
-  }
-}
