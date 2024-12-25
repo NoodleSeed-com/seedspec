@@ -8,38 +8,42 @@ SeedSpec is a minimal, declarative language for rapidly prototyping web applicat
 ## Quick Example
 
 ```seed
-app "Task Management App" todo {
+app "Task Management App" {
   model {
+    User {
+      name text = "New User"
+      email text = ""
+      role text = "member"
+    }
+
     Task {
-      title "Task Title" text(3..100)
-      done "Completed" bool
-      priority "Priority Level" num(1..5)
+      title text = "New Task"
+      done bool = false
+      priority num = 3
     }
   }
   
   data {
-    // Positional style - matches field sequence
+    users: User[] = [
+      ["John Doe", "john@example.com", "admin"],
+      ["Jane Smith", "jane@example.com", "member"]
+    ]
+
     tasks: Task[] = [
       ["Create mockups", false, 1],
       ["Review design", true, 2]
     ]
-    
-    // Explicit style - when field clarity preferred
-    featured: Task[] = [
-      {
-        title: "Important Task",
-        done: false,
-        priority: 5
-      }
-    ]
   }
   
   component task_card {
-    input { task Task }
-    style {
-      // Only override built-in defaults when needed
-      surface accent
-      spacing.lg
+    input {
+      task: Task
+    }
+  }
+  
+  component user_card {
+    input {
+      user: User
     }
   }
   
@@ -48,32 +52,30 @@ app "Task Management App" todo {
       use task_card
       data tasks
     }
-  }
-  
-  // Minimal theme overrides - rest uses built-in defaults
-  styles {
-    brand: colors.indigo.600
-    radius: 0
+
+    UserList {
+      use user_card
+      data users
+    }
   }
 }
 ```
 
 ## 🌟 Key Features
 
-- **Simple Types**: Basic str, num, bool with minimal validation
-- **UI Components**: Easy component definitions with props and styling
-- **Basic Theming**: Simple color and spacing tokens
-- **Quick Prototypes**: Generate working React components fast
+- **Optimized for Generation with LLMs**
+- **Deterministic, Declarative and cross compilable** into different target execution and deployment targets.
+- **Easy to read and understand** for people.
 
 ## 🎯 Type System
 
 Basic types for rapid prototyping:
 
 ```seed
-// Core types
-type str(min?..max?)
-type num(min?..max?)
-type bool
+// Core types with built-in defaults
+type str(min?..max?) = ""      // Empty string default
+type num(min?..max?) = 0       // Zero default
+type bool = false              // False default
 
 // Simple component
 comp button {
@@ -106,21 +108,9 @@ Creates React components with:
 
 ## 🛠️ Development Status
 
-SeedSpec is focused on prototyping with:
+In the first phase, SeedSpec is being developed to represent working prototypes that have built-in Google Cloud services.
 
-1. **Basic Types**
-   - Simple validation
-   - Clear errors
-
-2. **UI Components**
-   - React components
-   - Basic styling
-   - Simple props
-
-3. **Developer Experience**
-   - Fast iteration
-   - Easy to learn
-   - Quick results
+Later, this language will be extended to other targets and end-to-end deployable applications, not just prototypes.
 
 ## 📱 Contact & Support
 

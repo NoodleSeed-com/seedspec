@@ -1,6 +1,76 @@
 # Seed Specification Language Structure
 
-The Seed Specification Language (SeedML) provides a type-safe, modular way to define consistent design systems and applications.
+The Seed Specification Language (Seed Spec) provides a type-safe, modular way to define consistent design systems and applications.
+
+## Formal Grammar
+
+The following EBNF (Extended Backus-Naur Form) grammar defines the core structure of the Seed Specification Language:
+
+```ebnf
+PROGRAM = { IMPORT_STATEMENT } APP_STATEMENT ;
+
+IMPORT_STATEMENT = 
+    "import" STRING |
+    "use" "{" IDENTIFIER_LIST "}" "from" (STRING | IDENTIFIER) ;
+
+IDENTIFIER_LIST = IDENTIFIER { "," IDENTIFIER } ;
+
+APP_STATEMENT =
+    "app" IDENTIFIER "{" 
+        [ THEME_BLOCK ]
+        [ MODEL_BLOCK ] 
+        [ DATA_BLOCK ]
+        [ COMPONENT_BLOCKS ]
+        [ SCREEN_BLOCK ] 
+    "}" ;
+
+THEME_BLOCK = 
+
+TYPE_REF =
+    "text" | "num" | "bool" ;
+
+DATA_BLOCK =
+    "data" "{" { DATA_DECL } "}" ;
+
+DATA_DECL =
+    IDENTIFIER ":" IDENTIFIER "[]" "=" JSON_ARRAY ;
+
+JSON_ARRAY =
+    "[" [ JSON_OBJECT { "," JSON_OBJECT } ] "]" ;
+
+JSON_OBJECT =
+    "{" [ JSON_FIELD { "," JSON_FIELD } ] "}" ;
+
+JSON_FIELD =
+    STRING ":" JSON_VALUE ;
+
+JSON_VALUE =
+    STRING | NUMBER | "true" | "false" | "null" | JSON_ARRAY | JSON_OBJECT ;
+
+COMPONENT_BLOCKS =
+    { COMPONENT_BLOCK } ;
+
+COMPONENT_BLOCK =
+    "component" IDENTIFIER "{" [ INPUT_BLOCK ] "}" ;
+
+INPUT_BLOCK =
+    "input" "{" IDENTIFIER ":" IDENTIFIER "}" ;
+
+SCREEN_BLOCK =
+    "screen" "{" { SCREEN_ELEMENT } "}" ;
+
+SCREEN_ELEMENT =
+    IDENTIFIER "{" "use" IDENTIFIER "data" IDENTIFIER "}" ;
+
+LITERAL = STRING | NUMBER | "true" | "false" ;
+STRING  = "\"" { ANY_CHAR_NO_QUOTE } "\"" ;
+NUMBER  = DIGIT { DIGIT } [ "." DIGIT { DIGIT } ] ;
+IDENTIFIER = LETTER { LETTER | DIGIT | "_" } ;
+LETTER = "A" | "B" | "C" | ... | "Z" | "a" | "b" | "c" | ... | "z" ;
+DIGIT = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+ANY_CHAR_NO_QUOTE = ? any character except double quote ? ;
+```
+
 
 ## Core Principles
 
