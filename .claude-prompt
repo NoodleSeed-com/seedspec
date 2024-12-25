@@ -1,1 +1,3 @@
-- Always read the README.md file
+IMPORTANT NOTES:
+- Readme file always provides the best top level ground truth for this project. If there are conflicts or inconsistencies between the readme and other files, ask the user about the choices and fix the inconsistencies.
+- Always try to keep things to a minimum. Keep all changes as incremental as possible. Don't make too many changes at once.

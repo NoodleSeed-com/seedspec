@@ -7,84 +7,131 @@ SeedSpec is a minimal, declarative language for rapidly prototyping web applicat
 
 ## Quick Example
 
+This example demonstrates a simple task management app with an integrated AI assistant using inline screen definitions.
+
 ```seed
-app "Task Management App" {
-  model {
+import "@stdlib/ai" as ai
+
+app Todo "Task Management App" {
+  model User "User" {
     User {
       name text = "New User"
       email text = ""
       role text = "member"
     }
+  }
 
+  model Tasks "Tasks" {
     Task {
       title text = "New Task"
       done bool = false
       priority num = 3
     }
   }
-  
-  data {
-    users: User[] = [
-      ["John Doe", "john@example.com", "admin"],
-      ["Jane Smith", "jane@example.com", "member"]
-    ]
 
-    tasks: Task[] = [
-      ["Create mockups", false, 1],
-      ["Review design", true, 2]
-    ]
+  data {
+    data Users "User Data" {
+      use User
+      data [
+        { name: "John Doe", email: "john@example.com", role: "admin" },
+        { name: "Jane Smith", email: "jane@example.com", role: "member" }
+      ]
+    }
+
+    data Tasks "Task Data" {
+      use Tasks
+      data [
+        { title: "Create mockups", done: false, priority: 1 },
+        { title: "Review design", done: true, priority: 2 }
+      ]
+    }
   }
-  
-  component task_card {
+
+  component task_card "Task Card Component" {
     input {
       task: Task
     }
   }
-  
-  component user_card {
+
+  component user_card "User Card Component" {
     input {
       user: User
     }
   }
-  
-  screen {
-    TaskList {
-      use task_card
-      data tasks
-    }
 
-    UserList {
-      use user_card
-      data users
+  // Define the TaskList screen inline
+  screen TaskList "Task List" {
+    use task_card
+    use ai.Chatbot {
+      systemPrompt: "You are a helpful assistant that helps users manage their tasks. You can ask the user for more details about their tasks, suggest deadlines, and help them prioritize their work. You can also answer general questions and provide helpful tips."
+      ui: {
+        mode: "modal"
+        trigger: "button"
+      }
     }
+    data tasks
+  }
+
+  // Define the UserList screen inline
+  screen UserList "User List" {
+    use user_card
+    data users
   }
 }
 ```
+
+**New Feature:** You can now define screens inline within the `app` block using the `screen` keyword followed by the screen name, an optional display name (in quotes), and the screen definition within curly braces. This example also demonstrates how to integrate pre-built components from external libraries, such as the `Chatbot` component from `@stdlib/ai`, and configure them directly within the screen definition.
 
 ## 🌟 Key Features
 
 - **Optimized for Generation with LLMs**
 - **Deterministic, Declarative and cross compilable** into different target execution and deployment targets.
 - **Easy to read and understand** for people.
+- **Modular Design** with explicit imports.
 
 ## 🎯 Type System
 
-Basic types for rapid prototyping:
+SeedSpec uses a type-safe system to ensure data integrity.
 
 ```seed
-// Core types with built-in defaults
-type str(min?..max?) = ""      // Empty string default
-type num(min?..max?) = 0       // Zero default
-type bool = false              // False default
-
-// Simple component
-comp button {
-  in { text str }
-  style {
-    bg primary
-    pad med
+types {
+  // Core data types
+  text: {
+    min: number
+    max: number
+    pattern?: regex
   }
+  
+  num: {
+    min?: number
+    max?: number
+    integer?: boolean
+  }
+
+  bool: {}
 }
+```
+
+## Components
+
+Components are defined with the `component` keyword:
+
+```seed
+component Button {
+    input {
+        label: text
+    }
+}
+```
+
+## Imports
+
+```seed
+// Import from standard library
+import "@stdlib/core"
+
+// Import a specific file
+import "./components"
 ```
 
 ## 🏗️ Generated Output
@@ -104,7 +151,7 @@ Creates React components with:
 - **[Core Concepts](docs/core-concepts/)**
   - [Basic Types](docs/core-concepts/types.md)
   - [Components](docs/core-concepts/components.md)
-  - [Theming](docs/core-concepts/theming.md)
+  - [Language Structure](docs/core-concepts/language-structure.md)
 
 ## 🛠️ Development Status
 
@@ -116,12 +163,6 @@ Later, this language will be extended to other targets and end-to-end deployable
 
 - **GitHub Issues**: Bug reports & feature requests
 - **Discord**: Community chat & support
-- **Email**: info@noodleseed.com
+- **Email**: [info@noodleseed.com](mailto:info@noodleseed.com)
 
 ---
-
-<div align="center">
-  Built with ❤️ by <a href="https://noodleseed.com">Noodle Seed</a>
-  <br>
-  Making prototyping faster and easier
-</div>

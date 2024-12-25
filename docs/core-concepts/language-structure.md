@@ -10,31 +10,49 @@ The following EBNF (Extended Backus-Naur Form) grammar defines the core structur
 PROGRAM = { IMPORT_STATEMENT } APP_STATEMENT ;
 
 IMPORT_STATEMENT = 
-    "import" STRING |
+    "import" STRING [ "as" IDENTIFIER ] |
     "use" "{" IDENTIFIER_LIST "}" "from" (STRING | IDENTIFIER) ;
 
 IDENTIFIER_LIST = IDENTIFIER { "," IDENTIFIER } ;
 
 APP_STATEMENT =
-    "app" IDENTIFIER "{" 
-        [ THEME_BLOCK ]
-        [ MODEL_BLOCK ] 
-        [ DATA_BLOCK ]
-        [ COMPONENT_BLOCKS ]
-        [ SCREEN_BLOCK ] 
+    "app" IDENTIFIER [ STRING ] "{"
+        { APP_ELEMENT }
     "}" ;
+
+APP_ELEMENT =
+    THEME_BLOCK |
+    MODEL_BLOCK |
+    DATA_BLOCK |
+    COMPONENT_BLOCK |
+    SCREEN_STATEMENT ;
+
+SCREEN_STATEMENT =
+    "screen" IDENTIFIER [ STRING ] "{" [ SCREEN_ELEMENT ] "}" ;
 
 THEME_BLOCK = 
 
 TYPE_REF =
     "text" | "num" | "bool" ;
 
+MODEL_BLOCK =
+    "model" IDENTIFIER [ STRING ] "{" { MODEL_ELEMENT } "}" ;
+
+MODEL_ELEMENT =
+    IDENTIFIER "{" { MODEL_FIELD } "}" ;
+
+MODEL_FIELD =
+    IDENTIFIER TYPE_REF [ "=" LITERAL ] ;
+
 DATA_BLOCK =
-    "data" "{" { DATA_DECL } "}" ;
+  "data" "{" { DATA_STATEMENT } "}" ;
 
-DATA_DECL =
-    IDENTIFIER ":" IDENTIFIER "[]" "=" JSON_ARRAY ;
+DATA_STATEMENT =
+  "data" IDENTIFIER [ STRING ] "{" "use" IDENTIFIER DATA_VALUE "}" ;
 
+DATA_VALUE =
+  "data" JSON_ARRAY ;
+  
 JSON_ARRAY =
     "[" [ JSON_OBJECT { "," JSON_OBJECT } ] "]" ;
 
@@ -47,20 +65,27 @@ JSON_FIELD =
 JSON_VALUE =
     STRING | NUMBER | "true" | "false" | "null" | JSON_ARRAY | JSON_OBJECT ;
 
-COMPONENT_BLOCKS =
-    { COMPONENT_BLOCK } ;
-
 COMPONENT_BLOCK =
-    "component" IDENTIFIER "{" [ INPUT_BLOCK ] "}" ;
+    "component" IDENTIFIER [ STRING ] "{" [ INPUT_BLOCK ] "}" ;
 
 INPUT_BLOCK =
     "input" "{" IDENTIFIER ":" IDENTIFIER "}" ;
 
-SCREEN_BLOCK =
-    "screen" "{" { SCREEN_ELEMENT } "}" ;
-
 SCREEN_ELEMENT =
-    IDENTIFIER "{" "use" IDENTIFIER "data" IDENTIFIER "}" ;
+    IDENTIFIER "{" [ "use" IDENTIFIER ] [ "data" IDENTIFIER ] [ INLINE_COMPONENT_BLOCK ] "}" |
+    SCREEN_COMPONENT_USE ;
+
+SCREEN_COMPONENT_USE =
+    "use" IDENTIFIER [ CONFIG_BLOCK ] ;
+
+CONFIG_BLOCK =
+    "{" CONFIG_OPTION { "," CONFIG_OPTION } "}" ;
+
+CONFIG_OPTION =
+    IDENTIFIER ":" STRING ;
+
+INLINE_COMPONENT_BLOCK =
+    "component" "{" [ INPUT_BLOCK ] "}" ;
 
 LITERAL = STRING | NUMBER | "true" | "false" ;
 STRING  = "\"" { ANY_CHAR_NO_QUOTE } "\"" ;
@@ -245,7 +270,33 @@ app MyApp {
 }
 ```
 
-### 3. Components
+### 3. Using External Components
+
+SeedSpec allows importing and using components from external libraries, including pre-built components from standard libraries like `@stdlib/ai`.
+
+To import a component from an external library, use the `import` statement with the `as` keyword to assign an alias:
+
+```seed
+import "@stdlib/ai" as ai
+```
+
+You can then use the imported component within your application, either by defining a new component that uses it or directly within a screen definition.
+
+To use an external component directly within a screen, use the `use` keyword followed by the component identifier and an optional configuration block:
+
+```seed
+screen TaskList "Task List" {
+  use task_card
+  use ai.Chatbot {
+    systemPrompt: "You are a helpful assistant."
+  }
+  data tasks
+}
+```
+
+The configuration block allows you to provide component-specific options, such as a `systemPrompt` for a chatbot.
+
+### 4. Components
 
 Reusable UI components with variants:
 
