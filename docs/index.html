@@ -68,74 +68,187 @@
 
         <main>
             <section class="section">
-                <div class="container-base container-hero">
-                    <h1>SeedML</h1>
-                    <p>An AI-native programming language that bridges the gap between human intent and production software.</p>
-                    <a href="docs/getting-started/quick-start.html" class="button-base button-primary">Get Started</a>
+                <div class="container-base container-primary">
+                    <h1>Seed Specification Language</h1>
+                    <p>
+                        <a href="https://img.shields.io/badge/Project%20Status-Prototype-yellow.svg"><img src="https://img.shields.io/badge/Project%20Status-Prototype-yellow.svg" alt="Project Status: Prototype"></a>
+                        <a href="LICENSE.md"><img src="https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg" alt="License"></a>
+                    </p>
+                    <p>SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Looking ahead, SeedSpec aims to evolve into a comprehensive solution for defining entire end-to-end production business applications, completely declaratively. It will provide built-in functional components and integrations with popular online services, all while maintaining a focus on minimal token usage, readability, and deterministic behavior.</p>
                 </div>
             </section>
 
             <section class="section">
                 <div class="container-base container-primary">
-                    <h2>Key Features</h2>
-                    <div class="features">
-                        <div class="feature-card">
-                            <h3>🎯 Natural Expression</h3>
-                            <p>Write specifications in a clear, intent-focused language that both humans and AI can understand.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h3>🤖 AI-First Design</h3>
-                            <p>Built from the ground up for seamless interaction with AI language models.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h3>⚡ Smart Defaults</h3>
-                            <p>Production patterns built-in, with full flexibility to customize when needed.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h3>🎨 Full Stack</h3>
-                            <p>Generate complete applications with frontend, backend, and infrastructure.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                    <h2>Quick Example</h2>
+                    <pre><code class="language-seed">import "@stdlib/ai" as ai
 
-            <section class="section">
-                <div class="container-base container-secondary">
-                    <h2>Quick Start</h2>
-                    <div class="code-block">
-                        <button class="button-base button-tertiary" onclick="copyCode()">Copy</button>
-                        <pre><code class="language-bash"># Install SeedML
-pip install -e .
-export ANTHROPIC_API_KEY='your-api-key'
-
-# Create a simple app
-cat << 'EOF' > app.seed
-app TodoApp {
-  entity Task {
-    title: string!
-    done: bool = false
+app Todo "Task Management App" {
+  model Users "Users" {
+    name text = "New User"
+    email text = ""
+    role text = "member"
   }
-  screen Tasks {
-    list: [title, done]
-    actions: [create, toggle-done]
+
+  model Tasks "Tasks" {
+    title text = "New Task"
+    done bool = false
+    priority num = 3
+  }
+
+  data {
+    Users "User Data" [
+      { name: "John Doe", email: "john@example.com", role: "admin" },
+      { name: "Jane Smith", email: "jane@example.com", role: "member" }
+    ]
+
+    Tasks "Task Data" [
+      { title: "Create mockups", done: false, priority: 1 },
+      { title: "Review design", done: true, priority: 2 }
+    ]
+  }
+
+  component task_card "Task Card Component" {
+    input {
+      task: Task
+    }
+  }
+
+  component user_card "User Card Component" {
+    input {
+      user: User
+    }
+  }
+
+  // Define the TaskList screen inline
+  screen TaskList "Task List" {
+    use task_card
+    use ai.Chatbot {
+      systemPrompt: "You are a helpful assistant that helps users manage their tasks. You can ask the user for more details about their tasks, suggest deadlines, and help them prioritize their work. You can also answer general questions and provide helpful tips."
+      ui: {
+        mode: "modal"
+        trigger: "button"
+      }
+    }
+    data tasks
+  }
+
+  // Define the UserList screen inline
+  screen UserList "User List" {
+    use user_card
+    data users
   }
 }
-EOF
-
-# Generate the application
-seedml generate app.seed</code></pre>
-                    </div>
+</code></pre>
+                    <p><strong>New Feature:</strong> You can now define screens inline within the <code>app</code> block using the <code>screen</code> keyword followed by the screen name, an optional display name (in quotes), and the screen definition within curly braces. This example also demonstrates how to integrate pre-built components from external libraries, such as the <code>Chatbot</code> component from <code>@stdlib/ai</code>, and configure them directly within the screen definition.</p>
                 </div>
             </section>
 
             <section class="section">
-                <div class="container-base container-hero">
-                    <h2>Ready to Get Started?</h2>
-                    <p>Join us in making software development more natural for humans and machines.</p>
-                    <div class="button-group">
-                        <a href="docs/getting-started/installation.html" class="button-base button-primary">Install Now</a>
-                        <a href="https://github.com/fahd-noodleseed/seedml" class="button-base button-secondary">View on GitHub</a>
-                    </div>
+                <div class="container-base container-primary">
+                    <h2>🌟 Key Features</h2>
+                    <ul>
+                        <li><strong>Optimized for Generation with LLMs</strong></li>
+                        <li><strong>Deterministic, Declarative and cross compilable</strong> into different target execution and deployment targets.</li>
+                        <li><strong>Easy to read and understand</strong> for people.</li>
+                        <li><strong>Modular Design:</strong> Explicit imports for better organization.</li>
+                        <li><strong>Unified Full-Stack Language (Future):</strong> Envisioned to cover everything from UI (fonts, colors, themes) to database schema, business logic, workflows, and integrations, all defined declaratively. These features represent our long-term vision for SeedSpec. While the current prototype focuses on frontend development and core language features, we are actively working towards expanding SeedSpec into a comprehensive solution for building complete business applications.</li>
+                        <li><strong>Built-in Integrations (Future):</strong> Will include pre-built components for integrating with popular services like chatbot APIs, maps, calendars, CRMs, and other essential tools for business applications. These features represent our long-term vision for SeedSpec. While the current prototype focuses on frontend development and core language features, we are actively working towards expanding SeedSpec into a comprehensive solution for building complete business applications.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>🎯 Type System</h2>
+                    <pre><code class="language-seed">types {
+  // Core data types
+  text: {
+    min: number
+    max: number
+    pattern?: regex
+  }
+  
+  num: {
+    min?: number
+    max?: number
+    integer?: boolean
+  }
+
+  bool: {}
+}
+</code></pre>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>Components</h2>
+                    <p>Components are defined with the <code>component</code> keyword:</p>
+                    <pre><code class="language-seed">component Button {
+    input {
+        label: text
+    }
+}
+</code></pre>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>Imports</h2>
+                    <pre><code class="language-seed">// Import from standard library
+import "@stdlib/core"
+
+// Import a specific file
+import "./components"
+</code></pre>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>🏗️ Generated Output</h2>
+                    <p>Currently, SeedSpec generates React components with TypeScript types, styled components, basic routing, and simple state management. This represents our initial focus on providing a robust frontend prototyping solution. As we progress towards our long-term vision of a unified full-stack language, we will expand SeedSpec's capabilities to include backend generation, database schema definition, and seamless integration with various online services.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>📚 Documentation</h2>
+                    <ul>
+                        <li><strong><a href="docs/getting-started.md">Getting Started</a></strong>
+                            <ul>
+                                <li><a href="docs/getting-started/quick-start.md">Quick Start</a></li>
+                                <li><a href="docs/getting-started/first-prototype.md">First Prototype</a></li>
+                            </ul>
+                        </li>
+                        <li><strong><a href="docs/core-concepts/">Core Concepts</a></strong>
+                            <ul>
+                                <li><a href="docs/core-concepts/types.md">Basic Types</a></li>
+                                <li><a href="docs/core-concepts/components.md">Components</a></li>
+                                <li><a href="docs/core-concepts/language-structure.md">Language Structure</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>🛠️ Development Status</h2>
+                    <p>SeedSpec is currently in the prototype phase, focusing on representing working prototypes with the ability to integrate with online services. While our initial development includes an example integration with Google Cloud services, our goal is to support a wide range of platforms and services in the future. This will enable developers to easily connect their SeedSpec applications to the tools and services they need. The prototype phase allows us to build a solid foundation for SeedSpec's core functionality and gather feedback from early users. This iterative approach ensures that we are on the right path towards achieving our long-term vision.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container-base container-primary">
+                    <h2>📱 Contact & Support</h2>
+                    <ul>
+                        <li><strong>GitHub Issues:</strong> Bug reports & feature requests</li>
+                        <li><strong>Discord:</strong> Community chat & support</li>
+                        <li><strong>Email:</strong> <a href="mailto:info@noodleseed.com">info@noodleseed.com</a></li>
+                    </ul>
                 </div>
             </section>
         </main>
