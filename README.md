@@ -13,25 +13,21 @@ This example demonstrates a simple task management app with an integrated AI ass
 import "@stdlib/ai" as ai
 
 app Todo "Task Management App" {
-  model User "User" {
-    User {
-      name text = "New User"
-      email text = ""
-      role text = "member"
-    }
+  model Users "Users" {
+    name text = "New User"
+    email text = ""
+    role text = "member"
   }
 
   model Tasks "Tasks" {
-    Task {
-      title text = "New Task"
-      done bool = false
-      priority num = 3
-    }
+    title text = "New Task"
+    done bool = false
+    priority num = 3
   }
 
   data {
     data Users "User Data" {
-      use User
+      use Users
       data [
         { name: "John Doe", email: "john@example.com", role: "admin" },
         { name: "Jane Smith", email: "jane@example.com", role: "member" }
