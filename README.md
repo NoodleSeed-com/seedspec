@@ -3,7 +3,7 @@
 [![Project Status: Prototype](https://img.shields.io/badge/Project%20Status-Prototype-yellow.svg)]()
 [![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
 
-SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Write simple specifications with basic typing and get working UI prototypes with built-in UI/UX best practices.
+SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Looking ahead, SeedSpec aims to evolve into a comprehensive solution for defining entire end-to-end production business applications, completely declaratively. It will provide built-in functional components and integrations with popular online services, all while maintaining a focus on minimal token usage, readability, and deterministic behavior.
 
 ## Quick Example
 
@@ -77,7 +77,9 @@ app Todo "Task Management App" {
 - **Optimized for Generation with LLMs**
 - **Deterministic, Declarative and cross compilable** into different target execution and deployment targets.
 - **Easy to read and understand** for people.
-- **Modular Design** with explicit imports.
+- **Modular Design:** Explicit imports for better organization.
+- **Unified Full-Stack Language (Future):** Envisioned to cover everything from UI (fonts, colors, themes) to database schema, business logic, workflows, and integrations, all defined declaratively. These features represent our long-term vision for SeedSpec. While the current prototype focuses on frontend development and core language features, we are actively working towards expanding SeedSpec into a comprehensive solution for building complete business applications.
+- **Built-in Integrations (Future):** Will include pre-built components for integrating with popular services like chatbot APIs, maps, calendars, CRMs, and other essential tools for business applications. These features represent our long-term vision for SeedSpec. While the current prototype focuses on frontend development and core language features, we are actively working towards expanding SeedSpec into a comprehensive solution for building complete business applications.
 
 ## 🎯 Type System
 
@@ -126,11 +128,7 @@ import "./components"
 
 ## 🏗️ Generated Output
 
-Creates React components with:
-- TypeScript types
-- Styled components
-- Basic routing
-- Simple state management
+Currently, SeedSpec generates React components with TypeScript types, styled components, basic routing, and simple state management. This represents our initial focus on providing a robust frontend prototyping solution. As we progress towards our long-term vision of a unified full-stack language, we will expand SeedSpec's capabilities to include backend generation, database schema definition, and seamless integration with various online services.
 
 ## 📚 Documentation
 
@@ -145,9 +143,7 @@ Creates React components with:
 
 ## 🛠️ Development Status
 
-In the first phase, SeedSpec is being developed to represent working prototypes that have built-in Google Cloud services.
-
-Later, this language will be extended to other targets and end-to-end deployable applications, not just prototypes.
+SeedSpec is currently in the prototype phase, focusing on representing working prototypes with the ability to integrate with online services. While our initial development includes an example integration with Google Cloud services, our goal is to support a wide range of platforms and services in the future. This will enable developers to easily connect their SeedSpec applications to the tools and services they need. The prototype phase allows us to build a solid foundation for SeedSpec's core functionality and gather feedback from early users. This iterative approach ensures that we are on the right path towards achieving our long-term vision.
 
 ## 📱 Contact & Support
 
