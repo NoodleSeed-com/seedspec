@@ -1,4 +1,0 @@
-// Main themes file that imports all theme definitions
-import "themes/default.seed"
-import "themes/light.seed"
-import "themes/dark.seed"

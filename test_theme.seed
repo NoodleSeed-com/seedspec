@@ -1,7 +1,0 @@
-
-    theme invalid extends nonexistent {
-        colors {
-            primary: color(#ff0000)
-        }
-    }
-    
