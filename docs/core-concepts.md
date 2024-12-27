@@ -1,771 +1,97 @@
-# Architecture & Design
-
-The Seed Specification Language transforms specifications into working applications through a carefully designed pipeline architecture.
-
-## System Architecture
-
-The Seed Specification Language follows a strict layered architecture pattern where each layer has clear responsibilities and boundaries:
-
-### Layer Dependencies
-```ascii
-┌─────────────────────────────────────────────────────┐
-│                Integration Layer                     │
-│  • External services, APIs, webhooks                │
-│  • Location services, mapping providers             │
-│  • Error handling, rate limiting, security          │
-├─────────────────────────────────────────────────────┤
-│                Presentation Layer                    │
-│  • UI components, layouts, navigation               │
-│  • User interactions, forms, validation             │
-├─────────────────────────────────────────────────────┤
-│                 Security Layer                       │
-│  • Roles, permissions, access control               │
-│  • Authentication, authorization, audit             │
-├─────────────────────────────────────────────────────┤
-│                  Logic Layer                         │
-│  • Business rules, workflows                        │
-│  • Computations, validations                        │
-├─────────────────────────────────────────────────────┤
-│                  Data Layer                         │
-│  • Entities, relationships                          │
-│  • CRUD operations, queries                         │
-├─────────────────────────────────────────────────────┤
-│                Foundation Layer                      │
-│  • Types, validation rules                          │
-│  • Common patterns, base entities                   │
-└─────────────────────────────────────────────────────┘
-```
-
-The Seed Specification Language enforces these architectural boundaries:
-
-```ascii
-┌─────────────────────────────────────────────────────┐
-│                Integration Layer                     │
-├─────────────────────────────────────────────────────┤
-│                Presentation Layer                    │
-├─────────────────────────────────────────────────────┤
-│                 Security Layer                       │
-├─────────────────────────────────────────────────────┤
-│                  Logic Layer                         │
-├─────────────────────────────────────────────────────┤
-│                  Data Layer                         │
-├─────────────────────────────────────────────────────┤
-│                Foundation Layer                      │
-└─────────────────────────────────────────────────────┘
-```
-
-Each layer builds upon lower layers:
-
-1. **Foundation Layer**
-   - Type system
-   - Validation rules
-   - Computed fields
-
-2. **Data Layer**
-   - Independent entities
-   - Dependent entities
-   - Relationships
-
-3. **Logic Layer**
-   - Business rules
-   - Workflows
-   - Computations
-
-4. **Security Layer**
-   - Permissions
-   - Roles
-   - Access control
-
-5. **Presentation Layer**
-   - Screens
-   - Components
-   - Layouts
-
-6. **Integration Layer**
-   - External services
-   - APIs
-   - Events
-
-## Core Components
-
-### 1. Parser & Validator
-
-The validation pipeline ensures specifications are correct before generation:
-
-```python
-class Validator:
-    def validate_syntax(self, spec):
-        """Check YAML syntax and structure"""
-        # Verify basic YAML format
-        # Check required sections
-        # Validate section structure
-        
-    def validate_semantics(self, spec):
-        """Verify semantic correctness"""
-        # Check entity relationships
-        # Validate type usage
-        # Verify rule logic
-        
-    def resolve_references(self, spec):
-        """Resolve all references"""
-        # Link entity relationships
-        # Resolve type references
-        # Connect rule dependencies
-```
-
-### 2. Generation Engine
-
-The generation engine handles interaction with Claude:
-
-```python
-class Generator:
-    def prepare_prompt(self, spec):
-        """Transform spec into prompt"""
-        # Break into logical chunks
-        # Add context and instructions
-        # Format for Claude
-        
-    def generate_code(self, prompt):
-        """Generate via Claude API"""
-        # Send prompt to Claude
-        # Handle response streaming
-        # Manage rate limits
-        # Retry on failures
-        
-    def process_response(self, response):
-        """Process Claude's response"""
-        # Parse response format
-        # Extract file content
-        # Validate output
-```
-
-### 3. Output Processor
-
-The output processor handles file system operations:
-
-```python
-class OutputProcessor:
-    def create_structure(self):
-        """Create directory structure"""
-        # Make directories
-        # Set up config files
-        # Initialize git repo
-        
-    def write_files(self, files):
-        """Write files atomically"""
-        # Write to temp location
-        # Validate content
-        # Move to final location
-        
-    def setup_project(self):
-        """Configure project"""
-        # Install dependencies
-        # Set up tooling
-        # Initialize services
-```
-
-### 4. Location Services
-
-```python
-class LocationServices:
-    def geocode(self, address):
-        """Convert address to coordinates"""
-        # Validate address format
-        # Call geocoding service
-        # Cache results
-        
-    def reverse_geocode(self, lat, lng):
-        """Convert coordinates to address"""
-        # Validate coordinates
-        # Call reverse geocoding
-        # Format response
-        
-    def validate_region(self, points):
-        """Validate geographic region"""
-        # Check boundary validity
-        # Compute area
-        # Verify constraints
-```
-
-## Design Principles
-
-### 1. Separation of Concerns
-
-Each component has clear responsibilities:
-- **Parser**: Understanding specifications
-- **Generator**: Code generation
-- **Output**: File system management
-
-### 2. Reliability
-
-Multiple layers ensure reliable operation:
-- Validation before generation
-- Atomic file operations
-- Error recovery
-- Output verification
-
-### 3. Extensibility
-
-The system is designed for extension:
-- Custom validators
-- Template overrides
-- Output adapters
-- Plugin system
-
-## Implementation Details
-
-### 1. Validation Pipeline
-
-```python
-def validate_specification(spec):
-    # 1. Basic syntax
-    validate_yaml_syntax(spec)
-    
-    # 2. Schema validation
-    validate_against_schema(spec)
-    
-    # 3. Semantic checks
-    validate_semantics(spec)
-    
-    # 4. Reference resolution
-    resolve_all_references(spec)
-```
-
-### 2. Generation Process
-
-```python
-def generate_application(spec):
-    # 1. Prepare context
-    context = prepare_generation_context(spec)
-    
-    # 2. Generate components
-    components = []
-    for component in spec.components:
-        result = generate_component(component, context)
-        components.append(result)
-        
-    # 3. Post-process
-    post_process_components(components)
-```
-
-```python
-# Maps Component Generation
-def generate_maps_components(spec):
-    # 1. Analyze location usage
-    location_fields = find_location_fields(spec)
-    
-    # 2. Generate components
-    for field in location_fields:
-        # Generate picker component
-        # Generate view component
-        # Generate search component
-        
-    # 3. Generate services
-    generate_location_services()
-    generate_geocoding_pipeline()
-    
-    # 4. Setup integration
-    configure_maps_provider()
-    setup_caching()
-```
-
-### 3. File Management
-
-```python
-def manage_output(components):
-    # 1. Prepare directories
-    setup_directory_structure()
-    
-    # 2. Write files
-    with atomic_writer() as writer:
-        for component in components:
-            writer.write_component(component)
-            
-    # 3. Verify output
-    verify_written_files()
-```
-
-```python
-def handle_location_data(location):
-    # 1. Validation
-    validate_coordinates(location)
-    
-    # 2. Geocoding
-    with geocoding_client() as client:
-        result = client.geocode(location)
-        
-    # 3. Data enhancement
-    enhance_location_data(result)
-    
-    # 4. Storage preparation
-    prepare_for_storage(result)
-```
-
-## Error Handling
-
-The system uses a comprehensive error handling approach:
-
-1. **Validation Errors**
-   - Syntax errors
-   - Semantic errors
-   - Reference errors
-
-2. **Generation Errors**
-   - API failures
-   - Context limits
-   - Invalid output
-
-3. **Output Errors**
-   - File system errors
-   - Permission issues
-   - Verification failures
-
-## Cross-Compilation Architecture
-
-The Seed Specification Language uses a sophisticated cross-compilation pipeline to transform declarative specifications into implementation-specific code:
-
-### Cross-Compiler Components
-
-```ascii
-┌─────────────────────────────────────────────────────┐
-│              Specification Parser                    │
-│  • YAML/JSON parsing                                │
-│  • Schema validation                                │
-│  • Intermediate representation                      │
-├─────────────────────────────────────────────────────┤
-│               Template Engine                        │
-│  • Implementation-specific templates                │
-│  • Component generation                             │
-│  • Layout processing                                │
-├─────────────────────────────────────────────────────┤
-│               Code Generator                         │
-│  • Target platform adaptation                       │
-│  • Project structure generation                     │
-│  • Dependency management                            │
-└─────────────────────────────────────────────────────┘
-```
-
-The cross-compiler follows these key principles:
-
-1. **Clean Separation**
-   - Parser independent of implementation
-   - Template system isolation
-   - Generator modularity
-
-2. **Implementation Support**
-   - Multiple frontend frameworks (React, Vue, Angular)
-   - Backend technology options
-   - Database flexibility
-
-3. **Template Organization**
-   - Component templates
-   - Layout patterns
-   - Style definitions
-   - Configuration templates
-
-### Cross-Compilation Process
-
-```python
-class CrossCompiler:
-    def compile(self, spec):
-        """Transform spec to implementation"""
-        # 1. Parse and validate
-        ir = self.parser.parse(spec)
-        
-        # 2. Load templates
-        templates = self.template_engine.load()
-        
-        # 3. Generate code
-        self.generator.generate(ir, templates)
-```
-
-## Future Directions
-
-### 1. Near-term Improvements
-
-- **Deterministic Generation**
-  - Local generation options
-  - Template-based generation
-  - Hybrid approaches
-
-- **Enhanced Validation**
-  - Deep semantic analysis
-  - Cross-reference checking
-  - Custom rule validation
-
-### 2. UI Patterns & Components
-
-```yaml
-# Standard Screen Types
-screen List {
-  list: [field1, field2]        # Fields to display
-  actions: [create, edit]       # Basic actions
-}
-
-screen Form {
-  form: [field1, field2]        # Form fields
-  actions: [save, cancel]       # Form actions
-}
-
-screen Detail {
-  content: [field1, field2]     # Content fields
-  actions: [edit, delete]       # Item actions
-}
-
-screen Dashboard {
-  summary: [metric1, metric2]   # Key metrics
-  lists: [recent, popular]      # Data lists
-}
-
-# Layout Patterns
-screen OrderDetail {
-  layout: split
-  left: [customer, items]
-  right: [summary, actions]
-}
-
-# Built-in Features
-features: {
-  search: true        # Search functionality
-  sort: true         # Column sorting
-  pagination: true   # Page navigation
-}
-```
-
-### 3. Research Areas
-
-- **Prompt Engineering**
-  - Context optimization
-  - Output consistency
-  - Token efficiency
-
-- **Code Quality**
-  - Style consistency
-  - Best practice enforcement
-  - Security patterns
-
-- **Location Optimization**
-  - Smart geocoding caching
-  - Efficient region calculations
-  - Clustering algorithms
-  - Distance matrix optimization
-
-### 3. Tooling
-
-- **Development Tools**
-  - IDE integration
-  - Live preview
-  - Debug tools
-
-- **Deployment**
-  - CI/CD integration
-  - Container support
-  - Cloud deployment
-
-## Contributing
-
-The architecture is designed for contribution in these areas:
-
-1. **Core Components**
-   - Validators
-   - Generators
-   - Processors
-
-2. **Extensions**
-   - Templates
-   - Plugins
-   - Tools
-
-3. **Documentation**
-   - Examples
-   - Tutorials
-   - Reference
-# Architecture
-
-SeedML generates scalable architectures through intent-focused patterns that automatically implement proven practices.
-
-## Core Concepts
-
-```yaml
-app ScalableApp {
-  # Declare architecture needs
-  architecture {
-    style: microservices    # Application pattern
-    scale: auto             # Infrastructure
-    regions: [us, eu]       # Distribution
-    resilience: high        # Reliability
+# Core Concepts
+
+The Seed Specification Language is built on simple but powerful concepts that work together to enable rapid prototyping of web applications.
+
+## Type System
+
+SeedSpec uses a type-safe system to ensure data integrity:
+
+```seed
+types {
+  // Core data types
+  text: {
+    min: number
+    max: number
+    pattern?: regex
+  }
+  
+  num: {
+    min?: number
+    max?: number
+    integer?: boolean
   }
 
-  # Intent-focused services
-  service Orders {
-    type: core          # Service classification
-    scale: high         # Resource allocation
-    storage: dedicated  # Data patterns
-  }
+  bool: {}
+}
+```
+
+## Components
+
+Components are defined with the `component` keyword:
+
+```seed
+component Button {
+    input {
+        label: text
+    }
+}
+```
+
+## Models
+
+Models define the data structure of your application:
+
+```seed
+model Users "Users" {
+  name text = "New User"
+  email text = ""
+  role text = "member"
+}
+
+model Tasks "Tasks" {
+  title text = "New Task"
+  done bool = false
+  priority num = 3
+}
+```
+
+## Screens
+
+Screens define the user interface of your application:
+
+```seed
+screen TaskList "Task List" {
+  use task_card
+  data tasks
+}
+
+screen UserList "User List" {
+  use user_card
+  data users
 }
 ```
 
 ## Key Features
 
-### 1. Application Patterns
-```yaml
-architecture {
-  # Smart architectural choices
-  style: microservices
-  patterns: [
-    cqrs,              # Command/Query
-    event_sourcing,    # State management
-    api_gateway        # Access control
-  ]
-}
-```
+1. **Optimized for Generation with LLMs**
+   - Minimal token usage
+   - Clear intent expression
+   - Deterministic output
 
-### 2. Scalability
-```yaml
-scale {
-  # Automatic scaling
-  compute: auto       # Resources
-  storage: replicated # Data
-  cache: distributed  # Performance
-  
-  limits: {
-    cpu: 80%         # Thresholds
-    memory: 70%      # Monitoring
-  }
-}
-```
+2. **Declarative and Cross-Compilable**
+   - Define what, not how
+   - Target multiple platforms
+   - Consistent output
 
-### 3. Resilience
-```yaml
-resilience {
-  # Built-in reliability
-  failover: automatic    # Recovery
-  backup: continuous     # Data protection
-  monitoring: complete   # Observability
-  
-  sla: {
-    uptime: 99.9%       # Availability
-    latency: 100ms      # Performance
-  }
-}
-```
-
-### 4. Distribution
-```yaml
-regions {
-  # Global deployment
-  primary: us-east
-  replicas: [eu, asia]
-  
-  routing: {
-    strategy: latency    # Smart routing
-    failover: nearest    # Reliability
-  }
-}
-```
-
-## Best Practices
-
-1. **Cloud Native**
-   - Container based
-   - Auto scaling
-   - Service mesh
-
-2. **Reliability First**
-   - High availability
-   - Disaster recovery
-   - Performance monitoring
-
-3. **Future Ready**
-   - Modular design
-   - Easy scaling
-   - Tech flexibility
-# Modular App Specifications
-
-The Seed language supports splitting app definitions across multiple files using the `extend` keyword. This enables better organization, team collaboration, and reuse of components.
-
-## Basic Usage
-
-```yaml
-# core.seed - Core app definition
-app MyApp {
-  entity User {
-    name: string
-    email: email
-  }
-}
-
-# ui.seed - UI components 
-extend MyApp {
-  screen Users {
-    list: [name, email]
-    actions: [create, edit]
-  }
-}
-
-# rules.seed - Business rules
-extend MyApp {
-  rules {
-    validateEmail: {
-      when: email.changed
-      validate: email.format
-    }
-  }
-}
-```
-
-## Key Benefits
-
-1. **Separation of Concerns**
-   - Split specifications by feature
-   - Organize by team responsibility 
-   - Maintain focus in each file
-
-2. **Team Collaboration**
-   - UI team works on screens
-   - Backend team handles data model
-   - Rules team manages business logic
-
-3. **Reusability**
-   - Share common components
-   - Create feature libraries
-   - Mix and match modules
-
-## File Organization
-
-Recommended file organization:
-
-```
-myapp/
-  ├── core.seed      # Core app definition
-  ├── ui/
-  │   ├── admin.seed    # Admin screens
-  │   └── public.seed   # Public screens  
-  ├── rules/
-  │   ├── auth.seed     # Auth rules
-  │   └── billing.seed  # Billing rules
-  └── api/
-      └── external.seed # External APIs
-```
-
-## Loading Order
-
-Files are loaded in this order:
-
-1. Core app definition (`app` keyword)
-2. Extensions (`extend` keyword) in alphabetical order
-3. Feature modules
-4. Component libraries
-5. Integration modules
-
-## Validation
-
-The system ensures:
-
-1. **Consistency**
-   - No conflicting definitions
-   - Valid references
-   - Complete dependencies
-
-2. **Uniqueness**
-   - No duplicate entities
-   - Unique component names
-   - Distinct rule names
-
-3. **Dependencies**
-   - Core app exists
-   - Required modules present
-   - Valid references
-
-## Best Practices
-
-1. **File Naming**
-   - Use descriptive names
-   - Group related files
-   - Follow consistent patterns
-
-2. **Module Size**
-   - Keep files focused
-   - Split large modules
-   - Group related features
-
-3. **Dependencies**
-   - Minimize coupling
-   - Clear dependencies
+3. **Easy to Read and Understand**
+   - Clean syntax
    - Explicit imports
-# Core Concepts
+   - Clear structure
 
-SeedML is built on simple but powerful concepts that work together:
-
-## [Modular Apps](modular-apps.md)
-
-Split app definitions across multiple files for better organization and team collaboration. See [Modular Apps](modular-apps.md) for details.
-
-## Key Ideas
-
-```javascript
-// Everything in one place
-app TodoList {
-  // Data model
-  entity Task {
-    title: string
-    done: bool
-  }
-
-  // Business rules
-  rules {
-    complete {
-      validate: !done
-      then: done = true
-    }
-  }
-
-  // User interface
-  screen Tasks {
-    list: [title, done]
-    actions: [create, complete]
-  }
-}
-```
-
-## Core Features
-
-1. **Smart Defaults**
-   - Production patterns built-in
-   - Override only when needed
-   - Progressive enhancement
-
-2. **Clear Intent**
-   - Express what you want
-   - Not how to build it
-   - Natural language
-
-3. **Full Stack**
-   - One specification
-   - Complete application
-   - Modern tech stack
-
-## Learn More
-
-1. [Type System](type-system.md)
-   - Basic types
-   - Validation
-   - Relationships
-
-2. [Business Rules](business-rules.md)
-   - Simple validation
-   - Clear workflows
-   - Computed fields
-
-3. [UI Patterns](ui-patterns.md)
-   - Standard layouts
-   - Common components
-   - Best practices
-
-4. [Theming](theming.md)
-   - Hierarchical themes
-   - Simple overrides
-   - Visual consistency
+4. **Modular Design**
+   - Explicit imports
+   - Component reuse
+   - Clean organization
 # Security
 
 Seed Spec provides comprehensive security features built into the language.
