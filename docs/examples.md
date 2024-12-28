@@ -19,7 +19,7 @@ app Contacts "Contact Management" {
 }
 ```
 
-This example demonstrates a basic application with a `Contact` model and a `ContactList` screen.
+This example demonstrates a basic application that implements a `Contact` model and a `ContactList` screen.
 
 ## Business Application Example
 
@@ -47,7 +47,7 @@ app OrderSystem "Order Management" {
 }
 ```
 
-This example demonstrates a more complex application with `Customer`, `Product`, and `Order` models, and an `OrderList` screen.
+This example demonstrates a more complex application that implements `Customer`, `Product`, and `Order` models, along with an `OrderList` screen.
 
 ## Analytics Dashboard Example
 
@@ -66,7 +66,7 @@ app Analytics "Analytics Dashboard" {
 }
 ```
 
-This example demonstrates a basic dashboard application with a `Metric` model and a `Dashboard` screen.
+This example demonstrates a basic dashboard application that implements a `Metric` model and a `Dashboard` screen.
 
 ## Integration Examples
 
@@ -84,7 +84,7 @@ app Store "Store App" {
 }
 ```
 
-This example demonstrates a basic application with a `Product` model and a `ProductList` screen.
+This example demonstrates a basic application that implements a `Product` model and a `ProductList` screen.
 
 ## SaaS Application Example
 
@@ -107,4 +107,4 @@ app SaaSPlatform "SaaS Platform" {
 }
 ```
 
-This example demonstrates a basic SaaS application with `Tenant` and `User` models, and a `TenantList` screen.
+This example demonstrates a basic SaaS application that implements `Tenant` and `User` models, along with a `TenantList` screen.
