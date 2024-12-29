@@ -1,22 +1,18 @@
 # Types
 
-Basic data types in SeedSpec with constraints.
+SeedSpec has three core types:
+
+- `text`: Text strings
+- `num`: Numbers
+- `bool`: True/false values
+
+Example usage in a model:
 
 ```seed
-types {
-  text: {
-    min: number
-    max: number
-    pattern?: regex
-  }
-  
-  num: {
-    min?: number
-    max?: number
-    integer?: boolean
-  }
-
-  bool: {}
+model Task {
+  title text        // Text field
+  count num         // Number field
+  done bool = false // Boolean with default
 }
 ```
 
