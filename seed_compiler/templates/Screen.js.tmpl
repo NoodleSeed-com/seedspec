@@ -1,40 +1,117 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { use{{ model.name }} } from '../models/{{ model.name }}';
 
 export function {{ name }}() {
   const { items, create, update, remove } = use{{ model.name }}();
+  const [editingId, setEditingId] = useState(null);
 
   return (
-    <div>
-      <h1>{{ name }}</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">{{ name }}</h1>
       
       {/* Create Form */}
-      <form onSubmit={e => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        create(Object.fromEntries(formData));
-      }}>
+      <form 
+        className="mb-8 p-4 bg-gray-100 rounded-lg"
+        onSubmit={e => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          create(Object.fromEntries(formData));
+          e.target.reset();
+        }}
+      >
         {% for field in model.fields %}
-        <div>
-          <label>{{ field.name }}</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            {{ field.name|title }}
+          </label>
           <input 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
             name="{{ field.name }}"
             type="{{ field.type|input_type }}"
             {% if field.default %}defaultValue="{{ field.default }}"{% endif %}
           />
         </div>
         {% endfor %}
-        <button type="submit">Create</button>
+        <button 
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Create
+        </button>
       </form>
 
       {/* List */}
-      <div>
+      <div className="space-y-4">
         {items.map(item => (
-          <div key={item.id}>
-            {% for field in model.fields %}
-            <div>{item.{{ field.name }}}</div>
-            {% endfor %}
-            <button onClick={() => remove(item.id)}>Delete</button>
+          <div 
+            key={item.id}
+            className="flex items-center justify-between p-4 bg-white shadow rounded-lg"
+          >
+            {editingId === item.id ? (
+              <form 
+                className="flex-1 mr-4"
+                onSubmit={e => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target);
+                  update(item.id, Object.fromEntries(formData));
+                  setEditingId(null);
+                }}
+              >
+                {% for field in model.fields %}
+                <div className="mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    {{ field.name|title }}
+                  </label>
+                  <input
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    name="{{ field.name }}"
+                    type="{{ field.type|input_type }}"
+                    defaultValue={item.{{ field.name }}}
+                  />
+                </div>
+                {% endfor %}
+                <div className="flex gap-2">
+                  <button 
+                    type="submit"
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(null)}
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <div className="flex-1">
+                  {% for field in model.fields %}
+                  <div className="text-gray-700">
+                    <span className="font-medium">{{ field.name|title }}:</span>{' '}
+                    {item.{{ field.name }}.toString()}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setEditingId(item.id)}
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => remove(item.id)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>

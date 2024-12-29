@@ -1,21 +1,33 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export function use{{ name }}() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    const saved = localStorage.getItem('{{ name|lower }}s');
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const create = (data) => {
-    setItems(prev => [...prev, { ...data, id: Date.now().toString() }]);
-  };
+  // Persist to localStorage whenever items change
+  const persistItems = useCallback((newItems) => {
+    localStorage.setItem('{{ name|lower }}s', JSON.stringify(newItems));
+    setItems(newItems);
+  }, []);
 
-  const update = (id, data) => {
-    setItems(prev => prev.map(item => 
+  const create = useCallback((data) => {
+    const newItems = [...items, { ...data, id: Date.now().toString() }];
+    persistItems(newItems);
+  }, [items, persistItems]);
+
+  const update = useCallback((id, data) => {
+    const newItems = items.map(item => 
       item.id === id ? { ...item, ...data } : item
-    ));
-  };
+    );
+    persistItems(newItems);
+  }, [items, persistItems]);
 
-  const remove = (id) => {
-    setItems(prev => prev.filter(item => item.id !== id));
-  };
+  const remove = useCallback((id) => {
+    const newItems = items.filter(item => item.id !== id);
+    persistItems(newItems);
+  }, [items, persistItems]);
 
   return { items, create, update, remove };
 }
