@@ -1,10 +1,12 @@
-import { CharStreams, CommonTokenStream } from 'antlr4';
+import antlr4 from 'antlr4';
 import { SeedSpecLexer } from './SeedSpecLexer';
 import { SeedSpecParser } from './SeedSpecParser';
 import { ASTBuilder } from './ASTBuilder';
 
+const { CommonTokenStream, InputStream } = antlr4;
+
 export function parseSeedSpec(input: string) {
-  const chars = CharStreams.fromString(input);
+  const chars = new InputStream(input);
   const lexer = new SeedSpecLexer(chars);
   const tokens = new CommonTokenStream(lexer);
   const parser = new SeedSpecParser(tokens);
