@@ -12,7 +12,7 @@ class Generator:
         self.env.filters['lower'] = str.lower
         self.env.filters['input_type'] = self._input_type_for_field
         
-        # Add valid types
+        # Define valid types
         self.valid_types = {'text', 'num', 'bool'}
         
     def generate(self, spec: dict, output_dir: str):

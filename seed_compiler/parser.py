@@ -98,7 +98,8 @@ class SeedParser:
             field = {
                 'name': field_name,
                 'type': field_type,
-                'default': None
+                'default': None,
+                'is_reference': field_type not in self.valid_types
             }
             
             # Handle default value if present
