@@ -61,7 +61,7 @@ app Todo "Task Management App" {
 ## 🌟 Key Features
 
 - **Optimized for Generation with LLMs.**
-- **Deterministic, Declarative and Cross Compilable** into different target execution and deployment targets.
+- **Deterministic and Declarative** into different target execution and deployment targets.
 - **Easy to Read and Understand** for people.
 - **Modular Design:** Explicit imports for better organization.
 - **Implicit CRUD Operations:** Automatically generated `create`, `update`, and `delete` actions for all models.
