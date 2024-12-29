@@ -1,23 +1,8 @@
 # Imports
 
-Import external libraries and files.
+Status: 🚧 In Development
 
-```seed
-// Import from standard library
-import "@stdlib/core"
-
-// Import specific components
-import "@stdlib/ui" {
-  Button,
-  Card,
-  Table
-}
-
-// Import with alias
-import "@stdlib/ai" as ai
-
-// Import local files
-import "./components"
-```
-
-Status: ✓ Available
+This feature is currently under development. It will allow you to:
+- Import external libraries
+- Share code between files
+- Manage dependencies

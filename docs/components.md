@@ -1,26 +1,8 @@
 # Components
 
-Define reusable UI components in SeedSpec.
+Status: 🚧 In Development
 
-```seed
-component task_card "Task Card Component" {
-  input {
-    task: Task
-  }
-}
-
-component user_card "User Card Component" {
-  input {
-    user: User
-  }
-}
-
-component Button "Button Component" {
-  input {
-    label: text
-    onClick: action
-  }
-}
-```
-
-Status: ✓ Available
+This feature is currently under development. It will allow you to:
+- Define reusable UI components
+- Create component libraries
+- Share components between screens
