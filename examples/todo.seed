@@ -1,6 +1,10 @@
+// Todo List Application
 model Task {
     title text
+    description text
+    priority num
     done bool = false
+    dueDate text
 }
 
 screen Tasks using Task
