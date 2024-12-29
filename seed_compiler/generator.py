@@ -163,7 +163,7 @@ ReactDOM.render(
         elif field['type'] == 'num':
             return str(field['default'])
         else:
-            return f'"{field["default"]}"'
+            return f"'{field['default']}'"  # Use single quotes for JS strings
     def _generate_tailwind_config(self, output_dir: str):
         """Generate tailwind.config.js"""
         config = '''
