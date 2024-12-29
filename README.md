@@ -1,9 +1,37 @@
-# Seed Specification Language
+# SeedSpec Language
 
-[![Project Status: Prototype](https://img.shields.io/badge/Project%20Status-Prototype-yellow.svg)]()
-[![License](https://img.shields.io/badge/license-Dual%20GPL%2FCommercial-blue.svg)](LICENSE.md)
+SeedSpec is a minimal, declarative language for defining data-driven applications.
 
-SeedSpec is a minimal, declarative language for rapidly prototyping web applications. Looking ahead, SeedSpec aims to evolve into a comprehensive solution for defining entire end-to-end production business applications, completely declaratively. It will provide built-in functional components and integrations with popular online services, all while maintaining a focus on minimal token usage, readability, and deterministic behavior.
+## Quick Example
+
+```seed
+model Task {
+  title text
+  done bool = false
+}
+
+screen Tasks using Task
+```
+
+## Core Features
+
+- **Models** - Define data with 3 types (text, num, bool)
+- **Screens** - Auto-generated CRUD interfaces
+- **Data Binding** - Automatic model-screen binding
+- **Basic References** - Simple model relationships
+
+## Documentation
+
+See the [docs](docs/) directory for detailed documentation.
+
+## Status
+
+SeedSpec is currently in prototype phase focusing on core features.
+
+## Contact
+
+- GitHub Issues: Bug reports & feature requests
+- Email: info@noodleseed.com
 
 ## Quick Example
 
