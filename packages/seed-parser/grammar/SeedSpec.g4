@@ -1,33 +1,103 @@
 grammar SeedSpec;
 
-// Top-level rule
+// Parser Rules
 program
-  : modelDeclaration+
-  ;
+    : declaration* EOF
+    ;
 
-// Model declaration
+declaration
+    : appDeclaration
+    | modelDeclaration
+    | dataDeclaration
+    | screenDeclaration
+    | actionDeclaration
+    ;
+
+appDeclaration
+    : 'app' IDENTIFIER STRING_LITERAL '{' declaration* '}'
+    ;
+
 modelDeclaration
-  : 'model' IDENTIFIER '{' fieldDeclaration* '}'
-  ;
+    : 'model' IDENTIFIER '{' fieldDeclaration* '}'
+    ;
 
-// Field declaration
 fieldDeclaration
-  : IDENTIFIER typeName ('as' 'title')? ('=' defaultValue)? ('?')?
-  ;
+    : IDENTIFIER typeName ('as' 'title')? ('=' defaultValue)? ('?')?
+    | IDENTIFIER 'in' '[' IDENTIFIER (',' IDENTIFIER)* ']' ('=' IDENTIFIER)?
+    ;
+
+dataDeclaration
+    : 'data' '{' datasetDeclaration* '}'
+    ;
+
+datasetDeclaration
+    : IDENTIFIER ':' IDENTIFIER '[]' '[' dataInstance (',' dataInstance)* ']'
+    ;
+
+dataInstance
+    : '{' (dataValue (',' dataValue)*)? '}'
+    ;
+
+dataValue
+    : IDENTIFIER ':' value
+    | value
+    ;
+
+screenDeclaration
+    : 'screen' IDENTIFIER
+    ;
+
+actionDeclaration
+    : 'action' IDENTIFIER '(' parameterList? ')' '{' actionStatement* '}'
+    ;
+
+parameterList
+    : parameter (',' parameter)*
+    ;
+
+parameter
+    : IDENTIFIER ':' typeName ('?')?
+    ;
+
+actionStatement
+    : 'create' IDENTIFIER '{' fieldAssignment (',' fieldAssignment)* '}'
+    ;
+
+fieldAssignment
+    : IDENTIFIER ':' IDENTIFIER
+    ;
 
 // Type names
 typeName
-  : 'text' | 'num' | 'bool'
-  ;
+    : 'text'
+    | 'num'
+    | 'bool'
+    | 'date'
+    | IDENTIFIER
+    ;
 
-// Default value (simplified for now)
+// Values
+value
+    : STRING_LITERAL
+    | NUMBER_LITERAL
+    | BOOLEAN_LITERAL
+    | DATE_LITERAL
+    | IDENTIFIER '[' NUMBER_LITERAL ']'
+    ;
+
 defaultValue
-  : STRING_LITERAL | NUMBER_LITERAL | BOOLEAN_LITERAL
-  ;
+    : STRING_LITERAL
+    | NUMBER_LITERAL
+    | BOOLEAN_LITERAL
+    | DATE_LITERAL
+    | IDENTIFIER
+    ;
 
-// Identifiers, literals, etc. (tokens)
+// Lexer Rules
 IDENTIFIER : [a-zA-Z_][a-zA-Z0-9_]*;
-STRING_LITERAL : '"' .*? '"'; // Very basic string literal
-NUMBER_LITERAL : [0-9]+ ('.' [0-9]+)?;
+STRING_LITERAL : '"' (~["\r\n])* '"';
+NUMBER_LITERAL : '-'? [0-9]+ ('.' [0-9]+)?;
 BOOLEAN_LITERAL : 'true' | 'false';
-WS : [ \t\r\n]+ -> skip; // Whitespace
+DATE_LITERAL : [0-9][0-9][0-9][0-9] '-' [0-9][0-9] '-' [0-9][0-9];
+WS : [ \t\r\n]+ -> skip;
+COMMENT : '//' ~[\r\n]* -> skip;
