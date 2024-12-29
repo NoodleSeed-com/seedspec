@@ -98,29 +98,8 @@ class SeedParser:
             field = {
                 'name': field_name,
                 'type': field_type,
-                'default': None,
-                'constraints': {}
+                'default': None
             }
-
-            # Parse constraints if present
-            if '{' in line:
-                constraint_start = line.index('{')
-                constraint_end = line.rindex('}')
-                constraint_str = line[constraint_start+1:constraint_end]
-                
-                for constraint in constraint_str.split(','):
-                    if ':' in constraint:
-                        key, value = constraint.split(':')
-                        key = key.strip()
-                        value = value.strip()
-                        
-                        # Convert numeric constraints
-                        if key in ('min', 'max'):
-                            value = int(value) if field_type == 'num' else value
-                        elif key == 'pattern':
-                            value = value.strip('"\'')
-                            
-                        field['constraints'][key] = value
             
             # Handle default value if present
             if len(parts) > 2 and parts[2] == '=':
