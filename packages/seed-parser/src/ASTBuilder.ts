@@ -1,5 +1,6 @@
+import { AbstractParseTreeVisitor } from 'antlr4/tree/Tree';
 import { SeedSpecVisitor } from './SeedSpecVisitor';
-import { 
+import {
   Node, AppDeclaration, ModelDeclaration, FieldDeclaration, 
   DataDeclaration, ScreenDeclaration, ActionDeclaration,
   Parameter, ActionStatement, FieldAssignment, TypeName,

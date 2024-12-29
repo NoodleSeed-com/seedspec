@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npm run generate-parser && jest",
     "generate-parser": "java -jar /usr/local/lib/antlr-4.13.1-complete.jar -Dlanguage=TypeScript grammar/SeedSpec.g4 -o src -visitor"
   },
   "keywords": [],
