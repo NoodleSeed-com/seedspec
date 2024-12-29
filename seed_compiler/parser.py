@@ -90,10 +90,10 @@ class SeedParser:
             
             if not field_name.isidentifier():
                 raise ParseError(f"Invalid field name: {field_name}")
-            # Stricter type validation - must be either a valid type or a model reference
+            
+            # Validate field type
             if field_type not in self.valid_types:
-                if not field_type.isidentifier():
-                    raise ParseError(f"Invalid field type: {field_type}")
+                raise ParseError(f"Invalid field type: {field_type}")
                 
             field = {
                 'name': field_name,
