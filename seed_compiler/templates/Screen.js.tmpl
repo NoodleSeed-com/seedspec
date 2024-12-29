@@ -1,12 +1,12 @@
 import React from 'react';
-import { use{{model}} } from '../models/{{model}}';
+import { use{{ model.name }} } from '../models/{{ model.name }}';
 
-export function {{name}}() {
-  const { items, create, update, remove } = use{{model}}();
+export function {{ name }}() {
+  const { items, create, update, remove } = use{{ model.name }}();
 
   return (
     <div>
-      <h1>{{name}}</h1>
+      <h1>{{ name }}</h1>
       
       {/* Create Form */}
       <form onSubmit={e => {
@@ -14,16 +14,16 @@ export function {{name}}() {
         const formData = new FormData(e.target);
         create(Object.fromEntries(formData));
       }}>
-        {{#each model.fields}}
+        {% for field in model.fields %}
         <div>
-          <label>{{name}}</label>
+          <label>{{ field.name }}</label>
           <input 
-            name="{{name}}" 
-            type="{{inputType type}}"
-            {{#if default}}defaultValue="{{default}}"{{/if}}
+            name="{{ field.name }}"
+            type="{{ field.type|input_type }}"
+            {% if field.default %}defaultValue="{{ field.default }}"{% endif %}
           />
         </div>
-        {{/each}}
+        {% endfor %}
         <button type="submit">Create</button>
       </form>
 
@@ -31,9 +31,9 @@ export function {{name}}() {
       <div>
         {items.map(item => (
           <div key={item.id}>
-            {{#each model.fields}}
-            <div>{item.{{name}}}</div>
-            {{/each}}
+            {% for field in model.fields %}
+            <div>{item.{{ field.name }}}</div>
+            {% endfor %}
             <button onClick={() => remove(item.id)}>Delete</button>
           </div>
         ))}

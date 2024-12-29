@@ -1,23 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-{{#each screens}}
-import { {{name}} } from './screens/{{name}}';
-{{/each}}
+{% for screen in screens %}
+import { {{ screen.name }} } from './screens/{{ screen.name }}';
+{% endfor %}
 
 export function App() {
   return (
     <Router>
       <div>
         <nav>
-          {{#each screens}}
-          <Link to="/{{lowercase name}}">{{name}}</Link>
-          {{/each}}
+          {% for screen in screens %}
+          <Link to="/{{ screen.name|lower }}">{{ screen.name }}</Link>
+          {% endfor %}
         </nav>
 
         <Switch>
-          {{#each screens}}
-          <Route path="/{{lowercase name}}" component={ {{name}} } />
-          {{/each}}
+          {% for screen in screens %}
+          <Route path="/{{ screen.name|lower }}" component={ {{ screen.name }} } />
+          {% endfor %}
         </Switch>
       </div>
     </Router>

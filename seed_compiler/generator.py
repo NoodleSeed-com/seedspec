@@ -9,8 +9,8 @@ class Generator:
         )
         
         # Add custom filters
-        self.env.filters['lowercase'] = lambda x: x.lower()
-        self.env.filters['inputType'] = self._input_type_for_field
+        self.env.filters['lower'] = str.lower
+        self.env.filters['input_type'] = self._input_type_for_field
         
     def generate(self, spec: dict, output_dir: str):
         """Generate React app from parsed spec"""
