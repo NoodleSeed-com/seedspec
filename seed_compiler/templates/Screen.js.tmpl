@@ -1,0 +1,43 @@
+import React from 'react';
+import { use{{model}} } from '../models/{{model}}';
+
+export function {{name}}() {
+  const { items, create, update, remove } = use{{model}}();
+
+  return (
+    <div>
+      <h1>{{name}}</h1>
+      
+      {/* Create Form */}
+      <form onSubmit={e => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        create(Object.fromEntries(formData));
+      }}>
+        {{#each model.fields}}
+        <div>
+          <label>{{name}}</label>
+          <input 
+            name="{{name}}" 
+            type="{{inputType type}}"
+            {{#if default}}defaultValue="{{default}}"{{/if}}
+          />
+        </div>
+        {{/each}}
+        <button type="submit">Create</button>
+      </form>
+
+      {/* List */}
+      <div>
+        {items.map(item => (
+          <div key={item.id}>
+            {{#each model.fields}}
+            <div>{item.{{name}}}</div>
+            {{/each}}
+            <button onClick={() => remove(item.id)}>Delete</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

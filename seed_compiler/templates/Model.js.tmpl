@@ -1,0 +1,21 @@
+import { useState } from 'react';
+
+export function use{{name}}() {
+  const [items, setItems] = useState([]);
+
+  const create = (data) => {
+    setItems(prev => [...prev, { ...data, id: Date.now().toString() }]);
+  };
+
+  const update = (id, data) => {
+    setItems(prev => prev.map(item => 
+      item.id === id ? { ...item, ...data } : item
+    ));
+  };
+
+  const remove = (id) => {
+    setItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  return { items, create, update, remove };
+}

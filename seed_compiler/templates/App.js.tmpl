@@ -1,0 +1,25 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+{{#each screens}}
+import { {{name}} } from './screens/{{name}}';
+{{/each}}
+
+export function App() {
+  return (
+    <Router>
+      <div>
+        <nav>
+          {{#each screens}}
+          <Link to="/{{lowercase name}}">{{name}}</Link>
+          {{/each}}
+        </nav>
+
+        <Switch>
+          {{#each screens}}
+          <Route path="/{{lowercase name}}" component={ {{name}} } />
+          {{/each}}
+        </Switch>
+      </div>
+    </Router>
+  );
+}
