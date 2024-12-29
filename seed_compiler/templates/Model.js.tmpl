@@ -13,7 +13,14 @@ export function use{{ name }}() {
   }, []);
 
   const create = useCallback((data) => {
-    const newItems = [...items, { ...data, id: Date.now().toString() }];
+    const defaults = {
+      {% for field in fields %}
+      {% if field.default is not none %}
+      {{ field.name }}: {{ field|default_value_for_field }},
+      {% endif %}
+      {% endfor %}
+    };
+    const newItems = [...items, { ...defaults, ...data, id: Date.now().toString() }];
     persistItems(newItems);
   }, [items, persistItems]);
 

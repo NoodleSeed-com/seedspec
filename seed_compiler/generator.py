@@ -11,6 +11,7 @@ class Generator:
         # Add custom filters
         self.env.filters['lower'] = str.lower
         self.env.filters['input_type'] = self._input_type_for_field
+        self.env.filters['default_value_for_field'] = self._default_value_for_field
         
         # Define valid types
         self.valid_types = {'text', 'num', 'bool'}
@@ -152,6 +153,17 @@ ReactDOM.render(
             'bool': 'checkbox'
         }
         return types.get(field_type, 'text')
+
+    def _default_value_for_field(self, field: dict) -> str:
+        """Convert field default value to appropriate JS value"""
+        if not field.get('default'):
+            return 'null'
+        if field['type'] == 'bool':
+            return str(field['default']).lower()
+        elif field['type'] == 'num':
+            return str(field['default'])
+        else:
+            return f'"{field["default"]}"'
     def _generate_tailwind_config(self, output_dir: str):
         """Generate tailwind.config.js"""
         config = '''
