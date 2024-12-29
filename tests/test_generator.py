@@ -43,7 +43,8 @@ def test_generator_model_content(basic_spec):
         with open(os.path.join(tmpdir, 'src/models/Task.js')) as f:
             content = f.read()
             assert 'export function useTask()' in content
-            assert 'const [items, setItems] = useState([]);' in content
+            assert 'const [items, setItems] = useState(() => {' in content
+            assert 'localStorage.getItem' in content
             assert 'create' in content
             assert 'update' in content
             assert 'remove' in content

@@ -45,6 +45,11 @@ class Generator:
         
     def _generate_file(self, template_name: str, output_path: str, context: dict):
         """Generate a single file from template"""
+        # Add model references to context
+        if isinstance(context, dict) and 'fields' in context:
+            for field in context['fields']:
+                if field['type'] not in self.valid_types:
+                    field['is_reference'] = True
         template = self.env.get_template(template_name)
         with open(output_path, 'w') as f:
             f.write(template.render(**context))

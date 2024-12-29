@@ -76,6 +76,7 @@ def main(argv=None):
         print(f"  cd {args.output}")
         print(f"  npm install")
         print(f"  npm start")
+        sys.exit(0)
 
     except Exception as e:
         print(f"Error: {str(e)}", file=sys.stderr)
