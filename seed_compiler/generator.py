@@ -17,10 +17,18 @@ class Generator:
         
     def generate(self, spec: dict, output_dir: str):
         """Generate React app from parsed spec"""
+        # Create directories
         os.makedirs(output_dir, exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'src'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'src/models'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'src/screens'), exist_ok=True)
+        os.makedirs(os.path.join(output_dir, 'public'), exist_ok=True)  # Add public directory
+        
+        # Generate public/index.html
+        self._generate_index_html(output_dir)
+        
+        # Generate src/index.js
+        self._generate_index_js(output_dir)
         
         # Generate App.js
         self._generate_file('App.js.tmpl', 
@@ -57,6 +65,41 @@ class Generator:
         with open(output_path, 'w') as f:
             f.write(template.render(**context))
             
+    def _generate_index_html(self, output_dir: str):
+        """Generate index.html"""
+        html = '''
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SeedSpec App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+'''
+        with open(os.path.join(output_dir, 'public/index.html'), 'w') as f:
+            f.write(html.strip())
+
+    def _generate_index_js(self, output_dir: str):
+        """Generate index.js"""
+        js = '''
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+'''
+        with open(os.path.join(output_dir, 'src/index.js'), 'w') as f:
+            f.write(js.strip())
+
     def _generate_package_json(self, output_dir: str):
         """Generate package.json with required dependencies"""
         package = {
