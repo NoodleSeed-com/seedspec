@@ -1,49 +1,41 @@
-# SeedSpec Core Concepts
+# SeedSpec Language Reference
 
-This document outlines the minimal core concepts and structure of the SeedSpec language.
+SeedSpec is a minimal language for defining data-driven applications.
 
-## Core Elements
+## Core Types
 
-- **Models**: Define data structures with typed fields
-- **Screens**: Auto-generated CRUD interfaces for models
+- `text`: Text strings
+- `num`: Numbers 
+- `bool`: True/false values
 
-## Data Types
+## Models
 
-- **text**: Represents text values
-- **num**: Represents numeric values  
-- **bool**: Represents true/false values
-
-## Grammar in BNF Form
-
-```bnf
-<spec> ::= <model>* <screen>*
-
-<model> ::= "model" <identifier> "{" <field>* "}"
-<field> ::= <identifier> <type> ["=" <literal>]
-
-<screen> ::= "screen" <identifier> ["using" <identifier>]
-
-<type> ::= "text" | "num" | "bool"
-<identifier> ::= <letter> (<letter> | <digit> | "_")*
-<literal> ::= <string> | <number> | "true" | "false"
-```
-
-## Example
+Define data structures:
 
 ```seed
 model Task {
-  title text
-  done bool = false
+  title text        // Required text field
+  done bool = false // Boolean with default
 }
-
-screen Tasks using Task
 ```
 
-This minimal specification provides:
+Each model automatically gets:
+- Unique ID field
+- CRUD operations (create, read, update, delete)
+- Generated UI screen
 
-- Basic data modeling with three core types
-- Implicit CRUD operations for all models
-- Auto-generated UI screens
-- Basic data persistence
+## Screens 
 
-Additional features like validation, relationships, custom actions, workflows, and styling can be added incrementally as the language matures.
+Reference models to get UI:
+
+```seed
+screen Tasks using Task  // Auto-generates CRUD interface
+```
+
+That's it! This minimal grammar lets you build working applications with:
+- Data modeling
+- Basic persistence
+- Generated UI
+- CRUD operations
+
+Additional features can be added as needed.
