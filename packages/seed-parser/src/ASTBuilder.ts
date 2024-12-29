@@ -1,12 +1,26 @@
 import { SeedSpecVisitor } from './SeedSpecVisitor';
-import { ModelDeclaration, FieldDeclaration, TypeName } from './ast';
+import { 
+  Node, AppDeclaration, ModelDeclaration, FieldDeclaration, 
+  DataDeclaration, ScreenDeclaration, ActionDeclaration,
+  Parameter, ActionStatement, FieldAssignment, TypeName,
+  Value, DatasetDeclaration, DataInstance, DataValue
+} from './ast';
 import {
   ProgramContext,
+  AppDeclarationContext,
   ModelDeclarationContext,
   FieldDeclarationContext,
+  DataDeclarationContext,
+  ScreenDeclarationContext,
+  ActionDeclarationContext,
+  ParameterListContext,
+  ActionStatementContext,
   TypeNameContext,
   DefaultValueContext,
-} from './SeedSpecParser'; // Import from generated parser
+  DatasetDeclarationContext,
+  DataInstanceContext,
+  DataValueContext
+} from './SeedSpecParser';
 import { AbstractParseTreeVisitor } from 'antlr4';
 import { ErrorNode } from 'antlr4/tree/Tree';
 
