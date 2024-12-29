@@ -44,10 +44,14 @@ screen Tasks using Task
 
 ## Core Features
 
-- **Models** - Define data with 3 types (text, num, bool)
+Currently Implemented:
+- **Models** - Define data with 3 basic types:
+  - text
+  - num
+  - bool
 - **Screens** - Auto-generated CRUD interfaces
-- **Data Binding** - Automatic model-screen binding
-- **Basic References** - Simple model relationships
+- **Data Binding** - Basic model-screen binding via 'using' keyword
+- **Title Fields** - Designate display fields with 'as title'
 
 ## Documentation
 
@@ -55,7 +59,11 @@ See the [docs](docs/) directory for detailed documentation.
 
 ## Status
 
-SeedSpec is currently in prototype phase focusing on core features.
+SeedSpec is currently in early prototype phase with minimal features:
+- Basic React app generation with Tailwind CSS
+- Simple CRUD operations
+- Form inputs mapped to model types
+- Basic routing
 
 ## Contact
 
@@ -92,28 +100,29 @@ app Todo "Task Management App" {
 
 | Feature Category | Feature | Status | Description |
 |-----------------|---------|---------|-------------|
-| Data Modeling | [Models](docs/models.md)          | ✓ Available | Define data structures with typed fields, required/optional properties, implicit/explicit IDs, and title fields |
-|              | [Types](docs/types.md)            | ✓ Available | Basic types (text, num, bool) with constraints                                                                   |
-|              | [Relationships](docs/relationships.md) | ✓ Available | Model relationships and references                                                                               |
-|              | [Default Values](docs/default-values.md) | ✓ Available | Specify default field values                                                                                    |
-|              | Implicit CRUD Actions             | ✓ Available | `create`, `update`, and `delete` actions are implicitly available for each model                                  |
-| UI Components | [Components](docs/components.md)    | ✓ Available | Define reusable UI components                                                                                   |
-|              | [Screens](docs/screens.md)        | ✓ Available | Define application screens/pages                                                                                |
-|              | Implicit CRUD Screens           | ✓ Available | A CRUD screen is implicitly available for each model and can be explicitly requested or customized               |
-|              | [Data Binding](docs/data-binding.md) | ✓ Available | Bind data to UI components                                                                                      |
-|              | [External Components](docs/external-components.md) | ✓ Available | Use components from external libraries                                                                            |
-|              | [Layout System](docs/layout-system.md) | 🚧 In Development | Define component positioning and structure                                                                        |
-|              | [Styling](docs/styling.md)        | 🚧 In Development | Define component appearance and themes                                                                             |
-|              | [Event Handling](docs/event-handling.md) | 🚧 In Development | Handle user interactions and events                                                                              |
-|              | [Forms](docs/forms.md)            | 🚧 In Development | Form validation and submission (now largely handled implicitly)                                                   |
-| Business Logic | [Actions](docs/actions.md)        | ✓ Available | Define custom data mutations and operations (CRUD operations are implicitly available)                           |
-|              | [Validation Rules](docs/validation-rules.md) | 🚧 In Development | Custom data validation logic                                                                                    |
-|              | [Workflows](docs/workflows.md)    | 🚧 In Development | Multi-step business processes                                                                                   |
-|              | [State Management](docs/state-management.md) | 🚧 In Development | Application state handling                                                                                       |
-| Integration | [Imports](docs/imports.md) | ✓ Available | Import external libraries and files |
-| | [API Integration](docs/api-integration.md) | 🚧 In Development | Connect to backend services |
-| | [Authentication](docs/authentication.md) | 🚧 In Development | User authentication and authorization |
-| | [External Services](docs/external-services.md) | 🚧 In Development | Integration with third-party services |
+| Data Modeling | Basic Models | ✓ Implemented | Define data structures with 3 basic types (text, num, bool) |
+|              | Title Fields | ✓ Implemented | Designate display fields with 'as title' |
+|              | Types | ⚡ Basic | Only text, num, and bool supported |
+|              | Default Values | 🚧 Planned | Specify default field values |
+|              | Relationships | 🚧 Planned | Model relationships and references |
+| UI Components | Basic Screens | ✓ Implemented | Simple screens with model binding |
+|              | CRUD Operations | ✓ Implemented | Auto-generated create, read, update, delete |
+|              | Data Binding | ⚡ Basic | Simple model-to-screen binding via 'using' |
+|              | Components | 🚧 Planned | Define reusable UI components |
+|              | External Components | 🚧 Planned | Use components from external libraries |
+|              | Layout System | 🚧 Planned | Define component positioning |
+|              | Styling | ⚡ Basic | Basic Tailwind CSS integration |
+| Business Logic | Actions | 🚧 Planned | Custom data operations |
+|              | Validation | 🚧 Planned | Data validation rules |
+|              | Workflows | 🚧 Planned | Multi-step processes |
+| Integration | Imports | 🚧 Planned | Import external resources |
+|            | API Integration | 🚧 Planned | Connect to backend services |
+|            | Authentication | 🚧 Planned | User auth and authorization |
+
+Status Key:
+- ✓ Implemented: Feature is complete and working
+- ⚡ Basic: Minimal implementation available
+- 🚧 Planned: Feature is designed but not yet implemented
 
 ## 🌟 Key Features
 
