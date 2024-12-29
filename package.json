@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "test": "npm-run-all --parallel test:packages",
-    "test:packages": "npm run test --workspaces"
+    "test:packages": "npm run test --workspaces",
+    "generate-parser": "cd packages/seed-parser && npm run generate-parser",
+    "postinstall": "npm run generate-parser"
   },
   "keywords": [],
   "author": "",
