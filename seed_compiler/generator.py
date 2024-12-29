@@ -101,7 +101,7 @@ ReactDOM.render(
             f.write(js.strip())
 
     def _generate_package_json(self, output_dir: str):
-        """Generate package.json with required dependencies"""
+        """Generate package.json with minimal required dependencies"""
         package = {
             "name": "seedspec-app",
             "version": "0.1.0",
@@ -114,9 +114,7 @@ ReactDOM.render(
             },
             "scripts": {
                 "start": "react-scripts start",
-                "build": "react-scripts build",
-                "test": "react-scripts test",
-                "eject": "react-scripts eject"
+                "build": "react-scripts build"
             },
             "browserslist": {
                 "production": [
@@ -125,9 +123,7 @@ ReactDOM.render(
                     "not op_mini all"
                 ],
                 "development": [
-                    "last 1 chrome version",
-                    "last 1 firefox version",
-                    "last 1 safari version"
+                    "last 1 chrome version"
                 ]
             }
         }
