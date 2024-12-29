@@ -66,11 +66,26 @@ class Generator:
             "dependencies": {
                 "react": "^17.0.2",
                 "react-dom": "^17.0.2",
-                "react-router-dom": "^5.2.0"
+                "react-router-dom": "^5.2.0",
+                "react-scripts": "^5.0.1"
             },
             "scripts": {
                 "start": "react-scripts start",
-                "build": "react-scripts build"
+                "build": "react-scripts build",
+                "test": "react-scripts test",
+                "eject": "react-scripts eject"
+            },
+            "browserslist": {
+                "production": [
+                    ">0.2%",
+                    "not dead",
+                    "not op_mini all"
+                ],
+                "development": [
+                    "last 1 chrome version",
+                    "last 1 firefox version",
+                    "last 1 safari version"
+                ]
             }
         }
         
