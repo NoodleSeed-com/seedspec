@@ -1,0 +1,6 @@
+model Task {
+    title text
+    done bool = false
+}
+
+screen Tasks using Task

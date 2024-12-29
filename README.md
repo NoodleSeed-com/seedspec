@@ -2,7 +2,36 @@
 
 SeedSpec is a minimal, declarative language for defining data-driven applications.
 
-## Quick Example
+## Quick Start
+
+1. Install:
+   ```bash
+   pip install -e .
+   ```
+
+2. Create app.seed:
+   ```seed
+   model Task {
+       title text
+       done bool = false
+   }
+
+   screen Tasks using Task
+   ```
+
+3. Generate app:
+   ```bash
+   seedc app.seed -o my-app
+   ```
+
+4. Run app:
+   ```bash
+   cd my-app
+   npm install
+   npm start
+   ```
+
+## Example
 
 ```seed
 model Task {
