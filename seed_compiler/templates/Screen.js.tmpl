@@ -98,7 +98,7 @@ export function {{ name }}() {
                   {% for field in model.fields %}
                   <div className="text-gray-700">
                     <span className="font-medium">{{ field.name|title }}:</span>{' '}
-                    {item.{{ field.name }}.toString()}
+                    {item.{{ field.name }} !== undefined ? item.{{ field.name }}.toString() : ''}
                   </div>
                   {% endfor %}
                 </div>
