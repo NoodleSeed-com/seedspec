@@ -6,13 +6,5 @@ app Expenses "Simple Expense Tracker" {
     paid bool
   }
 
-  data {
-    Expenses: Expense[] [
-      { description: "Grocery shopping", amount: 85.50, category: "food", paid: true },
-      { description: "Bus ticket", amount: 2.50, category: "transport", paid: true },
-      { description: "Electricity bill", amount: 120.00, category: "utilities", paid: false }
-    ]
-  }
-
   screen ExpenseList using Expense
 }
