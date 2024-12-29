@@ -5,8 +5,11 @@ from pathlib import Path
 from .parser import SeedParser
 from .generator import Generator
 
-def main():
+def main(argv=None):
     """Main entry point for the seed compiler CLI"""
+    if argv is None:
+        argv = sys.argv[1:]
+        
     parser = argparse.ArgumentParser(
         description='SeedSpec compiler - Generate React apps from .seed files'
     )
@@ -30,7 +33,7 @@ def main():
         help='Enable verbose output'
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     try:
         # Validate input file
