@@ -1,9 +1,9 @@
 app Expenses "Simple Expense Tracker" {
   model Expense {
     description text as title
-    amount num
-    category text
-    paid bool
+    amount num = 0
+    category text = "other"
+    paid bool = true
   }
 
   screen ExpenseList using Expense
