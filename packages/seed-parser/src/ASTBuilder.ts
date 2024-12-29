@@ -4,15 +4,53 @@ import {
   ProgramContext,
   ModelDeclarationContext,
   FieldDeclarationContext,
+  TypeNameContext,
+  DefaultValueContext,
 } from './SeedSpecParser'; // Import from generated parser
 import { AbstractParseTreeVisitor } from 'antlr4';
+import { ErrorNode } from 'antlr4/tree/Tree';
+
+class SyntaxError extends Error {
+  line: number;
+  column: number;
+
+  constructor(line: number, column: number, message: string) {
+    super(message);
+    this.name = 'SyntaxError';
+    this.line = line;
+    this.column = column;
+  }
+}
 
 export class ASTBuilder
   extends AbstractParseTreeVisitor<any>
   implements SeedSpecVisitor<any>
 {
+  errors: SyntaxError[] = [];
+
+  visitErrorNode(node: ErrorNode) {
+    const token = node.symbol;
+    this.errors.push(
+      new SyntaxError(
+        token.line,
+        token.column,
+        `Syntax error: Unexpected token ${token.text}`,
+      ),
+    );
+    return null;
+  }
+
   visitProgram(ctx: ProgramContext): ModelDeclaration[] {
-    return ctx.modelDeclaration().map((modelCtx) => this.visit(modelCtx));
+    this.errors = []; // Reset errors
+    const models = ctx
+      .modelDeclaration()
+      .map((modelCtx) => this.visit(modelCtx));
+
+    if (this.errors.length > 0) {
+      throw this.errors; // Throw collected errors
+    }
+
+    return models;
   }
 
   visitModelDeclaration(ctx: ModelDeclarationContext): ModelDeclaration {
@@ -36,7 +74,7 @@ export class ASTBuilder
 
     let defaultValue = null;
     if (ctx.defaultValue()) {
-      defaultValue = this.visit(ctx.defaultValue()); // Simplified for now
+      defaultValue = this.visit(ctx.defaultValue());
     }
 
     return {
@@ -49,13 +87,11 @@ export class ASTBuilder
     };
   }
 
-  visitTypeName(ctx: any): TypeName {
-    // Assuming basic types for now: text, num, bool
+  visitTypeName(ctx: TypeNameContext): TypeName {
     return ctx.getText() as TypeName;
   }
 
-  visitDefaultValue(ctx: any): any {
-    // Simplified handling of default values for now
+  visitDefaultValue(ctx: DefaultValueContext): any {
     const text = ctx.getText();
     if (text.startsWith('"')) {
       return text.substring(1, text.length - 1); // Remove quotes
