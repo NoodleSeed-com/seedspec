@@ -15,7 +15,55 @@ export function {{ name }}() {
         onSubmit={e => {
           e.preventDefault();
           const formData = new FormData(e.target);
-          create(Object.fromEntries(formData));
+          const data = Object.fromEntries(formData);
+          
+          // Validate form data
+          const errors = {};
+          {% for field in model.fields %}
+          {% if field.constraints %}
+          // {{ field.name }} validation
+          {% if field.type == 'text' %}
+          {% if field.constraints.min %}
+          if (data.{{ field.name }}.length < {{ field.constraints.min }}) {
+            errors.{{ field.name }} = 'Must be at least {{ field.constraints.min }} characters';
+          }
+          {% endif %}
+          {% if field.constraints.max %}
+          if (data.{{ field.name }}.length > {{ field.constraints.max }}) {
+            errors.{{ field.name }} = 'Must be at most {{ field.constraints.max }} characters';
+          }
+          {% endif %}
+          {% if field.constraints.pattern %}
+          if (!new RegExp('{{ field.constraints.pattern }}').test(data.{{ field.name }})) {
+            errors.{{ field.name }} = 'Invalid format';
+          }
+          {% endif %}
+          {% elif field.type == 'num' %}
+          {% if field.constraints.min %}
+          if (Number(data.{{ field.name }}) < {{ field.constraints.min }}) {
+            errors.{{ field.name }} = 'Must be at least {{ field.constraints.min }}';
+          }
+          {% endif %}
+          {% if field.constraints.max %}
+          if (Number(data.{{ field.name }}) > {{ field.constraints.max }}) {
+            errors.{{ field.name }} = 'Must be at most {{ field.constraints.max }}';
+          }
+          {% endif %}
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+
+          if (Object.keys(errors).length > 0) {
+            // Show errors
+            Object.entries(errors).forEach(([field, message]) => {
+              const el = e.target.elements[field];
+              el.setCustomValidity(message);
+              el.reportValidity();
+            });
+            return;
+          }
+
+          create(data);
           e.target.reset();
         }}
       >
@@ -53,7 +101,55 @@ export function {{ name }}() {
                 onSubmit={e => {
                   e.preventDefault();
                   const formData = new FormData(e.target);
-                  update(item.id, Object.fromEntries(formData));
+                  const data = Object.fromEntries(formData);
+                  
+                  // Validate form data
+                  const errors = {};
+                  {% for field in model.fields %}
+                  {% if field.constraints %}
+                  // {{ field.name }} validation
+                  {% if field.type == 'text' %}
+                  {% if field.constraints.min %}
+                  if (data.{{ field.name }}.length < {{ field.constraints.min }}) {
+                    errors.{{ field.name }} = 'Must be at least {{ field.constraints.min }} characters';
+                  }
+                  {% endif %}
+                  {% if field.constraints.max %}
+                  if (data.{{ field.name }}.length > {{ field.constraints.max }}) {
+                    errors.{{ field.name }} = 'Must be at most {{ field.constraints.max }} characters';
+                  }
+                  {% endif %}
+                  {% if field.constraints.pattern %}
+                  if (!new RegExp('{{ field.constraints.pattern }}').test(data.{{ field.name }})) {
+                    errors.{{ field.name }} = 'Invalid format';
+                  }
+                  {% endif %}
+                  {% elif field.type == 'num' %}
+                  {% if field.constraints.min %}
+                  if (Number(data.{{ field.name }}) < {{ field.constraints.min }}) {
+                    errors.{{ field.name }} = 'Must be at least {{ field.constraints.min }}';
+                  }
+                  {% endif %}
+                  {% if field.constraints.max %}
+                  if (Number(data.{{ field.name }}) > {{ field.constraints.max }}) {
+                    errors.{{ field.name }} = 'Must be at most {{ field.constraints.max }}';
+                  }
+                  {% endif %}
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+
+                  if (Object.keys(errors).length > 0) {
+                    // Show errors
+                    Object.entries(errors).forEach(([field, message]) => {
+                      const el = e.target.elements[field];
+                      el.setCustomValidity(message);
+                      el.reportValidity();
+                    });
+                    return;
+                  }
+
+                  update(item.id, data);
                   setEditingId(null);
                 }}
               >
