@@ -2,21 +2,17 @@ app Expenses "Simple Expense Tracker" {
   model Expense {
     description text as title
     amount num
-    date date = today
-    category text = "other"  // food, transport, utilities, other
-    paid bool = true
+    category text
+    paid bool
   }
 
   data {
     Expenses: Expense[] [
-      { description: "Grocery shopping", amount: 85.50, date: 2024-01-15, category: "food" },
-      { description: "Bus ticket", amount: 2.50, date: 2024-01-15, category: "transport" },
-      { description: "Electricity bill", amount: 120.00, date: 2024-01-14, category: "utilities", paid: false }
+      { description: "Grocery shopping", amount: 85.50, category: "food", paid: true },
+      { description: "Bus ticket", amount: 2.50, category: "transport", paid: true },
+      { description: "Electricity bill", amount: 120.00, category: "utilities", paid: false }
     ]
   }
 
-  screen ExpenseList using Expense {
-    filter category  // Add category filter
-    sort date desc  // Most recent first
-  }
+  screen ExpenseList using Expense
 }
