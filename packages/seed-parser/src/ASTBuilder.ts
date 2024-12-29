@@ -22,7 +22,6 @@ import {
   DataInstanceContext,
   DataValueContext
 } from './SeedSpecParser';
-import { AbstractParseTreeVisitor } from 'antlr4';
 import { ErrorNode } from 'antlr4/tree/Tree';
 
 class SyntaxError extends Error {
@@ -37,9 +36,7 @@ class SyntaxError extends Error {
   }
 }
 
-export class ASTBuilder
-  extends AbstractParseTreeVisitor<any>
-  implements SeedSpecVisitor<any>
+export class ASTBuilder extends AbstractParseTreeVisitor<any> 
 {
   errors: SyntaxError[] = [];
 
