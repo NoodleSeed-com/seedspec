@@ -24,6 +24,9 @@ class Generator:
         os.makedirs(os.path.join(output_dir, 'src/screens'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'public'), exist_ok=True)  # Add public directory
         
+        # Generate index.css with Tailwind directives
+        self._generate_index_css(output_dir)
+        
         # Generate Tailwind config files
         self._generate_tailwind_config(output_dir)
         self._generate_postcss_config(output_dir)
@@ -179,3 +182,13 @@ module.exports = {
 '''
         with open(os.path.join(output_dir, 'postcss.config.js'), 'w') as f:
             f.write(config.strip())
+            
+    def _generate_index_css(self, output_dir: str):
+        """Generate index.css with Tailwind directives"""
+        css = '''
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+'''
+        with open(os.path.join(output_dir, 'src/index.css'), 'w') as f:
+            f.write(css.strip())
