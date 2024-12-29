@@ -79,3 +79,8 @@ npm-debug.log*
 .parcel-cache/
 .npm/
 .yarn/
+
+# Generated example artifacts
+todo-app/
+my-app/
+example-*/
