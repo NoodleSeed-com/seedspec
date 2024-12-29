@@ -24,6 +24,10 @@ class Generator:
         os.makedirs(os.path.join(output_dir, 'src/screens'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'public'), exist_ok=True)  # Add public directory
         
+        # Generate Tailwind config files
+        self._generate_tailwind_config(output_dir)
+        self._generate_postcss_config(output_dir)
+        
         # Generate public/index.html
         self._generate_index_html(output_dir)
         
@@ -74,6 +78,7 @@ class Generator:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SeedSpec App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -88,6 +93,7 @@ class Generator:
         js = '''
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 import App from './App';
 
 ReactDOM.render(
@@ -110,7 +116,11 @@ ReactDOM.render(
                 "react": "^17.0.2",
                 "react-dom": "^17.0.2",
                 "react-router-dom": "^5.2.0",
-                "react-scripts": "^5.0.1"
+                "react-scripts": "^5.0.1",
+                "@tailwindcss/forms": "^0.5.3",
+                "tailwindcss": "^3.3.0",
+                "autoprefixer": "^10.4.14",
+                "postcss": "^8.4.21"
             },
             "scripts": {
                 "start": "react-scripts start",
@@ -139,3 +149,33 @@ ReactDOM.render(
             'bool': 'checkbox'
         }
         return types.get(field_type, 'text')
+    def _generate_tailwind_config(self, output_dir: str):
+        """Generate tailwind.config.js"""
+        config = '''
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
+}
+'''
+        with open(os.path.join(output_dir, 'tailwind.config.js'), 'w') as f:
+            f.write(config.strip())
+
+    def _generate_postcss_config(self, output_dir: str):
+        """Generate postcss.config.js"""
+        config = '''
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+'''
+        with open(os.path.join(output_dir, 'postcss.config.js'), 'w') as f:
+            f.write(config.strip())
