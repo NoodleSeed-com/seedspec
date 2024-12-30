@@ -1,6 +1,9 @@
 class ParseError(Exception):
     """Custom error for parsing issues"""
-    pass
+    def __init__(self, message, line_num=None, line_content=None):
+        super().__init__(message)
+        self.line_num = line_num
+        self.line_content = line_content
 
 class SeedParser:
     """Parses .seed files into Python data structures"""
@@ -32,7 +35,7 @@ class SeedParser:
                         if line.strip():
                             self._parse_field(line, current_block)
                 except ParseError as e:
-                    raise ParseError(f"Line {line_num}: {str(e)}")
+                    raise ParseError(str(e), line_num=line_num, line_content=line)
                 
             return spec
             

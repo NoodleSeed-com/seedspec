@@ -2,7 +2,7 @@ import argparse
 import sys
 import os
 from pathlib import Path
-from .parser import SeedParser
+from .parser import SeedParser, ParseError
 from .generator import Generator
 
 def main(argv=None):
@@ -79,10 +79,21 @@ def main(argv=None):
         sys.exit(0)
 
     except Exception as e:
-        print(f"Error: {str(e)}", file=sys.stderr)
-        if args.verbose:
-            import traceback
-            traceback.print_exc()
+        if isinstance(e, ParseError):
+            print("\n🚫 Parse Error:", file=sys.stderr)
+            if e.line_num is not None:
+                print(f"  Line {e.line_num}: {e.line_content}", file=sys.stderr)
+            print(f"\nDetails: {str(e)}", file=sys.stderr)
+            if args.verbose:
+                print("\nStack trace:", file=sys.stderr)
+                import traceback
+                traceback.print_exc()
+        else:
+            print(f"\n❌ Error: {str(e)}", file=sys.stderr)
+            if args.verbose:
+                print("\nStack trace:", file=sys.stderr)
+                import traceback
+                traceback.print_exc()
         sys.exit(1)
 
 if __name__ == '__main__':
