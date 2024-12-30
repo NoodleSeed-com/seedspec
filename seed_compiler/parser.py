@@ -23,6 +23,7 @@ class SeedParser:
             lines = input_text.strip().splitlines()
             current_block = None
             in_app_block = False
+            brace_stack = []  # Track opening braces and their line numbers
             
             for line_num, line in enumerate(lines, 1):
                 line = line.strip()
@@ -30,6 +31,15 @@ class SeedParser:
                     continue
                 
                 try:
+                    # Track opening braces
+                    if '{' in line:
+                        brace_stack.append((line_num, line))
+                    
+                    # Track closing braces
+                    if '}' in line:
+                        if not brace_stack:
+                            raise ParseError("Unexpected closing brace - no matching opening brace found")
+                        opening_line_num, opening_line = brace_stack.pop()
                     if line.startswith('app'):
                         # Parse app declaration
                         parts = line.split('"')
@@ -47,7 +57,12 @@ class SeedParser:
                         elif in_app_block:
                             in_app_block = False
                         else:
-                            raise ParseError("Unexpected closing brace")
+                            context = f"\nOpening brace was at line {opening_line_num}: {opening_line}"
+                            raise ParseError(f"Unexpected closing brace at line {line_num}", 
+                                          line_num=line_num,
+                                          line_content=line,
+                                          prev_line=lines[line_num-2] if line_num > 1 else None,
+                                          next_line=lines[line_num] if line_num < len(lines) else None)
                     elif line.startswith('model'):
                         if not in_app_block:
                             raise ParseError("Model must be defined inside app block")
@@ -72,6 +87,11 @@ class SeedParser:
                         next_line=next_line
                     )
                 
+            # Check for unclosed braces at end of parsing
+            if brace_stack:
+                last_brace = brace_stack[-1]
+                raise ParseError(f"Unclosed brace from line {last_brace[0]}: {last_brace[1]}")
+            
             return spec
             
         except Exception as e:
