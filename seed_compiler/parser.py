@@ -117,22 +117,23 @@ class SeedParser:
                 'is_reference': field_type not in self.valid_types
             }
             
+            # Handle 'as title' syntax
+            remaining_parts = parts[2:]
+            if remaining_parts and remaining_parts[0:2] == ['as', 'title']:
+                field['is_title'] = True
+                remaining_parts = remaining_parts[2:]
+            
             # Handle default value if present
-            if len(parts) > 2:
-                if parts[2] != '=':
-                    raise ParseError(f"Expected '=' after type, got '{parts[2]}' in line: '{line}'")
-                if len(parts) < 4:
+            if remaining_parts:
+                if remaining_parts[0] != '=':
+                    raise ParseError(f"Expected '=' for default value, got '{remaining_parts[0]}' in line: '{line}'")
+                if len(remaining_parts) < 2:
                     raise ParseError(f"Missing default value after '=' in line: '{line}'")
-                field['default'] = parts[3]
+                field['default'] = remaining_parts[1]
                 
-                # Handle 'as title' after default value
-                if len(parts) > 4:
-                    if parts[4:] != ['as', 'title']:
-                        raise ParseError(f"Invalid syntax after default value in line: '{line}'")
-            # Handle 'as title' without default value        
-            elif len(parts) > 2:
-                if parts[2:] != ['as', 'title']:
-                    raise ParseError(f"Invalid syntax after type in line: '{line}'")
+                # Check for any invalid tokens after default value
+                if len(remaining_parts) > 2:
+                    raise ParseError(f"Unexpected tokens after default value in line: '{line}'")
                 
             model['fields'].append(field)
             
