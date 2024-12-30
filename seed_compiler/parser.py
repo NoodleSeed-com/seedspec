@@ -41,17 +41,25 @@ class SeedParser:
                             raise ParseError(f"Invalid app name: {app_name}")
                         spec['app'] = {'name': app_name, 'title': app_title}
                         in_app_block = True
-                    elif line == '}' and in_app_block:
-                        in_app_block = False
+                    elif line == '}':
+                        if current_block:
+                            current_block = None
+                        elif in_app_block:
+                            in_app_block = False
+                        else:
+                            raise ParseError("Unexpected closing brace")
                     elif line.startswith('model'):
+                        if not in_app_block:
+                            raise ParseError("Model must be defined inside app block")
                         current_block = self._parse_model(line)
                         spec['models'].append(current_block)
                     elif line.startswith('screen'):
+                        if not in_app_block:
+                            raise ParseError("Screen must be defined inside app block")
                         screen = self._parse_screen(line)
                         spec['screens'].append(screen)
-                    elif current_block and line != '}':
-                        if line.strip():
-                            self._parse_field(line, current_block)
+                    elif current_block and line.strip():
+                        self._parse_field(line, current_block)
                 except ParseError as e:
                     # Get context lines
                     prev_line = lines[line_num-2] if line_num > 1 else None
