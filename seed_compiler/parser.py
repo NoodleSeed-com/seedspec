@@ -123,13 +123,16 @@ class SeedParser:
         try:
             parts = line.split()
             if len(parts) < 2:
-                raise ParseError(f"Invalid field declaration in line: '{line}'")
+                raise ParseError(f"Field declaration must have at least a name and type")
                 
             field_name = parts[0]
             field_type = parts[1]
             
             if not field_name.isidentifier():
-                raise ParseError(f"Invalid field name '{field_name}' in line: '{line}'")
+                raise ParseError(f"'{field_name}' is not a valid field name")
+            
+            if field_type not in self.valid_types and not field_type.isidentifier():
+                raise ParseError(f"'{field_type}' is not a valid type")
             
             # Field type can be either a basic type or a model reference
             field = {
@@ -139,27 +142,29 @@ class SeedParser:
                 'is_reference': field_type not in self.valid_types
             }
             
-            # Handle 'as title' syntax
+            # Handle 'as title' syntax first
             remaining_parts = parts[2:]
             if remaining_parts and remaining_parts[0:2] == ['as', 'title']:
                 field['is_title'] = True
                 remaining_parts = remaining_parts[2:]
             
-            # Handle default value if present
+            # Then handle default value if present
             if remaining_parts:
                 if remaining_parts[0] != '=':
-                    raise ParseError(f"Expected '=' for default value, got '{remaining_parts[0]}' in line: '{line}'")
+                    raise ParseError(f"Expected '=' for default value, got '{remaining_parts[0]}'")
                 if len(remaining_parts) < 2:
-                    raise ParseError(f"Missing default value after '=' in line: '{line}'")
-                field['default'] = remaining_parts[1]
+                    raise ParseError(f"Missing value after '='")
+                field['default'] = remaining_parts[1].strip('"')  # Remove quotes if present
                 
                 # Check for any invalid tokens after default value
                 if len(remaining_parts) > 2:
-                    raise ParseError(f"Unexpected tokens after default value in line: '{line}'")
+                    unexpected_tokens = ' '.join(remaining_parts[2:])
+                    raise ParseError(f"Unexpected tokens after default value: '{unexpected_tokens}'")
                 
             model['fields'].append(field)
             
         except Exception as e:
             if isinstance(e, ParseError):
                 raise
-            raise ParseError(f"Invalid field declaration in line: '{line}' - {str(e)}")
+            context = f"\nIn model '{model.get('name', 'unknown')}'\nParsing field: {line}"
+            raise ParseError(f"{str(e)}{context}")
