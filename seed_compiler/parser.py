@@ -22,6 +22,7 @@ class SeedParser:
             
             lines = input_text.strip().splitlines()
             current_block = None
+            in_app_block = False
             
             for line_num, line in enumerate(lines, 1):
                 line = line.strip()
@@ -29,7 +30,20 @@ class SeedParser:
                     continue
                 
                 try:
-                    if line.startswith('model'):
+                    if line.startswith('app'):
+                        # Parse app declaration
+                        parts = line.split('"')
+                        if len(parts) != 3:
+                            raise ParseError("Invalid app declaration - expected 'app Name \"Title\" {'")
+                        app_name = parts[0].split()[1]
+                        app_title = parts[1]
+                        if not app_name.isidentifier():
+                            raise ParseError(f"Invalid app name: {app_name}")
+                        spec['app'] = {'name': app_name, 'title': app_title}
+                        in_app_block = True
+                    elif line == '}' and in_app_block:
+                        in_app_block = False
+                    elif line.startswith('model'):
                         current_block = self._parse_model(line)
                         spec['models'].append(current_block)
                     elif line.startswith('screen'):
