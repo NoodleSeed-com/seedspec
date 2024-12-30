@@ -1,9 +1,11 @@
 class ParseError(Exception):
     """Custom error for parsing issues"""
-    def __init__(self, message, line_num=None, line_content=None):
+    def __init__(self, message, line_num=None, line_content=None, prev_line=None, next_line=None):
         super().__init__(message)
         self.line_num = line_num
         self.line_content = line_content
+        self.prev_line = prev_line
+        self.next_line = next_line
 
 class SeedParser:
     """Parses .seed files into Python data structures"""
@@ -18,8 +20,10 @@ class SeedParser:
                 'screens': []
             }
             
+            lines = input_text.strip().splitlines()
             current_block = None
-            for line_num, line in enumerate(input_text.strip().splitlines(), 1):
+            
+            for line_num, line in enumerate(lines, 1):
                 line = line.strip()
                 if not line or line.startswith('//'): 
                     continue
@@ -35,11 +39,22 @@ class SeedParser:
                         if line.strip():
                             self._parse_field(line, current_block)
                 except ParseError as e:
-                    raise ParseError(str(e), line_num=line_num, line_content=line)
+                    # Get context lines
+                    prev_line = lines[line_num-2] if line_num > 1 else None
+                    next_line = lines[line_num] if line_num < len(lines) else None
+                    raise ParseError(
+                        str(e),
+                        line_num=line_num,
+                        line_content=line,
+                        prev_line=prev_line,
+                        next_line=next_line
+                    )
                 
             return spec
             
         except Exception as e:
+            if isinstance(e, ParseError):
+                raise
             raise ParseError(f"Failed to parse spec: {str(e)}")
 
     def _parse_model(self, line: str) -> dict:
