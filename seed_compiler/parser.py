@@ -101,13 +101,13 @@ class SeedParser:
         try:
             parts = line.split()
             if len(parts) < 2:
-                raise ParseError("Invalid field declaration")
+                raise ParseError(f"Invalid field declaration in line: '{line}'")
                 
             field_name = parts[0]
             field_type = parts[1]
             
             if not field_name.isidentifier():
-                raise ParseError(f"Invalid field name: {field_name}")
+                raise ParseError(f"Invalid field name '{field_name}' in line: '{line}'")
             
             # Field type can be either a basic type or a model reference
             field = {
@@ -118,12 +118,25 @@ class SeedParser:
             }
             
             # Handle default value if present
-            if len(parts) > 2 and parts[2] == '=':
+            if len(parts) > 2:
+                if parts[2] != '=':
+                    raise ParseError(f"Expected '=' after type, got '{parts[2]}' in line: '{line}'")
                 if len(parts) < 4:
-                    raise ParseError("Missing default value")
+                    raise ParseError(f"Missing default value after '=' in line: '{line}'")
                 field['default'] = parts[3]
+                
+                # Handle 'as title' after default value
+                if len(parts) > 4:
+                    if parts[4:] != ['as', 'title']:
+                        raise ParseError(f"Invalid syntax after default value in line: '{line}'")
+            # Handle 'as title' without default value        
+            elif len(parts) > 2:
+                if parts[2:] != ['as', 'title']:
+                    raise ParseError(f"Invalid syntax after type in line: '{line}'")
                 
             model['fields'].append(field)
             
         except Exception as e:
-            raise ParseError(f"Invalid field declaration: {str(e)}")
+            if isinstance(e, ParseError):
+                raise
+            raise ParseError(f"Invalid field declaration in line: '{line}' - {str(e)}")
