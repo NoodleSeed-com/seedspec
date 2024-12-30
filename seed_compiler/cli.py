@@ -81,8 +81,12 @@ def main(argv=None):
     except Exception as e:
         if isinstance(e, ParseError):
             print("\n🚫 Parse Error:", file=sys.stderr)
-            if e.line_num is not None:
-                print(f"  Line {e.line_num}: {e.line_content}", file=sys.stderr)
+            print("\nContext:", file=sys.stderr)
+            if e.prev_line:
+                print(f"  Line {e.line_num-1}: {e.prev_line}", file=sys.stderr)
+            print(f"→ Line {e.line_num}: {e.line_content}", file=sys.stderr)
+            if e.next_line:
+                print(f"  Line {e.line_num+1}: {e.next_line}", file=sys.stderr)
             print(f"\nDetails: {str(e)}", file=sys.stderr)
             if args.verbose:
                 print("\nStack trace:", file=sys.stderr)
