@@ -1,6 +1,6 @@
 app Expenses "Simple Expense Tracker" {
   model Expense {
-    description text as title
+    descriptionText text as title
     amount num
     category text
     paid bool
