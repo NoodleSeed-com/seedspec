@@ -1,10 +1,11 @@
-// Todo List Application
-model Task {
+app Todo "Simple Todo List" {
+  model Task {
     title text
     description text
     priority num
     done bool = false
     dueDate text
-}
+  }
 
-screen Tasks using Task
+  screen Tasks using Task
+}
