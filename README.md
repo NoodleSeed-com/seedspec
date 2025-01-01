@@ -45,13 +45,29 @@ screen Tasks using Task
 ## Core Features
 
 Currently Implemented:
-- **Models** - Define data with 3 basic types:
-  - text
-  - num
-  - bool
+
+### Data Modeling
+- **Models** - Define data structures with fields
+  - Supported types: text, num, bool
+  - Default values for fields
+  - Title fields using 'as title' syntax
+  - Basic validation of field names and types
+
+### User Interface
 - **Screens** - Auto-generated CRUD interfaces
-- **Data Binding** - Basic model-screen binding via 'using' keyword
-- **Title Fields** - Designate display fields with 'as title'
+  - Basic form generation with appropriate input types
+    - text -> text input
+    - num -> number input
+    - bool -> checkbox
+  - Model binding via 'using' keyword
+  - Basic state management with localStorage
+
+### Application Structure
+- React app generation with:
+  - Basic routing setup
+  - Tailwind CSS integration
+  - Required dependencies (React, React Router, Tailwind)
+  - Build and start scripts
 
 ## Documentation
 
