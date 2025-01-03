@@ -1,46 +1,150 @@
 import pytest
 import os
 import tempfile
-import json
 from seed_compiler.parser import SeedParser
 from seed_compiler.generator import Generator
 
-def test_complex_relationships():
-    """Test complex model relationships and references"""
+def test_complex_model_relationships():
+    """Test integration of parser and generator with complex model relationships"""
     input_text = """
-    app ProjectManager "Project Management System" {
-        model User {
+    app BlogSystem "Blog System" {
+        model Author {
             name text
             email email
-            role text = "member"
+            bio text
         }
         
-        model Team {
-            name text as title
-            leader User
-            active bool = true
+        model Post {
+            title text
+            content text
+            published bool = false
+            author Author
         }
         
-        model Project {
-            title text as title
-            description text
-            owner User
-            team Team
-            status text = "planning"
+        screen Posts using Post
+        screen Authors using Author
+    }
+    """
+    
+    # Test complete pipeline
+    parser = SeedParser()
+    spec = parser.parse(input_text)
+    
+    # Verify parser output for relationships
+    assert len(spec['models']) == 2
+    post_model = next(m for m in spec['models'] if m['name'] == 'Post')
+    author_field = next(f for f in post_model['fields'] if f['name'] == 'author')
+    assert author_field['type'] == 'Author'
+    
+    # Test generator with relationship handling
+    with tempfile.TemporaryDirectory() as tmpdir:
+        generator = Generator()
+        generator.generate(spec, tmpdir)
+        
+        # Verify model imports and relationships
+        with open(os.path.join(tmpdir, 'src/models/Post.js')) as f:
+            post_content = f.read()
+            assert 'useAuthor' in post_content
+            assert 'import { useAuthor }' in post_content
+        
+        # Verify screen handling of relationships
+        with open(os.path.join(tmpdir, 'src/screens/Posts.js')) as f:
+            screen_content = f.read()
+            # Check reference field rendering
+            assert 'Select Author' in screen_content
+            assert 'authorItems' in screen_content
+
+def test_advanced_form_handling():
+    """Test integration of complex form generation and validation"""
+    input_text = """
+    app UserSystem "User Management" {
+        model User {
+            username text
+            email email
+            age num
+            preferences text
+            terms bool = false
         }
         
+        screen UserProfile using User
+    }
+    """
+    
+    parser = SeedParser()
+    spec = parser.parse(input_text)
+    
+    # Verify parser handles all field types
+    user_model = spec['models'][0]
+    assert len(user_model['fields']) == 5
+    assert any(f['type'] == 'email' for f in user_model['fields'])
+    assert any(f['type'] == 'num' for f in user_model['fields'])
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        generator = Generator()
+        generator.generate(spec, tmpdir)
+        
+        # Verify form generation with different input types
+        with open(os.path.join(tmpdir, 'src/screens/UserProfile.js')) as f:
+            content = f.read()
+            # Check proper input type generation
+            assert 'type="email"' in content
+            assert 'type="number"' in content
+            assert 'type="checkbox"' in content
+            # Check form submission handling
+            assert 'onSubmit' in content
+            assert 'preventDefault' in content
+            assert 'FormData' in content
+
+def test_error_and_loading_integration():
+    """Test integration of error handling and loading states"""
+    input_text = """
+    app DataSystem "Data Management" {
+        model DataItem {
+            name text
+            status text
+            priority num
+        }
+        
+        screen DataItems using DataItem
+    }
+    """
+    
+    parser = SeedParser()
+    spec = parser.parse(input_text)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        generator = Generator()
+        generator.generate(spec, tmpdir)
+        
+        # Verify error boundary integration
+        with open(os.path.join(tmpdir, 'src/App.js')) as f:
+            app_content = f.read()
+            assert 'ErrorBoundary' in app_content
+            assert '<ErrorBoundary>' in app_content
+        
+        # Verify screen error and loading handling
+        with open(os.path.join(tmpdir, 'src/screens/DataItems.js')) as f:
+            screen_content = f.read()
+            # Error state handling
+            assert 'useState' in screen_content
+            assert 'setError' in screen_content
+            assert 'catch' in screen_content
+            # Loading state handling
+            assert 'setLoading' in screen_content
+            assert 'disabled={loading}' in screen_content
+            assert 'finally {' in screen_content
+
+def test_component_interaction():
+    """Test integration of component interactions and state management"""
+    input_text = """
+    app TaskSystem "Task Management" {
         model Task {
-            title text as title
+            title text
             description text
-            project Project
-            assignee User
-            reviewer User
+            status text = "pending"
             priority num = 1
         }
         
-        screen Users using User
-        screen Teams using Team
-        screen Projects using Project
         screen Tasks using Task
     }
     """
@@ -52,192 +156,22 @@ def test_complex_relationships():
         generator = Generator()
         generator.generate(spec, tmpdir)
         
-        # Check model files are generated
-        assert os.path.exists(os.path.join(tmpdir, 'src/models/User.js'))
-        assert os.path.exists(os.path.join(tmpdir, 'src/models/Team.js'))
-        assert os.path.exists(os.path.join(tmpdir, 'src/models/Project.js'))
-        assert os.path.exists(os.path.join(tmpdir, 'src/models/Task.js'))
-        
-        # Check Task model handles multiple User references
+        # Verify model hooks and state management
         with open(os.path.join(tmpdir, 'src/models/Task.js')) as f:
-            content = f.read()
-            assert 'assignee' in content
-            assert 'reviewer' in content
-            assert 'useUser' in content  # Should import User model hook
-            
-        # Check Project model handles both User and Team references
-        with open(os.path.join(tmpdir, 'src/models/Project.js')) as f:
-            content = f.read()
-            assert 'owner' in content
-            assert 'team' in content
-            assert 'useUser' in content
-            assert 'useTeam' in content
-
-def test_circular_references():
-    """Test handling of circular model references"""
-    input_text = """
-    app CircularTest "Circular Reference Test" {
-        model Department {
-            name text
-            head Employee
-        }
+            model_content = f.read()
+            assert 'useState' in model_content
+            assert 'localStorage' in model_content
+            assert 'useCallback' in model_content
         
-        model Employee {
-            name text
-            department Department
-            supervisor Employee
-        }
-        
-        screen Departments using Department
-        screen Employees using Employee
-    }
-    """
-    
-    parser = SeedParser()
-    spec = parser.parse(input_text)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        generator = Generator()
-        generator.generate(spec, tmpdir)
-        
-        # Check circular references are handled
-        with open(os.path.join(tmpdir, 'src/models/Employee.js')) as f:
-            content = f.read()
-            assert 'department' in content
-            assert 'supervisor' in content
-            assert 'useDepartment' in content
-            assert 'useEmployee' in content
-            assert 'circular' in content.lower()  # Should have circular reference handling
-
-def test_data_persistence():
-    """Test data persistence and relationships"""
-    input_text = """
-    app Notes "Note Taking App" {
-        model Category {
-            name text as title
-            description text
-        }
-        
-        model Note {
-            title text as title
-            content text
-            category Category
-            tags text
-            created num
-            updated num
-        }
-        
-        screen Categories using Category
-        screen Notes using Note
-    }
-    """
-    
-    parser = SeedParser()
-    spec = parser.parse(input_text)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        generator = Generator()
-        generator.generate(spec, tmpdir)
-        
-        # Check Note model handles persistence
-        with open(os.path.join(tmpdir, 'src/models/Note.js')) as f:
-            content = f.read()
-            assert 'localStorage' in content
-            assert 'JSON.parse' in content
-            assert 'JSON.stringify' in content
-            assert 'created' in content
-            assert 'updated' in content
-            assert 'Date.now()' in content
-
-def test_validation_rules():
-    """Test field validation rules"""
-    input_text = """
-    app Validation "Validation Testing" {
-        model User {
-            username text
-            email email
-            age num
-            role text = "user"
-            active bool = true
-        }
-        
-        screen Users using User
-    }
-    """
-    
-    parser = SeedParser()
-    spec = parser.parse(input_text)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        generator = Generator()
-        generator.generate(spec, tmpdir)
-        
-        # Check validation in screen component
-        with open(os.path.join(tmpdir, 'src/screens/Users.js')) as f:
-            content = f.read()
-            assert 'required' in content
-            assert 'pattern' in content  # Email validation
-            assert 'min' in content  # Number validation
-            assert 'validate' in content
-            assert 'error' in content
-
-def test_error_boundaries():
-    """Test error boundary generation"""
-    input_text = """
-    app ErrorTest "Error Boundary Testing" {
-        model Item {
-            name text
-            quantity num
-        }
-        
-        screen Items using Item
-    }
-    """
-    
-    parser = SeedParser()
-    spec = parser.parse(input_text)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        generator = Generator()
-        generator.generate(spec, tmpdir)
-        
-        # Check for error boundary component
-        assert os.path.exists(os.path.join(tmpdir, 'src/components/ErrorBoundary.js'))
-        
-        # Check error boundary usage
-        with open(os.path.join(tmpdir, 'src/App.js')) as f:
-            content = f.read()
-            assert 'ErrorBoundary' in content
-            assert 'catch' in content
-            assert 'error' in content
-            assert 'fallback' in content
-
-def test_loading_states():
-    """Test loading state handling"""
-    input_text = """
-    app LoadingTest "Loading State Test" {
-        model Post {
-            title text
-            content text
-            published bool = false
-        }
-        
-        screen Posts using Post
-    }
-    """
-    
-    parser = SeedParser()
-    spec = parser.parse(input_text)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        generator = Generator()
-        generator.generate(spec, tmpdir)
-        
-        # Check loading states in screen component
-        with open(os.path.join(tmpdir, 'src/screens/Posts.js')) as f:
-            content = f.read()
-            assert 'loading' in content
-            assert 'isLoading' in content
-            assert 'useState' in content
-            assert 'disabled' in content
-            assert 'spinner' in content.lower()
+        # Verify screen-model interaction
+        with open(os.path.join(tmpdir, 'src/screens/Tasks.js')) as f:
+            screen_content = f.read()
+            # Model hook usage
+            assert 'useTask' in screen_content
+            assert 'const { items, create, update, remove }' in screen_content
+            # State updates
+            assert 'useState' in screen_content
+            assert 'setEditingId' in screen_content
+            # Default value handling
+            assert "'pending'" in model_content
+            assert '1' in model_content

@@ -14,12 +14,8 @@ class SeedParser:
         self.valid_types = {'text', 'num', 'bool', 'email'}
 
     def parse(self, input_text: str) -> dict:
+        """Parse .seed file content"""
         try:
-            spec = {
-                'models': [],
-                'screens': []
-            }
-            
             lines = input_text.strip().splitlines()
             
             # Validate input starts with app declaration
@@ -28,88 +24,103 @@ class SeedParser:
                 raise ParseError("Empty input")
             if not non_empty_lines[0].startswith('app '):
                 raise ParseError("File must start with app declaration")
-                
-            block_stack = []  # Track block hierarchy (app, model, etc)
-            brace_stack = []  # Track opening braces and their line numbers
             
-            for line_num, line in enumerate(lines, 1):
-                # Remove inline comments and strip whitespace
-                line = line.split('//')[0].strip()
-                if not line:
-                    continue
-                
-                try:
-                    # Track opening braces and block types
-                    if '{' in line:
-                        brace_stack.append((line_num, line))
-                        if line.startswith('app'):
-                            # Parse app declaration
-                            parts = line.split('"')
-                            if len(parts) != 3:
-                                raise ParseError("Invalid app declaration - expected 'app Name \"Title\" {'")
-                            app_name = parts[0].split()[1]
-                            app_title = parts[1]
-                            if not app_name.isidentifier():
-                                raise ParseError(f"Invalid app name: {app_name}")
-                            if not app_title.strip():
-                                raise ParseError("App title cannot be empty")
-                            if app_name in spec.get('models', []) or app_name in spec.get('screens', []):
-                                raise ParseError(f"Duplicate name: {app_name}")
-                            spec['app'] = {'name': app_name, 'title': app_title}
-                            block_stack.append('app')
-                        elif line.startswith('model'):
-                            if 'app' not in block_stack:
-                                raise ParseError("Model must be defined inside app block")
-                            model = self._parse_model(line)
-                            if any(m['name'] == model['name'] for m in spec['models']):
-                                raise ParseError(f"Duplicate model name: {model['name']}")
-                            spec['models'].append(model)
-                            block_stack.append('model')
-                    
-                    # Track closing braces
-                    elif line == '}':
-                        if not brace_stack:
-                            raise ParseError("Unexpected closing brace - no matching opening brace found")
-                        opening_line_num, opening_line = brace_stack.pop()
-                        if block_stack:
-                            block_stack.pop()
-                    
-                    # Handle screen declarations
-                    elif line.startswith('screen'):
-                        if 'app' not in block_stack:
-                            raise ParseError("Screen must be defined inside app block")
-                        screen = self._parse_screen(line)
-                        if any(s['name'] == screen['name'] for s in spec['screens']):
-                            raise ParseError(f"Duplicate screen name: {screen['name']}")
-                        spec['screens'].append(screen)
-                    
-                    # Handle model fields
-                    elif block_stack and block_stack[-1] == 'model' and line.strip():
-                        current_model = spec['models'][-1]
-                        self._parse_field(line, current_model)
-                except ParseError as e:
-                    # Get context lines
-                    prev_line = lines[line_num-2] if line_num > 1 else None
-                    next_line = lines[line_num] if line_num < len(lines) else None
-                    raise ParseError(
-                        str(e),
-                        line_num=line_num,
-                        line_content=line,
-                        prev_line=prev_line,
-                        next_line=next_line
-                    )
-                
-            # Check for unclosed braces at end of parsing
-            if brace_stack:
-                last_brace = brace_stack[-1]
-                raise ParseError(f"Unclosed brace from line {last_brace[0]}: {last_brace[1]}")
-            
-            return spec
+            return self._parse_app(lines)
             
         except Exception as e:
             if isinstance(e, ParseError):
                 raise
             raise ParseError(f"Failed to parse spec: {str(e)}")
+            
+    def _parse_app(self, lines: list) -> dict:
+        """Parse app and its contents"""
+        spec = {
+            'models': [],
+            'screens': []
+        }
+        
+        block_stack = []  # Track block hierarchy (app, model, etc)
+        brace_stack = []  # Track opening braces and their line numbers
+        
+        for line_num, line in enumerate(lines, 1):
+            # Remove inline comments and strip whitespace
+            line = line.split('//')[0].strip()
+            if not line:
+                continue
+            
+            try:
+                # Track opening braces and block types
+                if '{' in line:
+                    brace_stack.append((line_num, line))
+                    if line.startswith('app'):
+                        # First check for quoted app name
+                        parts = line.strip().split()
+                        if len(parts) >= 2 and parts[1].startswith('"'):
+                            raise ParseError("Invalid app name")
+                        
+                        # Parse app declaration
+                        quote_parts = line.split('"')
+                        if len(quote_parts) != 3:
+                            raise ParseError("Invalid app declaration - expected 'app Name \"Title\" {'")
+                        
+                        app_name = quote_parts[0].split()[1]
+                        app_title = quote_parts[1]
+                        
+                        if not app_name.isidentifier():
+                            raise ParseError("Invalid app name")
+                        if not app_title.strip():
+                            raise ParseError("App title cannot be empty")
+                        
+                        spec['app'] = {'name': app_name, 'title': app_title}
+                        block_stack.append('app')
+                    elif line.startswith('model'):
+                        if 'app' not in block_stack:
+                            raise ParseError("Model must be defined inside app block")
+                        model = self._parse_model(line)
+                        if any(m['name'] == model['name'] for m in spec['models']):
+                            raise ParseError(f"Duplicate model name: {model['name']}")
+                        spec['models'].append(model)
+                        block_stack.append('model')
+                
+                # Track closing braces
+                elif line == '}':
+                    if not brace_stack:
+                        raise ParseError("Unexpected closing brace - no matching opening brace found")
+                    opening_line_num, opening_line = brace_stack.pop()
+                    if block_stack:
+                        block_stack.pop()
+                
+                # Handle screen declarations
+                elif line.startswith('screen'):
+                    if 'app' not in block_stack:
+                        raise ParseError("Screen must be defined inside app block")
+                    screen = self._parse_screen(line)
+                    if any(s['name'] == screen['name'] for s in spec['screens']):
+                        raise ParseError(f"Duplicate screen name: {screen['name']}")
+                    spec['screens'].append(screen)
+                
+                # Handle model fields
+                elif block_stack and block_stack[-1] == 'model' and line.strip():
+                    current_model = spec['models'][-1]
+                    self._parse_field(line, current_model)
+            except ParseError as e:
+                # Get context lines
+                prev_line = lines[line_num-2] if line_num > 1 else None
+                next_line = lines[line_num] if line_num < len(lines) else None
+                raise ParseError(
+                    str(e),
+                    line_num=line_num,
+                    line_content=line,
+                    prev_line=prev_line,
+                    next_line=next_line
+                )
+            
+        # Check for unclosed braces at end of parsing
+        if brace_stack:
+            last_brace = brace_stack[-1]
+            raise ParseError(f"Unclosed brace from line {last_brace[0]}: {last_brace[1]}")
+        
+        return spec
 
     def _parse_model(self, line: str) -> dict:
         """Parse model declaration"""

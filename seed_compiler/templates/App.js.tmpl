@@ -1,13 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { ErrorBoundary } from './components/ErrorBoundary';
 {% for screen in screens %}
 import { {{ screen.name }} } from './screens/{{ screen.name }}';
 {% endfor %}
 
 export default function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
+    <ErrorBoundary>
+      <Router>
+        <div className="min-h-screen bg-gray-100">
         <nav className="bg-white shadow-lg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
@@ -37,7 +39,8 @@ export default function App() {
             {% endfor %}
           </Switch>
         </main>
-      </div>
-    </Router>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }

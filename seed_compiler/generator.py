@@ -23,8 +23,14 @@ class Generator:
         os.makedirs(os.path.join(output_dir, 'src'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'src/models'), exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'src/screens'), exist_ok=True)
+        os.makedirs(os.path.join(output_dir, 'src/components'), exist_ok=True)  # Add components directory
         os.makedirs(os.path.join(output_dir, 'public'), exist_ok=True)  # Add public directory
         
+        # Generate error boundary component
+        self._generate_file('ErrorBoundary.js.tmpl',
+                          os.path.join(output_dir, 'src/components/ErrorBoundary.js'),
+                          {})
+
         # Generate index.css with Tailwind directives
         self._generate_index_css(output_dir)
         
