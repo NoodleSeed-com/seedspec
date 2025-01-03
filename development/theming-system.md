@@ -64,45 +64,120 @@ theme Default "SeedSpec Default Theme" {
   }
 
   colors {
-    primary: "#4F46E5"  // Indigo
-    secondary: "#10B981" // Emerald
-    neutral: {
-      50: "#F9FAFB"
-      100: "#F3F4F6"
-      900: "#111827"
-    }
-    semantic: {
-      success: "#10B981"
-      error: "#EF4444"
-      warning: "#F59E0B"
-    }
+    // Base colors with semantic meaning
+    primary: ocean-blue
+    secondary: forest-green
+    background: white
+    text: black
+    
+    // Status colors
+    success: emerald-green
+    error: ruby-red
+    warning: california-gold
+    info: mediterranean-blue
+    
+    // Interaction states
+    hover: primary.light
+    active: primary.dark
+    disabled: slate-gray
+    selected: primary.pale
+    
+    // Feedback states
+    valid: success
+    invalid: error
+    pending: info
+    
+    // Structural elements
+    border: slate-gray.light
+    divider: slate-gray.pale
+    shadow: black.transparent
+    overlay: black.transparent
+    
+    // Content hierarchy
+    heading: text.dark
+    body: text
+    caption: text.light
+    placeholder: text.pale
+    
+    // Interactive elements
+    link: primary
+    linkVisited: primary.dark
+    button: primary
+    buttonText: white
+    
+    // Form elements
+    input: white
+    inputBorder: border
+    inputFocus: primary
+    inputPlaceholder: placeholder
+    
+    // Navigation
+    nav: background.dark
+    navText: text.light
+    navActive: primary
+    
+    // Emphasis
+    highlight: sunset-yellow.pale
+    accent: coral-green
+    
+    // Surfaces
+    card: white
+    modal: white
+    tooltip: text.dark
+    
+    // System
+    focus: primary
+    selection: primary.pale
   }
 
   typography {
     fonts: {
-      sans: "system-ui, -apple-system, sans-serif"
-      mono: "ui-monospace, monospace"
+      body: sans
+      heading: sans
+      mono: mono
     }
+    
+    weights: {
+      light: 300
+      regular: 400
+      medium: 500
+      bold: 700
+    }
+    
     sizes: {
-      base: "1rem"
-      lg: "1.125rem"
-      xl: "1.25rem"
+      xs: 0.75
+      sm: 0.875
+      base: 1
+      lg: 1.125
+      xl: 1.25
+      "2xl": 1.5
+      "3xl": 1.875
+      "4xl": 2.25
+    }
+    
+    lineHeights: {
+      tight: 1.25
+      base: 1.5
+      loose: 1.75
     }
   }
 
-  components {
-    button: {
-      base: "rounded-md font-medium transition-colors"
-      primary: "bg-primary text-white hover:bg-primary/90"
-      secondary: "bg-secondary text-white hover:bg-secondary/90"
-    }
-    input: {
-      base: "rounded-md border border-neutral-200"
-      focus: "ring-2 ring-primary/50"
-    }
-    card: {
-      base: "bg-white rounded-lg shadow-sm p-4"
-    }
+  spacing {
+    xs: 0.25
+    sm: 0.5
+    base: 1
+    lg: 1.5
+    xl: 2
+    "2xl": 3
+    "3xl": 4
+  }
+
+  radii {
+    none: 0
+    sm: 0.125
+    base: 0.25
+    lg: 0.5
+    full: 9999
   }
 }
 ```
@@ -110,47 +185,50 @@ theme Default "SeedSpec Default Theme" {
 ### Default Dark Theme
 ```seed
 // @stdlib/themes/dark.seed
-theme Dark "SeedSpec Dark Theme" {
+theme Dark extends Default {
   metadata {
     version: "1.0.0"
     description: "Default dark theme with reduced eye strain"
   }
 
   colors {
-    primary: "#818CF8"   // Lighter indigo
-    secondary: "#34D399" // Lighter emerald
-    neutral: {
-      50: "#18181B"
-      100: "#27272A"
-      900: "#FAFAFA"
-    }
-    semantic: {
-      success: "#34D399"
-      error: "#F87171"
-      warning: "#FBBF24"
-    }
+    // Invert main colors
+    background: midnight-black
+    text: pearl-white
+    
+    // Adjust color intensities
+    primary: ocean-blue.light
+    secondary: forest-green.light
+    
+    // Adjust surfaces
+    card: background.light
+    modal: background.light
+    
+    // Adjust states
+    hover: primary.pale
+    selected: primary.dark
   }
-  // Inherits other properties from Default theme
 }
 ```
 
-## 2. Theme Extension Syntax
+## 2. Theme Extension Example
 
 ```seed
-// custom-theme.seed
 import { Default } from "@stdlib/themes"
 
 theme Corporate extends Default {
-  metadata {
-    version: "1.0.0"
-    description: "Corporate brand theme"
-  }
-
   colors {
-    primary: "#0047AB"   // Corporate blue
-    secondary: "#50C878" // Corporate green
+    primary: california-blue
+    secondary: forest-green
+    accent: coral-green
+    
+    // Use modifiers
+    hover: primary.light
+    active: primary.dark
+    
+    // Direct hex for exact brand color
+    brand: "#FF5733"
   }
-  // Inherits other properties from Default theme
 }
 ```
 
@@ -159,22 +237,14 @@ theme Corporate extends Default {
 Themes can be generated from natural language descriptions:
 
 ```seed
-// Example LLM prompt: "Generate a modern, professional theme with blue and gray tones"
-theme ModernPro {
-  metadata {
-    version: "1.0.0"
-    description: "Modern professional theme with blue and gray accents"
-    generated: true
-    prompt: "Modern professional theme with blue and gray tones"
-  }
-
+// Example: "Generate a modern tech startup theme with ocean vibes"
+theme ModernTech extends Default {
   colors {
-    primary: "#2563EB"
-    secondary: "#64748B"
-    // ... LLM generates complete color palette
+    primary: ocean-blue
+    secondary: coral-green
+    accent: mediterranean-blue
+    background: slate-gray.light
   }
-
-  // ... LLM generates complete theme
 }
 ```
 
@@ -190,7 +260,8 @@ class ThemeParser:
             'metadata': self.parse_metadata(),
             'colors': self.parse_colors(),
             'typography': self.parse_typography(),
-            'components': self.parse_components()
+            'spacing': self.parse_spacing(),
+            'radii': self.parse_radii()
         }
 
     def parse_theme_extension(self, base_theme, extensions):
@@ -213,20 +284,33 @@ class ThemeGenerator:
         config = {
             'theme': {
                 'extend': {
-                    'colors': theme['colors'],
-                    'typography': theme['typography']
+                    'colors': self.transform_colors(theme.colors),
+                    'typography': theme.typography,
+                    'spacing': theme.spacing,
+                    'borderRadius': theme.radii
                 }
             }
         }
-        # Write config
+        return config
+
+    def transform_colors(self, colors):
+        """Transform semantic color names to actual values"""
+        return self.resolve_color_references(colors)
 
     def generate_theme_tokens(self, theme):
         """Generate theme.js with design tokens"""
-        # Generate JavaScript theme tokens
+        tokens = {
+            'colors': self.transform_colors(theme.colors),
+            'typography': theme.typography,
+            'spacing': theme.spacing,
+            'radii': theme.radii
+        }
+        return tokens
 
     def generate_component_styles(self, theme):
         """Generate component-specific styles"""
-        # Generate component style utilities
+        styles = self.generate_component_classes(theme)
+        return styles
 ```
 
 ### c. Standard Library Integration
@@ -235,10 +319,67 @@ class ThemeGenerator:
 class StdLibManager:
     def get_standard_theme(self, theme_name):
         """Load standard library theme"""
-        if theme_name == 'Default':
-            return self.load_theme('@stdlib/themes/default.seed')
-        elif theme_name == 'Dark':
-            return self.load_theme('@stdlib/themes/dark.seed')
+        themes = {
+            'Default': self.load_theme('@stdlib/themes/default.seed'),
+            'Dark': self.load_theme('@stdlib/themes/dark.seed')
+        }
+        return themes.get(theme_name)
+
+    def resolve_color(self, color_name):
+        """Resolve semantic color name to actual value"""
+        # Basic colors
+        basic_colors = {
+            'red': '#EF4444',
+            'blue': '#3B82F6',
+            'green': '#10B981',
+            'yellow': '#F59E0B',
+            'purple': '#8B5CF6',
+            'orange': '#F97316'
+        }
+        
+        # Geographic colors
+        geographic_colors = {
+            'california-blue': '#0077BE',
+            'mediterranean-blue': '#1A5F7A',
+            'california-gold': '#FDB515'
+        }
+        
+        # Natural colors
+        natural_colors = {
+            'coral-green': '#84B082',
+            'forest-green': '#228B22',
+            'ocean-blue': '#00A0B0',
+            'sunset-yellow': '#FAD6A5',
+            'midnight-black': '#141414',
+            'pearl-white': '#F5F5F1'
+        }
+        
+        # Material colors
+        material_colors = {
+            'slate-gray': '#708090',
+            'ruby-red': '#E0115F',
+            'emerald-green': '#50C878'
+        }
+        
+        # Combine all color maps
+        all_colors = {
+            **basic_colors,
+            **geographic_colors,
+            **natural_colors,
+            **material_colors
+        }
+        
+        # Handle modifiers (light, dark, pale, bright)
+        if '.' in color_name:
+            base, modifier = color_name.split('.')
+            if base in all_colors:
+                return self.apply_modifier(all_colors[base], modifier)
+                
+        # Handle direct hex values
+        if color_name.startswith('#'):
+            return color_name
+            
+        return all_colors.get(color_name)
 ```
 
 ### d. LLM Theme Generation (seed_compiler/llm_theme_generator.py)
@@ -247,25 +388,26 @@ class StdLibManager:
 class LLMThemeGenerator:
     def generate_theme(self, prompt):
         """Generate theme based on natural language prompt"""
-        # Use LLM to generate complete theme specification
         return {
             'metadata': {
                 'generated': True,
                 'prompt': prompt
             },
-            # ... generated theme properties
+            'colors': self.generate_color_scheme(prompt),
+            'typography': self.generate_typography(prompt),
+            'spacing': self.generate_spacing(prompt),
+            'radii': self.generate_radii(prompt)
         }
 
-    def extend_theme(self, base_theme, prompt):
-        """Extend existing theme based on prompt"""
-        # Use LLM to generate theme extensions
+    def generate_color_scheme(self, prompt):
+        """Generate semantic color choices based on prompt"""
+        return self.analyze_prompt_for_colors(prompt)
 ```
 
 ## 5. Usage in Apps
 
 ```seed
 import { Dark } from "@stdlib/themes"
-import { Corporate } from "./themes/corporate.seed"
 
 app MyApp "My Application" {
   // Use standard dark theme
@@ -275,9 +417,7 @@ app MyApp "My Application" {
   use theme Corporate
 
   // Or generate theme with LLM
-  use theme generate "Modern professional theme with blue accents"
-
-  // Rest of app specification
+  use theme generate "Modern professional theme"
 }
 ```
 
@@ -292,40 +432,33 @@ app MyApp "My Application" {
 ## Benefits
 
 This implementation:
-- Maintains SeedSpec's declarative nature
-- Leverages LLMs for theme generation
-- Provides standard themes out of the box
-- Enables easy theme customization and extension
-- Keeps the syntax simple and readable
-- Supports modular theme development
-- Generates optimized output for React/Tailwind
+- Supports intuitive basic colors (red, blue, green)
+- Provides rich descriptive colors (california-blue, coral-green)
+- Allows color modifiers (light, dark, pale, bright)
+- Enables direct hex values for brand precision
+- Maps naturally to human language for LLM generation
+- Maintains simplicity while offering designer flexibility
 
-The system is designed to be both powerful for advanced users who want to create custom themes from scratch, and accessible for users who prefer to use standard themes or LLM-generated themes with minimal configuration.
+The system creates a natural bridge between human color perception, designer needs, and technical implementation through an expressive yet simple naming system.
 
 ## Reference Files
 
-To implement this theming system, an LLM should analyze these key files from the project:
-
 ### Core Files
-- `seed_compiler/parser.py` - To understand how to parse seed files and add theme parsing
-- `seed_compiler/generator.py` - To understand how to generate React/Tailwind output and add theme generation
-- `seed_compiler/templates/Screen.js.tmpl` - To understand current component templating and styling
-- `seed_compiler/templates/App.js.tmpl` - To understand app-level structure and where theme provider should be added
+- `seed_compiler/parser.py` - Theme parsing implementation
+- `seed_compiler/generator.py` - Theme generation and Tailwind integration
+- `seed_compiler/templates/Screen.js.tmpl` - Component templating and styling
+- `seed_compiler/templates/App.js.tmpl` - App-level theme provider integration
 
 ### Example Files
-- `examples/todo.seed` - To understand current seed file structure and where theme syntax fits
-- `examples/expenses.seed` - Another example of seed file structure
+- `examples/todo.seed` - Basic theme usage example
+- `examples/themed-todo.seed` - Advanced theme customization example
 
 ### Documentation
-- `docs/styling.md` - Current styling documentation
-- `docs/components.md` - To understand component system for theme integration
-- `docs/concepts-and-structure.md` - To understand overall architecture
+- `docs/styling.md` - Theme system usage guide
+- `docs/components.md` - Component theming guide
+- `docs/concepts-and-structure.md` - Theme architecture overview
 
 ### Test Files
-- `tests/test_parser.py` - To understand current parsing tests and add theme parsing tests
-- `tests/test_generator.py` - To understand current generation tests and add theme generation tests
-- `tests/test_integration.py` - To understand end-to-end testing
-
-These files provide the necessary context for:
-1. Current parsing and generation system
-2. Component templating and styling approach
+- `tests/test_parser.py` - Theme parsing tests
+- `tests/test_generator.py` - Theme generation tests
+- `tests/test_integration.py` - End-to-end theme tests

@@ -1,0 +1,32 @@
+import { Default } from "@stdlib/themes"
+
+// Extend default theme with just the key customizations
+theme TodoTheme extends Default {
+  colors {
+    primary: ocean-blue
+    secondary: forest-green
+    
+    // Status colors derived from nature
+    success: emerald-green
+    warning: california-gold
+  }
+}
+
+model Todo {
+  title text as title
+  done bool = false
+  dueDate date?
+}
+
+app TodoApp "Todo List" {
+  use theme TodoTheme
+
+  data {
+    Todos: Todo[] [
+      { title: "Complete project proposal", dueDate: 2024-01-15 },
+      { title: "Weekly team meeting", dueDate: 2024-01-10, done: true }
+    ]
+  }
+
+  screen TodoList using Todo
+}
