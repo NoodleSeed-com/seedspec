@@ -37,11 +37,40 @@ This document outlines the implementation plan for adding a robust theming syste
 - [ ] Component style generation
 
 ### Testing
-- [ ] Parser unit tests
-- [ ] Generator unit tests
-- [ ] Integration tests
-- [ ] Theme validation tests
-- [ ] LLM generation tests
+- [x] Parser unit tests
+  - Theme block structure parsing
+  - Theme extension/inheritance
+  - Color reference resolution
+  - Color modifier application
+  - Theme validation rules
+  - Theme import parsing
+  - Theme usage in apps
+- [x] Generator unit tests
+  - Tailwind config generation
+  - Theme token generation
+  - Component style generation
+  - Dark mode configuration
+  - Theme provider generation
+  - Themed component generation
+- [x] Integration tests
+  - End-to-end theme application
+  - Theme inheritance chain
+  - Dark mode integration
+  - Color resolution and modifiers
+  - Theme switching capabilities
+  - Component theme application
+- [x] Theme validation tests
+  - Color scheme validation
+  - Typography validation
+  - Spacing/sizing validation
+  - Theme inheritance validation
+  - Color modifier validation
+- [x] LLM generation tests
+  - Theme generation from prompts
+  - Color scheme generation
+  - Prompt color extraction
+  - Theme modification validation
+  - Theme extension validation
 
 ### Documentation
 - [ ] Theme specification docs
