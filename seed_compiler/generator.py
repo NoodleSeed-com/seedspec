@@ -14,7 +14,7 @@ class Generator:
         self.env.filters['default_value_for_field'] = self._default_value_for_field
         
         # Define valid types
-        self.valid_types = {'text', 'num', 'bool'}
+        self.valid_types = {'text', 'num', 'bool', 'email'}
         
     def generate(self, spec: dict, output_dir: str):
         """Generate React app from parsed spec"""
@@ -150,7 +150,8 @@ ReactDOM.render(
         types = {
             'text': 'text',
             'num': 'number',
-            'bool': 'checkbox'
+            'bool': 'checkbox',
+            'email': 'email'
         }
         return types.get(field_type, 'text')
 

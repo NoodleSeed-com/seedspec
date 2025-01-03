@@ -6,6 +6,7 @@ from seed_compiler.generator import Generator
 @pytest.fixture
 def basic_spec():
     return {
+        'app': {'name': 'Todo', 'title': 'Todo App'},
         'models': [{
             'name': 'Task',
             'fields': [
@@ -16,6 +17,24 @@ def basic_spec():
         'screens': [{
             'name': 'Tasks',
             'model': 'Task'
+        }]
+    }
+
+@pytest.fixture
+def email_spec():
+    return {
+        'app': {'name': 'UserManager', 'title': 'User Management System'},
+        'models': [{
+            'name': 'User',
+            'fields': [
+                {'name': 'name', 'type': 'text'},
+                {'name': 'email', 'type': 'email'},
+                {'name': 'active', 'type': 'bool', 'default': 'true'}
+            ]
+        }],
+        'screens': [{
+            'name': 'Users',
+            'model': 'User'
         }]
     }
 
@@ -49,7 +68,7 @@ def test_generator_model_content(basic_spec):
             assert 'update' in content
             assert 'remove' in content
 
-def test_generator_screen_content(basic_spec):
+def test_generator_screen_content(basic_spec, email_spec):
     with tempfile.TemporaryDirectory() as tmpdir:
         generator = Generator()
         generator.generate(basic_spec, tmpdir)
@@ -61,6 +80,12 @@ def test_generator_screen_content(basic_spec):
             assert '<form' in content
             assert 'title' in content
             assert 'done' in content
+
+        # Test email input type generation
+        generator.generate(email_spec, tmpdir)
+        with open(os.path.join(tmpdir, 'src/screens/Users.js')) as f:
+            content = f.read()
+            assert 'type="email"' in content
 
 def test_generator_package_json(basic_spec):
     with tempfile.TemporaryDirectory() as tmpdir:

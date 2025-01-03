@@ -4,9 +4,11 @@ from seed_compiler.parser import SeedParser, ParseError
 def test_basic_model_parsing():
     parser = SeedParser()
     input_text = """
-    model Task {
-        title text
-        done bool = false
+    app Todo "Todo App" {
+        model Task {
+            title text
+            done bool = false
+        }
     }
     """
     
@@ -21,7 +23,9 @@ def test_basic_model_parsing():
 def test_basic_screen_parsing():
     parser = SeedParser()
     input_text = """
-    screen Tasks using Task
+    app Todo "Todo App" {
+        screen Tasks using Task
+    }
     """
     
     spec = parser.parse(input_text)
@@ -32,12 +36,14 @@ def test_basic_screen_parsing():
 def test_complete_app_parsing():
     parser = SeedParser()
     input_text = """
-    model Task {
-        title text
-        done bool = false
+    app Todo "Todo App" {
+        model Task {
+            title text
+            done bool = false
+        }
+        
+        screen Tasks using Task
     }
-    
-    screen Tasks using Task
     """
     
     spec = parser.parse(input_text)
@@ -63,7 +69,25 @@ def test_invalid_field_type():
     parser = SeedParser()
     with pytest.raises(ParseError):
         parser.parse("""
-        model Task {
-            title invalid_type
+        app Todo "Todo App" {
+            model Task {
+                title invalid_type
+            }
         }
         """)
+
+def test_email_field_parsing():
+    parser = SeedParser()
+    input_text = """
+    app UserManager "User Management System" {
+        model User {
+            name text
+            email email
+            active bool = true
+        }
+        
+        screen Users using User
+    }
+    """
+    spec = parser.parse(input_text)
+    assert spec['models'][0]['fields'][1]['type'] == 'email'

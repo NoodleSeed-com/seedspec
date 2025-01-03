@@ -11,7 +11,7 @@ class SeedParser:
     """Parses .seed files into Python data structures"""
     
     def __init__(self):
-        self.valid_types = {'text', 'num', 'bool'}
+        self.valid_types = {'text', 'num', 'bool', 'email'}
 
     def parse(self, input_text: str) -> dict:
         try:
@@ -21,60 +21,64 @@ class SeedParser:
             }
             
             lines = input_text.strip().splitlines()
-            current_block = None
-            in_app_block = False
+            block_stack = []  # Track block hierarchy (app, model, etc)
             brace_stack = []  # Track opening braces and their line numbers
             
             for line_num, line in enumerate(lines, 1):
-                line = line.strip()
-                if not line or line.startswith('//'): 
+                # Remove inline comments and strip whitespace
+                line = line.split('//')[0].strip()
+                if not line:
                     continue
                 
                 try:
-                    # Track opening braces
+                    # Track opening braces and block types
                     if '{' in line:
                         brace_stack.append((line_num, line))
+                        if line.startswith('app'):
+                            # Parse app declaration
+                            parts = line.split('"')
+                            if len(parts) != 3:
+                                raise ParseError("Invalid app declaration - expected 'app Name \"Title\" {'")
+                            app_name = parts[0].split()[1]
+                            app_title = parts[1]
+                            if not app_name.isidentifier():
+                                raise ParseError(f"Invalid app name: {app_name}")
+                            if not app_title.strip():
+                                raise ParseError("App title cannot be empty")
+                            if app_name in spec.get('models', []) or app_name in spec.get('screens', []):
+                                raise ParseError(f"Duplicate name: {app_name}")
+                            spec['app'] = {'name': app_name, 'title': app_title}
+                            block_stack.append('app')
+                        elif line.startswith('model'):
+                            if 'app' not in block_stack:
+                                raise ParseError("Model must be defined inside app block")
+                            model = self._parse_model(line)
+                            if any(m['name'] == model['name'] for m in spec['models']):
+                                raise ParseError(f"Duplicate model name: {model['name']}")
+                            spec['models'].append(model)
+                            block_stack.append('model')
                     
                     # Track closing braces
-                    if '}' in line:
+                    elif line == '}':
                         if not brace_stack:
                             raise ParseError("Unexpected closing brace - no matching opening brace found")
                         opening_line_num, opening_line = brace_stack.pop()
-                    if line.startswith('app'):
-                        # Parse app declaration
-                        parts = line.split('"')
-                        if len(parts) != 3:
-                            raise ParseError("Invalid app declaration - expected 'app Name \"Title\" {'")
-                        app_name = parts[0].split()[1]
-                        app_title = parts[1]
-                        if not app_name.isidentifier():
-                            raise ParseError(f"Invalid app name: {app_name}")
-                        spec['app'] = {'name': app_name, 'title': app_title}
-                        in_app_block = True
-                    elif line == '}':
-                        if current_block:
-                            current_block = None
-                        elif in_app_block:
-                            in_app_block = False
-                        else:
-                            context = f"\nOpening brace was at line {opening_line_num}: {opening_line}"
-                            raise ParseError(f"Unexpected closing brace at line {line_num}", 
-                                          line_num=line_num,
-                                          line_content=line,
-                                          prev_line=lines[line_num-2] if line_num > 1 else None,
-                                          next_line=lines[line_num] if line_num < len(lines) else None)
-                    elif line.startswith('model'):
-                        if not in_app_block:
-                            raise ParseError("Model must be defined inside app block")
-                        current_block = self._parse_model(line)
-                        spec['models'].append(current_block)
+                        if block_stack:
+                            block_stack.pop()
+                    
+                    # Handle screen declarations
                     elif line.startswith('screen'):
-                        if not in_app_block:
+                        if 'app' not in block_stack:
                             raise ParseError("Screen must be defined inside app block")
                         screen = self._parse_screen(line)
+                        if any(s['name'] == screen['name'] for s in spec['screens']):
+                            raise ParseError(f"Duplicate screen name: {screen['name']}")
                         spec['screens'].append(screen)
-                    elif current_block and line.strip():
-                        self._parse_field(line, current_block)
+                    
+                    # Handle model fields
+                    elif block_stack and block_stack[-1] == 'model' and line.strip():
+                        current_model = spec['models'][-1]
+                        self._parse_field(line, current_model)
                 except ParseError as e:
                     # Get context lines
                     prev_line = lines[line_num-2] if line_num > 1 else None
@@ -151,10 +155,12 @@ class SeedParser:
             if not field_name.isidentifier():
                 raise ParseError(f"'{field_name}' is not a valid field name")
             
-            if field_type not in self.valid_types and not field_type.isidentifier():
-                raise ParseError(f"'{field_type}' is not a valid type")
+            # Check if type is a basic type or a valid model reference
+            if field_type not in self.valid_types:
+                # For model references, only allow simple identifiers without underscores
+                if not field_type.isidentifier() or '_' in field_type:
+                    raise ParseError(f"'{field_type}' is not a valid type")
             
-            # Field type can be either a basic type or a model reference
             field = {
                 'name': field_name,
                 'type': field_type,
@@ -174,7 +180,21 @@ class SeedParser:
                     raise ParseError(f"Expected '=' for default value, got '{remaining_parts[0]}'")
                 if len(remaining_parts) < 2:
                     raise ParseError(f"Missing value after '='")
-                field['default'] = remaining_parts[1].strip('"')  # Remove quotes if present
+                default_value = remaining_parts[1].strip('"')  # Remove quotes if present
+                
+                # Validate default value based on field type
+                if field_type == 'bool':
+                    if default_value.lower() not in ['true', 'false']:
+                        raise ParseError(f"Invalid default value for bool field: {default_value}")
+                    field['default'] = default_value.lower()
+                elif field_type == 'num':
+                    try:
+                        float(default_value)
+                        field['default'] = default_value
+                    except ValueError:
+                        raise ParseError(f"Invalid default value for num field: {default_value}")
+                else:
+                    field['default'] = default_value
                 
                 # Check for any invalid tokens after default value
                 if len(remaining_parts) > 2:

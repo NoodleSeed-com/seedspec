@@ -18,12 +18,14 @@ def test_cli_basic_generation(capsys, tmp_path):
     # Create test input file
     input_file = tmp_path / "test.seed"
     input_file.write_text("""
-    model Task {
-        title text
-        done bool = false
+    app Todo "Todo App" {
+        model Task {
+            title text
+            done bool = false
+        }
+        
+        screen Tasks using Task
     }
-    
-    screen Tasks using Task
     """)
     
     # Create output dir
@@ -45,10 +47,12 @@ def test_cli_verbose_output(capsys, tmp_path):
     # Create test input
     input_file = tmp_path / "test.seed"
     input_file.write_text("""
-    model Task {
-        title text
+    app Todo "Todo App" {
+        model Task {
+            title text
+        }
+        screen Tasks using Task
     }
-    screen Tasks using Task
     """)
     
     # Run CLI with verbose flag

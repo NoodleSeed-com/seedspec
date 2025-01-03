@@ -7,12 +7,14 @@ from seed_compiler.generator import Generator
 def test_end_to_end():
     # Test input
     input_text = """
-    model Task {
-        title text
-        done bool = false
+    app Todo "Todo App" {
+        model Task {
+            title text
+            done bool = false
+        }
+        
+        screen Tasks using Task
     }
-    
-    screen Tasks using Task
     """
     
     # Parse
@@ -33,18 +35,20 @@ def test_end_to_end():
 
 def test_multiple_models():
     input_text = """
-    model User {
-        name text
-        email text
+    app ProjectManager "Project Management System" {
+        model User {
+            name text
+            email email
+        }
+        
+        model Task {
+            title text
+            assignee User
+        }
+        
+        screen Users using User
+        screen Tasks using Task
     }
-    
-    model Task {
-        title text
-        assignee User
-    }
-    
-    screen Users using User
-    screen Tasks using Task
     """
     
     parser = SeedParser()

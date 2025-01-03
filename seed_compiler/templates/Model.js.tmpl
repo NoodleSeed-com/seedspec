@@ -1,6 +1,16 @@
 import { useState, useCallback } from 'react';
+{% for field in fields %}
+{% if field.is_reference %}
+import { use{{ field.type }} } from './{{ field.type }}';
+{% endif %}
+{% endfor %}
 
 export function use{{ name }}() {
+  {% for field in fields %}
+  {% if field.is_reference %}
+  const { items: {{ field.type|lower }}Items } = use{{ field.type }}();
+  {% endif %}
+  {% endfor %}
   const [items, setItems] = useState(() => {
     const saved = localStorage.getItem('{{ name|lower }}s');
     return saved ? JSON.parse(saved) : [];
@@ -15,9 +25,7 @@ export function use{{ name }}() {
   const create = useCallback((data) => {
     const defaults = {
       {% for field in fields %}
-      {% if field.default is not none %}
       {{ field.name }}: {{ field|default_value_for_field }},
-      {% endif %}
       {% endfor %}
     };
     const newItems = [...items, { ...defaults, ...data, id: Date.now().toString() }];

@@ -5,6 +5,5 @@ app Expenses "Simple Expense Tracker" {
     category text = "other"
     paid bool = true
   }
-
   screen ExpenseList using Expense
 }
