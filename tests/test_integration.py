@@ -63,3 +63,38 @@ def test_multiple_models():
             content = f.read()
             assert 'assignee' in content
             assert 'User' in content
+
+def test_screen_async_handlers():
+    input_text = """
+    app Todo "Todo App" {
+        model Task {
+            title text
+            done bool = false
+        }
+        
+        screen Tasks using Task
+    }
+    """
+    
+    parser = SeedParser()
+    spec = parser.parse(input_text)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        generator = Generator()
+        generator.generate(spec, tmpdir)
+        
+        # Read generated screen file
+        with open(os.path.join(tmpdir, 'src/screens/Tasks.js')) as f:
+            content = f.read()
+            
+            # Verify create form has async handler
+            assert 'onSubmit={async e =>' in content
+            assert 'await create(data);' in content
+            
+            # Verify edit form has async handler
+            assert 'onSubmit={async e =>' in content
+            assert 'await update(item.id, data);' in content
+            
+            # Verify delete has async handler
+            assert 'onClick={async () =>' in content
+            assert 'await remove(item.id);' in content

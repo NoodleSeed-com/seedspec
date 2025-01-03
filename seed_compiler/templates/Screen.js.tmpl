@@ -24,7 +24,7 @@ export function {{ name }}() {
           <h2 className="text-lg font-medium text-gray-900 mb-4">Create New {{ model.name }}</h2>
           <form 
             className="space-y-6"
-            onSubmit={e => {
+            onSubmit={async e => {
               e.preventDefault();
               setError(null);
               setLoading(true);
@@ -125,12 +125,20 @@ export function {{ name }}() {
               {editingId === item.id ? (
                 <form 
                   className="p-4"
-                  onSubmit={e => {
+                  onSubmit={async e => {
                     e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const data = Object.fromEntries(formData);
-                    update(item.id, data);
-                    setEditingId(null);
+                    setError(null);
+                    setLoading(true);
+                    try {
+                      const formData = new FormData(e.target);
+                      const data = Object.fromEntries(formData);
+                      await update(item.id, data);
+                      setEditingId(null);
+                    } catch (err) {
+                      setError(err.message);
+                    } finally {
+                      setLoading(false);
+                    }
                   }}
                 >
                   {% for field in model.fields %}
