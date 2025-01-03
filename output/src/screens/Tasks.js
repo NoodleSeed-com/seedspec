@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { use{{ model.name }} } from '../models/{{ model.name }}';
+import { useTask } from '../models/Task';
 
-export function {{ name }}() {
-  const { items, create, update, remove } = use{{ model.name }}();
+export function Tasks() {
+  const { items, create, update, remove } = useTask();
   const [editingId, setEditingId] = useState(null);
 
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">{{ name }}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-8">Tasks</h1>
         
         {/* Create Form */}
         <div className="bg-gray-50 rounded-lg p-6 mb-8">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Create New {{ model.name }}</h2>
+          <h2 className="text-lg font-medium text-gray-900 mb-4">Create New Task</h2>
           <form 
             className="space-y-6"
             onSubmit={e => {
@@ -23,22 +23,22 @@ export function {{ name }}() {
               e.target.reset();
             }}
           >
-            {% for field in model.fields %}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                {{ field.name|title }}
+                Title
               </label>
               <input 
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                name="{{ field.name }}"
-                type="{{ field.type|input_type }}"
-                defaultValue={ {{ field|default_value_for_field }} }
-                {% if not field.optional %}required{% endif %}
-                {% if field.type == 'email' %}pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"{% endif %}
-                {% if field.type == 'num' %}min="-9007199254740991" max="9007199254740991" step="any"{% endif %}
+                name="title"
+                type="text"
+                
+                required
+                
+                
               />
             </div>
-            {% endfor %}
+            
             <button 
               type="submit"
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -66,22 +66,22 @@ export function {{ name }}() {
                     setEditingId(null);
                   }}
                 >
-                  {% for field in model.fields %}
+                  
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
-                      {{ field.name|title }}
+                      Title
                     </label>
                     <input
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      name="{{ field.name }}"
-                      type="{{ field.type|input_type }}"
-                      defaultValue={item.{{ field.name }} !== undefined ? item.{{ field.name }} : {{ field|default_value_for_field }}}
-                      {% if not field.optional %}required{% endif %}
-                      {% if field.type == 'email' %}pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"{% endif %}
-                      {% if field.type == 'num' %}min="-9007199254740991" max="9007199254740991" step="any"{% endif %}
+                      name="title"
+                      type="text"
+                      defaultValue={item.title !== undefined ? item.title : null}
+                      required
+                      
+                      
                     />
                   </div>
-                  {% endfor %}
+                  
                   <div className="flex gap-2">
                     <button 
                       type="submit"
@@ -102,14 +102,14 @@ export function {{ name }}() {
                 <div className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                      {% for field in model.fields %}
+                      
                       <div>
-                        <span className="text-sm font-medium text-gray-500">{{ field.name|title }}:</span>
+                        <span className="text-sm font-medium text-gray-500">Title:</span>
                         <span className="ml-2 text-sm text-gray-900">
-                          {item.{{ field.name }} !== undefined ? item.{{ field.name }}.toString() : ''}
+                          {item.title !== undefined ? item.title.toString() : ''}
                         </span>
                       </div>
-                      {% endfor %}
+                      
                     </div>
                     <div className="flex gap-2">
                       <button

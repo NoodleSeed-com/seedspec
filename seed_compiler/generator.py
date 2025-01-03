@@ -160,7 +160,8 @@ ReactDOM.render(
         if not field.get('default'):
             return 'null'
         if field['type'] == 'bool':
-            return str(field['default']).lower()
+            # Convert string 'true'/'false' to JavaScript boolean literal
+            return 'true' if field['default'].lower() == 'true' else 'false'
         elif field['type'] == 'num':
             return str(field['default'])
         else:

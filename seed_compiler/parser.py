@@ -21,6 +21,14 @@ class SeedParser:
             }
             
             lines = input_text.strip().splitlines()
+            
+            # Validate input starts with app declaration
+            non_empty_lines = [line.split('//')[0].strip() for line in lines if line.split('//')[0].strip()]
+            if not non_empty_lines:
+                raise ParseError("Empty input")
+            if not non_empty_lines[0].startswith('app '):
+                raise ParseError("File must start with app declaration")
+                
             block_stack = []  # Track block hierarchy (app, model, etc)
             brace_stack = []  # Track opening braces and their line numbers
             

@@ -72,9 +72,10 @@ def test_form_default_values(form_spec):
         with open(os.path.join(tmpdir, 'src/screens/Users.js')) as f:
             content = f.read()
             
-            # Check default values
-            assert 'defaultValue={true}' in content  # For active field
-            assert 'defaultValue={null}' in content  # For fields without defaults
+            # Check default values using regex to allow for whitespace variations
+            import re
+            assert re.search(r'defaultValue\s*=\s*{\s*true\s*}', content)  # For active field
+            assert re.search(r'defaultValue\s*=\s*{\s*null\s*}', content)  # For fields without defaults
 
 def test_reference_field_ui(reference_spec):
     """Test that reference fields generate proper selection UI"""
