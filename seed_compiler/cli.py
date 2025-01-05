@@ -2,8 +2,28 @@ import argparse
 import sys
 import os
 from pathlib import Path
-from .parser import SeedParser, ParseError
+from antlr4.error.ErrorListener import ErrorListener
+from .antlr_parser import SeedParser, ParseError as AntlrParseError
 from .generator import Generator
+
+class SeedSpecErrorListener(ErrorListener):
+    def __init__(self):
+        self.errors = []
+        
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        self.errors.append({
+            'line': line,
+            'column': column,
+            'message': msg
+        })
+
+class CliParseError(Exception):
+    def __init__(self, line_num, line_content, message, prev_line=None, next_line=None):
+        self.line_num = line_num
+        self.line_content = line_content
+        self.prev_line = prev_line
+        self.next_line = next_line
+        super().__init__(message)
 
 def main(argv=None):
     """Main entry point for the seed compiler CLI"""
@@ -50,11 +70,27 @@ def main(argv=None):
         with open(input_path) as f:
             seed_content = f.read()
 
-        # Parse spec
+        # Parse spec using ANTLR
         if args.verbose:
             print("Parsing SeedSpec file...")
-        parser = SeedParser()
-        spec = parser.parse(seed_content)
+            
+        try:
+            spec = SeedParser.parse(seed_content)
+        except Exception as e:
+            # Get line content and context for error
+            lines = seed_content.splitlines()
+            error_line = e.line if hasattr(e, 'line') else 1
+            line_content = lines[error_line - 1] if error_line <= len(lines) else ''
+            prev_line = lines[error_line - 2] if error_line > 1 else None
+            next_line = lines[error_line] if error_line < len(lines) else None
+            
+            raise CliParseError(
+                error_line,
+                line_content,
+                str(e),
+                prev_line,
+                next_line
+            )
         
         if args.verbose:
             print("Parsed spec:")
@@ -79,7 +115,7 @@ def main(argv=None):
         sys.exit(0)
 
     except Exception as e:
-        if isinstance(e, ParseError):
+        if isinstance(e, (CliParseError, AntlrParseError)):
             print("\n🚫 Parse Error:", file=sys.stderr)
             print("\nContext:", file=sys.stderr)
             if e.prev_line:
