@@ -71,7 +71,10 @@ Currently Implemented:
 
 ## Documentation
 
-See the [docs](docs/) directory for detailed documentation.
+See the [docs](docs/) directory for detailed documentation:
+
+- **[Compiler Pipeline](docs/compiler-pipeline.md)** - Detailed explanation of how the compiler works
+- **[Grammar Structure](docs/grammar-structure.md)** - Language syntax and rules
 
 ## Status
 
